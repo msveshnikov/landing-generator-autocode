@@ -80,3 +80,5 @@ This project is licensed under the MIT License.
 
 -   add user logins/save to db
 -   make design of builder and landing page more interesting and with modern font
+-   add templates
+-   add nice Generating spinner when Sonnet is building landing

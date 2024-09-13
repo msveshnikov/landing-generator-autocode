@@ -107,8 +107,8 @@ const LandingPage = () => {
                     Create stunning, professional landing pages in minutes with AI-powered
                     technology
                 </Subtitle>
-                <CTAButton to={isAuthenticated ? "/builder" : "/login"}>
-                    {isAuthenticated ? "Start Creating" : "Login to Start"}
+                <CTAButton to={isAuthenticated ? '/builder' : '/login'}>
+                    {isAuthenticated ? 'Start Creating' : 'Login to Start'}
                 </CTAButton>
                 <FeatureSection>
                     <FeatureCard>

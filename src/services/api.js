@@ -17,9 +17,9 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-export const register = async (email, password) => {
+export const registerUser = async (username, email, password) => {
     try {
-        const response = await api.post('/register', { email, password });
+        const response = await api.post('/register', { username, email, password });
         return response.data;
     } catch (error) {
         console.error('Error registering user:', error);
@@ -27,7 +27,7 @@ export const register = async (email, password) => {
     }
 };
 
-export const login = async (email, password) => {
+export const loginUser = async (email, password) => {
     try {
         const response = await api.post('/login', { email, password });
         localStorage.setItem('token', response.data.token);
@@ -79,9 +79,9 @@ export const improveLandingPage = async (websiteId, userFeedback) => {
     }
 };
 
-export const getUserWebsites = async () => {
+export const getUserWebsites = async (userId) => {
     try {
-        const response = await api.get('/websites');
+        const response = await api.get(`/users/${userId}/websites`);
         return response.data;
     } catch (error) {
         console.error('Error fetching user websites:', error);
@@ -101,6 +101,35 @@ export const uploadImage = async (file) => {
         return response.data.imageUrl;
     } catch (error) {
         console.error('Error uploading image:', error);
+        throw error;
+    }
+};
+
+export const fetchTemplates = async () => {
+    try {
+        const response = await api.get('/templates');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching templates:', error);
+        throw error;
+    }
+};
+
+export const saveTemplate = async (userId, templateData) => {
+    try {
+        const response = await api.post(`/users/${userId}/templates`, templateData);
+        return response.data;
+    } catch (error) {
+        console.error('Error saving template:', error);
+        throw error;
+    }
+};
+
+export const deleteWebsite = async (websiteId) => {
+    try {
+        await api.delete(`/websites/${websiteId}`);
+    } catch (error) {
+        console.error('Error deleting website:', error);
         throw error;
     }
 };

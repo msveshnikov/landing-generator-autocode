@@ -52,16 +52,19 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    const register = useCallback(async (email, password) => {
-        try {
-            setError(null);
-            await api.post('/register', { email, password });
-            await login(email, password);
-        } catch (error) {
-            console.error('Registration error:', error);
-            setError(error.response?.data?.error || 'An error occurred during registration');
-        }
-    }, [login]);
+    const register = useCallback(
+        async (email, password) => {
+            try {
+                setError(null);
+                await api.post('/register', { email, password });
+                await login(email, password);
+            } catch (error) {
+                console.error('Registration error:', error);
+                setError(error.response?.data?.error || 'An error occurred during registration');
+            }
+        },
+        [login]
+    );
 
     const logout = useCallback(() => {
         localStorage.removeItem('token');

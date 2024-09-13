@@ -78,7 +78,5 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   fix Error registering user: Error: data and salt arguments required at Object.hash
-    (C:\My-progs\Node.JS\AI\test17\server\node_modules\bcrypt\bcrypt.js:137:17) at
-    C:\My-progs\Node.JS\AI\test17\server\node_modules\bcrypt\promises.js:29:12 at new Promise
-    (<anonymous>)
+-   nice loading indicator in the middle of screen
+-   fix [object Object] in preview instead of html rendered

@@ -1,15 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../contexts/AuthContext';
-import { loginUser } from '../services/api';
+import Header from '../components/Header';
 
 const LoginContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: calc(100vh - 60px);
     background-color: #f0f4f8;
 `;
 
@@ -85,50 +85,63 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { setUser } = useContext(AuthContext);
+    const { login, user, error: authError } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (user) {
+            navigate('/builder');
+        }
+    }, [user, navigate]);
+
+    useEffect(() => {
+        if (authError) {
+            setError(authError);
+        }
+    }, [authError]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            const userData = await loginUser(email, password);
-            setUser(userData);
-            navigate('/builder');
+            await login(email, password);
         } catch (err) {
-            setError('Invalid email or password');
+            setError('An error occurred during login. Please try again.');
         }
     };
 
     return (
-        <LoginContainer>
-            <LoginForm onSubmit={handleSubmit}>
-                <Title>Login</Title>
-                {error && <ErrorMessage>{error}</ErrorMessage>}
-                <InputGroup>
-                    <Label htmlFor="email">Email:</Label>
-                    <Input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </InputGroup>
-                <InputGroup>
-                    <Label htmlFor="password">Password:</Label>
-                    <Input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </InputGroup>
-                <Button type="submit">Login</Button>
-                <StyledLink to="/register">Don't have an account? Register here</StyledLink>
-            </LoginForm>
-        </LoginContainer>
+        <>
+            <Header />
+            <LoginContainer>
+                <LoginForm onSubmit={handleSubmit}>
+                    <Title>Login</Title>
+                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                    <InputGroup>
+                        <Label htmlFor="email">Email:</Label>
+                        <Input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label htmlFor="password">Password:</Label>
+                        <Input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </InputGroup>
+                    <Button type="submit">Login</Button>
+                    <StyledLink to="/register">Don't have an account? Register here</StyledLink>
+                </LoginForm>
+            </LoginContainer>
+        </>
     );
 };
 

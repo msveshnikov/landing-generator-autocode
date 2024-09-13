@@ -17,25 +17,25 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-export const registerUser = async (email, password) => {
-    try {
-        const response = await api.post('/register', { email, password });
-        return response.data;
-    } catch (error) {
-        console.error('Error registering user:', error);
-        throw error;
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('token');
+        }
+        return Promise.reject(error);
     }
+);
+
+export const registerUser = async (email, password) => {
+    const response = await api.post('/register', { email, password });
+    return response.data;
 };
 
 export const loginUser = async (email, password) => {
-    try {
-        const response = await api.post('/login', { email, password });
-        localStorage.setItem('token', response.data.token);
-        return response.data;
-    } catch (error) {
-        console.error('Error logging in:', error);
-        throw error;
-    }
+    const response = await api.post('/login', { email, password });
+    localStorage.setItem('token', response.data.token);
+    return response.data;
 };
 
 export const logout = () => {
@@ -50,128 +50,93 @@ export const generateLandingPage = async (
     productDescription,
     components
 ) => {
-    try {
-        const response = await api.post('/generate', {
-            designType,
-            colors,
-            heroImageUrl,
-            otherImagery,
-            productDescription,
-            components
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error generating landing page:', error);
-        throw error;
-    }
+    const response = await api.post('/generate', {
+        designType,
+        colors,
+        heroImageUrl,
+        otherImagery,
+        productDescription,
+        components
+    });
+    return response.data;
 };
 
 export const improveLandingPage = async (websiteId, userFeedback) => {
-    try {
-        const response = await api.post('/improve', {
-            websiteId,
-            userFeedback
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error improving landing page:', error);
-        throw error;
-    }
+    const response = await api.post('/improve', {
+        websiteId,
+        userFeedback
+    });
+    return response.data;
 };
 
 export const getUserWebsites = async (userId) => {
-    try {
-        const response = await api.get(`/users/${userId}/websites`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching user websites:', error);
-        throw error;
-    }
+    const response = await api.get(`/users/${userId}/websites`);
+    return response.data;
 };
 
 export const uploadImage = async (file) => {
-    try {
-        const formData = new FormData();
-        formData.append('image', file);
-        const response = await api.post('/upload-image', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return response.data.imageUrl;
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        throw error;
-    }
+    const formData = new FormData();
+    formData.append('image', file);
+    const response = await api.post('/upload-image', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+    return response.data.imageUrl;
 };
 
 export const fetchTemplates = async () => {
-    try {
-        const response = await api.get('/templates');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching templates:', error);
-        throw error;
-    }
+    const response = await api.get('/templates');
+    return response.data;
 };
 
 export const saveTemplate = async (userId, templateData) => {
-    try {
-        const response = await api.post(`/users/${userId}/templates`, templateData);
-        return response.data;
-    } catch (error) {
-        console.error('Error saving template:', error);
-        throw error;
-    }
+    const response = await api.post(`/users/${userId}/templates`, templateData);
+    return response.data;
 };
 
 export const deleteWebsite = async (websiteId) => {
-    try {
-        await api.delete(`/websites/${websiteId}`);
-    } catch (error) {
-        console.error('Error deleting website:', error);
-        throw error;
-    }
+    await api.delete(`/websites/${websiteId}`);
 };
 
 export const getDesignTypes = async () => {
-    try {
-        const response = await api.get('/design-types');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching design types:', error);
-        throw error;
-    }
+    const response = await api.get('/design-types');
+    return response.data;
 };
 
 export const getColorPalettes = async () => {
-    try {
-        const response = await api.get('/color-palettes');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching color palettes:', error);
-        throw error;
-    }
+    const response = await api.get('/color-palettes');
+    return response.data;
 };
 
 export const downloadWebsite = async (websiteId) => {
-    try {
-        const response = await api.get(`/websites/${websiteId}/download`, { responseType: 'blob' });
-        return response.data;
-    } catch (error) {
-        console.error('Error downloading website:', error);
-        throw error;
-    }
+    const response = await api.get(`/websites/${websiteId}/download`, { responseType: 'blob' });
+    return response.data;
 };
 
 export const getWebsiteAnalytics = async (websiteId) => {
-    try {
-        const response = await api.get(`/websites/${websiteId}/analytics`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching website analytics:', error);
-        throw error;
-    }
+    const response = await api.get(`/websites/${websiteId}/analytics`);
+    return response.data;
+};
+
+export const getCurrentUser = async () => {
+    const response = await api.get('/user');
+    return response.data;
+};
+
+export const updateUserProfile = async (userId, profileData) => {
+    const response = await api.put(`/users/${userId}`, profileData);
+    return response.data;
+};
+
+export const getWebsiteById = async (websiteId) => {
+    const response = await api.get(`/websites/${websiteId}`);
+    return response.data;
+};
+
+export const updateWebsite = async (websiteId, websiteData) => {
+    const response = await api.put(`/websites/${websiteId}`, websiteData);
+    return response.data;
 };
 
 export default api;

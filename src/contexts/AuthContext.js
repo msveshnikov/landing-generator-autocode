@@ -47,25 +47,29 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', token);
             api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             await fetchUser();
+            return true;
         } catch (error) {
             console.error('Login error:', error);
             setError(error.response?.data?.error || 'An error occurred during login');
+            return false;
         }
     }, []);
 
-    const register = useCallback(
-        async (email, password) => {
-            try {
-                setError(null);
-                await api.post('/register', { email, password });
-                await login(email, password);
-            } catch (error) {
-                console.error('Registration error:', error);
-                setError(error.response?.data?.error || 'An error occurred during registration');
-            }
-        },
-        [login]
-    );
+    const register = useCallback(async (email, password) => {
+        try {
+            setError(null);
+            const response = await api.post('/register', { email, password });
+            const { token } = response.data;
+            localStorage.setItem('token', token);
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            await fetchUser();
+            return true;
+        } catch (error) {
+            console.error('Registration error:', error);
+            setError(error.response?.data?.error || 'An error occurred during registration');
+            return false;
+        }
+    }, []);
 
     const logout = useCallback(() => {
         localStorage.removeItem('token');
@@ -80,7 +84,8 @@ export const AuthProvider = ({ children }) => {
         register,
         loading,
         error,
-        isAuthenticated: !!user
+        isAuthenticated: !!user,
+        setError
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Header from '../components/Header';
@@ -7,7 +7,7 @@ import ColorPicker from '../components/ColorPicker';
 import ImageUploader from '../components/ImageUploader';
 import { useWebsite } from '../contexts/WebsiteContext';
 import { useAuth } from '../contexts/AuthContext';
-import { generateLandingPage, improveLandingPage } from '../services/api';
+import { generateLandingPage, improveLandingPage, uploadImage } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const BuilderContainer = styled.div`
@@ -97,6 +97,11 @@ const Button = styled.button`
     &:hover {
         background-color: #357abd;
     }
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
 `;
 
 const TextArea = styled.textarea`
@@ -115,14 +120,26 @@ const SectionTitle = styled.h3`
     color: #333;
 `;
 
+const LoadingOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+`;
+
 const Spinner = styled.div`
     border: 4px solid #f3f3f3;
     border-top: 4px solid #3498db;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     animation: spin 1s linear infinite;
-    margin: 20px auto;
 
     @keyframes spin {
         0% {
@@ -155,44 +172,62 @@ const Builder = () => {
         }
     }, [website]);
 
-    const onDragEnd = (result) => {
-        if (!result.destination) return;
+    const onDragEnd = useCallback(
+        (result) => {
+            if (!result.destination) return;
 
-        const { source, destination } = result;
+            const { source, destination } = result;
 
-        if (source.droppableId === 'componentLibrary' && destination.droppableId === 'canvas') {
-            const draggedComponent = components[source.index];
-            const newCanvasItem = { ...draggedComponent, id: `canvas-${Date.now()}` };
-            const newCanvasItems = [...canvasItems];
-            newCanvasItems.splice(destination.index, 0, newCanvasItem);
-            setCanvasItems(newCanvasItems);
-            updateWebsite({ components: newCanvasItems });
-        } else if (source.droppableId === 'canvas' && destination.droppableId === 'canvas') {
-            const newCanvasItems = Array.from(canvasItems);
-            const [reorderedItem] = newCanvasItems.splice(source.index, 1);
-            newCanvasItems.splice(destination.index, 0, reorderedItem);
-            setCanvasItems(newCanvasItems);
-            updateWebsite({ components: newCanvasItems });
-        }
-    };
+            if (source.droppableId === 'componentLibrary' && destination.droppableId === 'canvas') {
+                const draggedComponent = components[source.index];
+                const newCanvasItem = { ...draggedComponent, id: `canvas-${Date.now()}` };
+                const newCanvasItems = [...canvasItems];
+                newCanvasItems.splice(destination.index, 0, newCanvasItem);
+                setCanvasItems(newCanvasItems);
+                updateWebsite({ components: newCanvasItems });
+            } else if (source.droppableId === 'canvas' && destination.droppableId === 'canvas') {
+                const newCanvasItems = Array.from(canvasItems);
+                const [reorderedItem] = newCanvasItems.splice(source.index, 1);
+                newCanvasItems.splice(destination.index, 0, reorderedItem);
+                setCanvasItems(newCanvasItems);
+                updateWebsite({ components: newCanvasItems });
+            }
+        },
+        [canvasItems, components, updateWebsite]
+    );
 
-    const handleColorChange = (color, type) => {
-        updateWebsite({ colors: { ...website.colors, [type]: color } });
-    };
+    const handleColorChange = useCallback(
+        (color, type) => {
+            updateWebsite({ colors: { ...website.colors, [type]: color } });
+        },
+        [website.colors, updateWebsite]
+    );
 
-    const handleImageUpload = (url) => {
-        updateWebsite({ heroImageUrl: url });
-    };
+    const handleImageUpload = useCallback(
+        async (file) => {
+            try {
+                const imageUrl = await uploadImage(file);
+                updateWebsite({ heroImageUrl: imageUrl });
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Failed to upload image. Please try again.');
+            }
+        },
+        [updateWebsite]
+    );
 
-    const handleDescriptionChange = (e) => {
-        updateWebsite({ productDescription: e.target.value });
-    };
+    const handleDescriptionChange = useCallback(
+        (e) => {
+            updateWebsite({ productDescription: e.target.value });
+        },
+        [updateWebsite]
+    );
 
-    const handleAdditionalInstructionsChange = (e) => {
+    const handleAdditionalInstructionsChange = useCallback((e) => {
         setAdditionalInstructions(e.target.value);
-    };
+    }, []);
 
-    const generatePage = async () => {
+    const generatePage = useCallback(async () => {
         if (!isAuthenticated) {
             alert('Please log in to generate a landing page.');
             navigate('/login');
@@ -219,9 +254,9 @@ const Builder = () => {
         } finally {
             setIsGenerating(false);
         }
-    };
+    }, [isAuthenticated, navigate, canvasItems, website, updateWebsite]);
 
-    const improvePage = async () => {
+    const improvePage = useCallback(async () => {
         if (!isAuthenticated) {
             alert('Please log in to improve the landing page.');
             navigate('/login');
@@ -241,9 +276,9 @@ const Builder = () => {
         } finally {
             setIsGenerating(false);
         }
-    };
+    }, [isAuthenticated, navigate, website.generatedHtml, additionalInstructions, updateWebsite]);
 
-    const downloadHtml = () => {
+    const downloadHtml = useCallback(() => {
         const blob = new Blob([website.generatedHtml], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -253,7 +288,7 @@ const Builder = () => {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    };
+    }, [website.generatedHtml]);
 
     return (
         <BuilderContainer>
@@ -348,13 +383,12 @@ const Builder = () => {
                         onChange={handleAdditionalInstructionsChange}
                     />
                     <Button onClick={generatePage} disabled={isGenerating}>
-                        {isGenerating ? 'Generating...' : 'Generate Landing Page'}
+                        Generate Landing Page
                     </Button>
-                    {isGenerating && <Spinner />}
                     {website.generatedHtml && (
                         <>
                             <Button onClick={improvePage} disabled={isGenerating}>
-                                {isGenerating ? 'Improving...' : 'Improve Landing Page'}
+                                Improve Landing Page
                             </Button>
                             <Button onClick={downloadHtml}>Download HTML</Button>
                         </>
@@ -374,6 +408,11 @@ const Builder = () => {
                 </PreviewContainer>
             )}
             <Footer />
+            {isGenerating && (
+                <LoadingOverlay>
+                    <Spinner />
+                </LoadingOverlay>
+            )}
         </BuilderContainer>
     );
 };

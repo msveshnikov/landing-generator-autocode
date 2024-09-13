@@ -69,8 +69,8 @@ export const improveLandingPage = async (websiteId, userFeedback) => {
     return response.data;
 };
 
-export const getUserWebsites = async (userId) => {
-    const response = await api.get(`/users/${userId}/websites`);
+export const getUserWebsites = async () => {
+    const response = await api.get('/websites');
     return response.data;
 };
 
@@ -90,8 +90,8 @@ export const fetchTemplates = async () => {
     return response.data;
 };
 
-export const saveTemplate = async (userId, templateData) => {
-    const response = await api.post(`/users/${userId}/templates`, templateData);
+export const saveTemplate = async (templateData) => {
+    const response = await api.post('/templates', templateData);
     return response.data;
 };
 
@@ -124,8 +124,8 @@ export const getCurrentUser = async () => {
     return response.data;
 };
 
-export const updateUserProfile = async (userId, profileData) => {
-    const response = await api.put(`/users/${userId}`, profileData);
+export const updateUserProfile = async (profileData) => {
+    const response = await api.put('/user', profileData);
     return response.data;
 };
 

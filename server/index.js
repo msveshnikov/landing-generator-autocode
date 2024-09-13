@@ -18,10 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+mongoose.connect(process.env.MONGODB_URI, {});
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
@@ -55,7 +52,7 @@ const anthropic = new Anthropic({
     apiKey: process.env.CLAUDE_KEY
 });
 
-const CLAUDE_MODEL = 'claude-3-sonnet-20240229';
+const CLAUDE_MODEL = 'claude-3-5-sonnet-20240620';
 
 const generateLandingPage = async (
     designType,

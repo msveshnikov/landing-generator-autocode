@@ -78,5 +78,5 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   nice loading indicator in the middle of screen
--   fix [object Object] in preview instead of html rendered
+-   !!!  fix [object Object] in preview instead of html rendered !!!
+-   improve account page design

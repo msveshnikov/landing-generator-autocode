@@ -35,4 +35,3 @@ generated page with additional instructions until they are satisfied. Works full
 
 # TODO
 
--   rewrite in es6 imports

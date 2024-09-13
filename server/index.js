@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
-import winston from 'winston';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -16,16 +16,9 @@ const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan('dev'));
 
 mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
-    transports: [new winston.transports.Console()]
 });
 
 const UserSchema = new mongoose.Schema({
@@ -92,7 +85,7 @@ const generateLandingPage = async (
 
         return response.content[0].text;
     } catch (error) {
-        logger.error('Error generating landing page:', error);
+        console.error('Error generating landing page:', error);
         throw error;
     }
 };
@@ -117,7 +110,7 @@ const improveLandingPage = async (currentHtml, userFeedback) => {
 
         return response.content[0].text;
     } catch (error) {
-        logger.error('Error improving landing page:', error);
+        console.error('Error improving landing page:', error);
         throw error;
     }
 };
@@ -153,7 +146,7 @@ app.post('/register', async (req, res) => {
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        logger.error('Error registering user:', error);
+        console.error('Error registering user:', error);
         res.status(500).json({ error: 'Error registering user' });
     }
 });
@@ -174,7 +167,7 @@ app.post('/login', async (req, res) => {
         });
         res.json({ token });
     } catch (error) {
-        logger.error('Error logging in:', error);
+        console.error('Error logging in:', error);
         res.status(500).json({ error: 'Error logging in' });
     }
 });
@@ -204,7 +197,7 @@ app.post('/generate', authenticateToken, async (req, res) => {
         await website.save();
         res.json({ html: generatedHtml, websiteId: website._id });
     } catch (error) {
-        logger.error('Error generating landing page:', error);
+        console.error('Error generating landing page:', error);
         res.status(500).json({ error: 'Error generating landing page' });
     }
 });
@@ -221,7 +214,7 @@ app.post('/improve', authenticateToken, async (req, res) => {
         await website.save();
         res.json({ html: improvedHtml });
     } catch (error) {
-        logger.error('Error improving landing page:', error);
+        console.error('Error improving landing page:', error);
         res.status(500).json({ error: 'Error improving landing page' });
     }
 });
@@ -231,7 +224,7 @@ app.get('/websites', authenticateToken, async (req, res) => {
         const websites = await Website.find({ userId: req.user.userId });
         res.json(websites);
     } catch (error) {
-        logger.error('Error fetching websites:', error);
+        console.error('Error fetching websites:', error);
         res.status(500).json({ error: 'Error fetching websites' });
     }
 });
@@ -257,7 +250,7 @@ app.post('/templates', authenticateToken, async (req, res) => {
         await template.save();
         res.status(201).json(template);
     } catch (error) {
-        logger.error('Error creating template:', error);
+        console.error('Error creating template:', error);
         res.status(500).json({ error: 'Error creating template' });
     }
 });
@@ -269,7 +262,7 @@ app.get('/templates', authenticateToken, async (req, res) => {
         });
         res.json(templates);
     } catch (error) {
-        logger.error('Error fetching templates:', error);
+        console.error('Error fetching templates:', error);
         res.status(500).json({ error: 'Error fetching templates' });
     }
 });
@@ -277,7 +270,7 @@ app.get('/templates', authenticateToken, async (req, res) => {
 app.use('/uploads', express.static('uploads'));
 
 app.listen(port, () => {
-    logger.info(`Server running on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });
 
 export default app;

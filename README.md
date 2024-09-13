@@ -78,5 +78,7 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   add Template schema  and methods
--   replace Winston with morgan
+- fix Error registering user: Error: data and salt arguments required
+    at Object.hash (C:\My-progs\Node.JS\AI\test17\server\node_modules\bcrypt\bcrypt.js:137:17)
+    at C:\My-progs\Node.JS\AI\test17\server\node_modules\bcrypt\promises.js:29:12
+    at new Promise (<anonymous>)

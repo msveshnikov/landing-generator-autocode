@@ -18,7 +18,10 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-mongoose.connect(process.env.MONGODB_URI, {});
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
@@ -31,9 +34,9 @@ const WebsiteSchema = new mongoose.Schema({
     designType: String,
     colors: Object,
     heroImageUrl: String,
-    otherImagery: String,
+    otherImagery: [String],
     productDescription: String,
-    components: [{ type: String }]
+    components: [Object]
 });
 
 const TemplateSchema = new mongoose.Schema({
@@ -73,9 +76,9 @@ const generateLandingPage = async (
           Design Type: ${designType}
           Colors: ${JSON.stringify(colors)}
           Hero Image URL: ${heroImageUrl}
-          Other Imagery: ${otherImagery}
+          Other Imagery: ${otherImagery.join(', ')}
           Product Description: ${productDescription}
-          Components: ${components?.map((c) => c.type).join(', ')}
+          Components: ${components.map((c) => c.type).join(', ')}
           
           Create a responsive, modern, and visually appealing landing page. Include appropriate meta tags, CSS, and minimal JavaScript if necessary. Ensure the page is optimized for SEO and performance.`
                 }

@@ -7,46 +7,63 @@ import Preview from './pages/Preview';
 import Download from './pages/Download';
 import LandingPage from './pages/LandingPage';
 import NotFound from './pages/NotFound';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import UserAccount from './pages/UserAccount';
+import Templates from './pages/Templates';
 import { AuthProvider } from './contexts/AuthContext';
 import { WebsiteProvider } from './contexts/WebsiteContext';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 const AppWrapper = styled.div`
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
 `;
 
 const ContentWrapper = styled.div`
-    flex: 1;
+  flex: 1;
 `;
 
 const App = () => {
-    return (
-        <AuthProvider>
-            <WebsiteProvider>
-                <Router>
-                    <AppWrapper>
-                        <Helmet>
-                            <title>Landing Page Generator</title>
-                            <meta
-                                name="description"
-                                content="Create custom landing pages with AI-powered generation"
-                            />
-                        </Helmet>
-                        <ContentWrapper>
-                            <Routes>
-                                <Route path="/" element={<LandingPage />} />
-                                <Route path="/builder" element={<Builder />} />
-                                <Route path="/preview" element={<Preview />} />
-                                <Route path="/download" element={<Download />} />
-                                <Route path="*" element={<NotFound />} />
-                            </Routes>
-                        </ContentWrapper>
-                    </AppWrapper>
-                </Router>
-            </WebsiteProvider>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <WebsiteProvider>
+        <Router>
+          <AppWrapper>
+            <Helmet>
+              <title>Landing Page Generator</title>
+              <meta
+                name="description"
+                content="Create custom landing pages with AI-powered generation"
+              />
+              <link
+                href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+                rel="stylesheet"
+              />
+            </Helmet>
+            <Header />
+            <ContentWrapper>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/builder" element={<Builder />} />
+                <Route path="/preview" element={<Preview />} />
+                <Route path="/download" element={<Download />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/user-account" element={<UserAccount />} />
+                <Route path="/templates" element={<Templates />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </ContentWrapper>
+            <Footer />
+          </AppWrapper>
+        </Router>
+      </WebsiteProvider>
+    </AuthProvider>
+  );
 };
 
 export default App;

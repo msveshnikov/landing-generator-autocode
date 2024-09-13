@@ -6,24 +6,28 @@ import Footer from '../components/Footer';
 import ColorPicker from '../components/ColorPicker';
 import ImageUploader from '../components/ImageUploader';
 import { useWebsite } from '../contexts/WebsiteContext';
+import { useAuth } from '../contexts/AuthContext';
 import { generateLandingPage, improveLandingPage } from '../services/api';
 
 const BuilderContainer = styled.div`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    font-family: 'Arial', sans-serif;
 `;
 
 const BuilderContent = styled.div`
     display: flex;
     flex: 1;
+    background-color: #f0f4f8;
 `;
 
 const ComponentLibrary = styled.div`
     width: 250px;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     padding: 20px;
     overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 `;
 
 const Canvas = styled.div`
@@ -32,18 +36,21 @@ const Canvas = styled.div`
     background-color: #ffffff;
     border: 2px dashed #ccc;
     min-height: 400px;
+    margin: 20px;
+    border-radius: 8px;
 `;
 
 const ComponentItem = styled.div`
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #ffffff;
+    background-color: #f0f4f8;
     border: 1px solid #ddd;
     cursor: move;
     transition: all 0.3s ease;
+    border-radius: 4px;
 
     &:hover {
-        background-color: #f0f0f0;
+        background-color: #e0e7ff;
         transform: translateY(-2px);
     }
 `;
@@ -54,6 +61,7 @@ const CanvasItem = styled.div`
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     transition: all 0.3s ease;
+    border-radius: 4px;
 
     &:hover {
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -62,25 +70,31 @@ const CanvasItem = styled.div`
 
 const PreviewContainer = styled.div`
     margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const ControlPanel = styled.div`
     width: 300px;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 `;
 
 const Button = styled.button`
     margin-top: 10px;
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: #4a90e2;
     color: white;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    border-radius: 4px;
 
     &:hover {
-        background-color: #0056b3;
+        background-color: #357abd;
     }
 `;
 
@@ -91,15 +105,18 @@ const TextArea = styled.textarea`
     padding: 10px;
     border: 1px solid #ddd;
     resize: vertical;
+    border-radius: 4px;
 `;
 
 const SectionTitle = styled.h3`
     margin-top: 20px;
     margin-bottom: 10px;
+    color: #333;
 `;
 
 const Builder = () => {
     const { website, updateWebsite } = useWebsite();
+    const { isAuthenticated } = useAuth();
     const [components] = useState([
         { id: 'header', type: 'Header' },
         { id: 'hero', type: 'Hero' },
@@ -154,6 +171,11 @@ const Builder = () => {
     };
 
     const generatePage = async () => {
+        if (!isAuthenticated) {
+            alert('Please log in to generate a landing page.');
+            return;
+        }
+
         const designType = canvasItems.map((item) => item.type).join(', ');
         const { colors, heroImageUrl, additionalImages, productDescription } = website;
 
@@ -169,10 +191,16 @@ const Builder = () => {
             updateWebsite({ generatedHtml });
         } catch (error) {
             console.error('Error generating landing page:', error);
+            alert('An error occurred while generating the landing page. Please try again.');
         }
     };
 
     const improvePage = async () => {
+        if (!isAuthenticated) {
+            alert('Please log in to improve the landing page.');
+            return;
+        }
+
         try {
             const improvedHtml = await improveLandingPage(
                 website.generatedHtml,
@@ -181,6 +209,7 @@ const Builder = () => {
             updateWebsite({ generatedHtml: improvedHtml });
         } catch (error) {
             console.error('Error improving landing page:', error);
+            alert('An error occurred while improving the landing page. Please try again.');
         }
     };
 
@@ -305,7 +334,7 @@ const Builder = () => {
                         srcDoc={website.generatedHtml}
                         width="100%"
                         height="600px"
-                        style={{ border: '1px solid #ddd' }}
+                        style={{ border: '1px solid #ddd', borderRadius: '4px' }}
                     />
                 </PreviewContainer>
             )}

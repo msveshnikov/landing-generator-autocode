@@ -9,6 +9,39 @@ const api = axios.create({
     }
 });
 
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+export const register = async (email, password) => {
+    try {
+        const response = await api.post('/register', { email, password });
+        return response.data;
+    } catch (error) {
+        console.error('Error registering user:', error);
+        throw error;
+    }
+};
+
+export const login = async (email, password) => {
+    try {
+        const response = await api.post('/login', { email, password });
+        localStorage.setItem('token', response.data.token);
+        return response.data;
+    } catch (error) {
+        console.error('Error logging in:', error);
+        throw error;
+    }
+};
+
+export const logout = () => {
+    localStorage.removeItem('token');
+};
+
 export const generateLandingPage = async (
     designType,
     colors,
@@ -26,32 +59,32 @@ export const generateLandingPage = async (
             productDescription,
             components
         });
-        return response.data.html;
+        return response.data;
     } catch (error) {
         console.error('Error generating landing page:', error);
         throw error;
     }
 };
 
-export const improveLandingPage = async (currentHtml, userFeedback) => {
+export const improveLandingPage = async (websiteId, userFeedback) => {
     try {
         const response = await api.post('/improve', {
-            currentHtml,
+            websiteId,
             userFeedback
         });
-        return response.data.html;
+        return response.data;
     } catch (error) {
         console.error('Error improving landing page:', error);
         throw error;
     }
 };
 
-export const generateContent = async (prompt) => {
+export const getUserWebsites = async () => {
     try {
-        const response = await api.post('/generate-content', { prompt });
-        return response.data.content;
+        const response = await api.get('/websites');
+        return response.data;
     } catch (error) {
-        console.error('Error generating content:', error);
+        console.error('Error fetching user websites:', error);
         throw error;
     }
 };

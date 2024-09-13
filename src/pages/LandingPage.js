@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useAuth } from '../contexts/AuthContext';
 
 const gradientAnimation = keyframes`
   0% { background-position: 0% 50%; }
@@ -17,6 +18,7 @@ const LandingContainer = styled.div`
     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
     background-size: 400% 400%;
     animation: ${gradientAnimation} 15s ease infinite;
+    font-family: 'Poppins', sans-serif;
 `;
 
 const MainContent = styled.main`
@@ -94,6 +96,8 @@ const FeatureDescription = styled.p`
 `;
 
 const LandingPage = () => {
+    const { isAuthenticated } = useAuth();
+
     return (
         <LandingContainer>
             <Header />
@@ -103,7 +107,9 @@ const LandingPage = () => {
                     Create stunning, professional landing pages in minutes with AI-powered
                     technology
                 </Subtitle>
-                <CTAButton to="/builder">Start Creating</CTAButton>
+                <CTAButton to={isAuthenticated ? "/builder" : "/login"}>
+                    {isAuthenticated ? "Start Creating" : "Login to Start"}
+                </CTAButton>
                 <FeatureSection>
                     <FeatureCard>
                         <FeatureTitle>Intuitive Design Interface</FeatureTitle>

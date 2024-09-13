@@ -5,6 +5,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
+import path from 'path';
 
 dotenv.config();
 
@@ -14,7 +16,10 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI, {});
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
@@ -101,6 +106,29 @@ const improveLandingPage = async (currentHtml, userFeedback) => {
     }
 };
 
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+};
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
 app.post('/register', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -132,18 +160,6 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Error logging in' });
     }
 });
-
-const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.sendStatus(401);
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
-        req.user = user;
-        next();
-    });
-};
 
 app.post('/generate', authenticateToken, async (req, res) => {
     try {
@@ -198,6 +214,16 @@ app.get('/websites', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Error fetching websites' });
     }
 });
+
+app.post('/upload-image', authenticateToken, upload.single('image'), (req, res) => {
+    if (req.file) {
+        res.json({ imageUrl: `/uploads/${req.file.filename}` });
+    } else {
+        res.status(400).json({ error: 'No image file uploaded' });
+    }
+});
+
+app.use('/uploads', express.static('uploads'));
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

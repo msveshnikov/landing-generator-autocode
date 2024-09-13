@@ -17,6 +17,7 @@ const Logo = styled(Link)`
     font-weight: bold;
     color: #333;
     text-decoration: none;
+    font-family: 'Arial', sans-serif;
 `;
 
 const Nav = styled.nav`
@@ -30,6 +31,7 @@ const NavLink = styled(Link)`
     padding: 0.5rem 1rem;
     border-radius: 4px;
     transition: background-color 0.2s;
+    font-family: 'Arial', sans-serif;
 
     &:hover {
         background-color: #e9ecef;
@@ -44,6 +46,7 @@ const Button = styled.button`
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s;
+    font-family: 'Arial', sans-serif;
 
     &:hover {
         background-color: #0056b3;
@@ -51,7 +54,7 @@ const Button = styled.button`
 `;
 
 const Header = () => {
-    const auth = useAuth();
+    const { isAuthenticated, logout } = useAuth();
 
     return (
         <HeaderContainer>
@@ -59,10 +62,10 @@ const Header = () => {
             <Nav>
                 <NavLink to="/templates">Templates</NavLink>
                 <NavLink to="/builder">Builder</NavLink>
-                {auth?.isAuthenticated ? (
+                {isAuthenticated ? (
                     <>
                         <NavLink to="/user-account">Account</NavLink>
-                        <Button onClick={auth.logout}>Logout</Button>
+                        <Button onClick={logout}>Logout</Button>
                     </>
                 ) : (
                     <>

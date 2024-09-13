@@ -67,7 +67,10 @@ const Preview = () => {
 
     const handleImprovePage = async () => {
         try {
-            const improvedHtml = await improveLandingPage(website.generatedHtml, additionalInstructions);
+            const improvedHtml = await improveLandingPage(
+                website.generatedHtml,
+                additionalInstructions
+            );
             updateWebsite({ generatedHtml: improvedHtml });
         } catch (error) {
             console.error('Error improving landing page:', error);

@@ -36,5 +36,4 @@ generated page with additional instructions until they are satisfied. Works full
 
 # TODO
 
--   Fix colors and pass all params to claude
 -   Fix drag n drop of components to Web Canvas

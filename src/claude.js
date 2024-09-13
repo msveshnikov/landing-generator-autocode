@@ -26,7 +26,7 @@ const generateLandingPage = async (
               Hero Image URL: ${heroImageUrl}
               Other Imagery: ${otherImagery}
               Product Description: ${productDescription}
-              Components: ${components.map(c => c.type).join(', ')}
+              Components: ${components.map((c) => c.type).join(', ')}
               
               Create a responsive, modern, and visually appealing landing page. Include appropriate meta tags, CSS, and minimal JavaScript if necessary. Ensure the page is optimized for SEO and performance.`
                     }

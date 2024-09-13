@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useWebsite } from '../contexts/WebsiteContext';
 
 const ImageUploader = ({ type }) => {
-    const { website, updateWebsite } = useWebsite();
+    const { updateWebsite } = useWebsite();
     const [imageUrl, setImageUrl] = useState('');
 
     const handleImageUpload = (e) => {

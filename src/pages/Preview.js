@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useWebsite } from '../contexts/WebsiteContext';
-import { improveLandingPage } from '../claude';
+import { improveLandingPage } from '../services/api';
 
 const PreviewContainer = styled.div`
     display: flex;

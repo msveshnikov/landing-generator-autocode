@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import ColorPicker from '../components/ColorPicker';
 import ImageUploader from '../components/ImageUploader';
 import { useWebsite } from '../contexts/WebsiteContext';
+import { generateLandingPage, improveLandingPage } from '../services/api';
 
 const BuilderContainer = styled.div`
     display: flex;

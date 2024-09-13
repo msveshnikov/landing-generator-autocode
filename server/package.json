@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "Backend server for Landing Page Generator",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "dev": "nodemon index.js"
     },

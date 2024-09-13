@@ -35,5 +35,4 @@ generated page with additional instructions until they are satisfied. Works full
 
 # TODO
 
--   Make simple ExpressJS backend to execute claude (because it cant work from browser), CLAUDE_KEY
-    is in .env in /server
+-   rewrite in es6 imports

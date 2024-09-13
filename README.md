@@ -36,14 +36,9 @@ generated page with additional instructions until they are satisfied. Works full
 4. Run the development server
 5. Access the application through your web browser
 
--   get rid of redux & slices, use React Context
--   fix ERROR in ./src/pages/Builder.js 144:34-49 export 'generateContent' (imported as
-    'generateContent') was not found in '../claude' (possible exports: generateLandingPage,
-    improveLandingPage)
+# TODO
 
-ERROR in [eslint] src\pages\Builder.js Line 78:33: 'selectTemplates' is not defined no-undef Line
-104:16: 'updateWebsite' is not defined no-undef Line 110:16: 'updateWebsite' is not defined no-undef
+-   Fix ERROR
+Cannot destructure property 'user' of '(0 , _contexts_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)(...)' as it is undefined.
+TypeError: Cannot destructure property 'user' of '(0 , _contexts_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)(...)' as it is undefined.
 
-Search for the keywords to learn more about each error.
-
-webpack compiled with 6 errors

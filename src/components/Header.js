@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { AuthContext } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -51,7 +51,7 @@ const Button = styled.button`
 `;
 
 const Header = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { user, logout } = useAuth();
 
   return (
     <HeaderContainer>
@@ -59,7 +59,7 @@ const Header = () => {
       <Nav>
         <NavLink to="/templates">Templates</NavLink>
         <NavLink to="/builder">Builder</NavLink>
-        {isAuthenticated ? (
+        {user ? (
           <>
             <NavLink to="/user-account">Account</NavLink>
             <Button onClick={logout}>Logout</Button>

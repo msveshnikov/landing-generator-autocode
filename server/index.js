@@ -18,8 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-mongoose.connect(process.env.MONGODB_URI, {
-});
+mongoose.connect(process.env.MONGODB_URI, {});
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
@@ -141,6 +140,9 @@ const upload = multer({ storage: storage });
 app.post('/register', async (req, res) => {
     try {
         const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required' });
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ email, password: hashedPassword });
         await user.save();

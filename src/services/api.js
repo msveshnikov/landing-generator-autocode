@@ -17,9 +17,9 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-export const registerUser = async (username, email, password) => {
+export const registerUser = async (email, password) => {
     try {
-        const response = await api.post('/register', { username, email, password });
+        const response = await api.post('/register', { email, password });
         return response.data;
     } catch (error) {
         console.error('Error registering user:', error);
@@ -42,7 +42,14 @@ export const logout = () => {
     localStorage.removeItem('token');
 };
 
-export const generateLandingPage = async (designType, colors, heroImageUrl, otherImagery, productDescription, components) => {
+export const generateLandingPage = async (
+    designType,
+    colors,
+    heroImageUrl,
+    otherImagery,
+    productDescription,
+    components
+) => {
     try {
         const response = await api.post('/generate', {
             designType,

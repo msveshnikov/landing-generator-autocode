@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
+import winston from 'winston';
 
 dotenv.config();
 
@@ -19,6 +20,12 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
+});
+
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+    transports: [new winston.transports.Console()]
 });
 
 const UserSchema = new mongoose.Schema({
@@ -37,8 +44,17 @@ const WebsiteSchema = new mongoose.Schema({
     components: [{ type: String }]
 });
 
+const TemplateSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    html: { type: String, required: true },
+    designType: String,
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    isPublic: { type: Boolean, default: false }
+});
+
 const User = mongoose.model('User', UserSchema);
 const Website = mongoose.model('Website', WebsiteSchema);
+const Template = mongoose.model('Template', TemplateSchema);
 
 const anthropic = new Anthropic({
     apiKey: process.env.CLAUDE_KEY
@@ -76,7 +92,7 @@ const generateLandingPage = async (
 
         return response.content[0].text;
     } catch (error) {
-        console.error('Error generating landing page:', error);
+        logger.error('Error generating landing page:', error);
         throw error;
     }
 };
@@ -101,7 +117,7 @@ const improveLandingPage = async (currentHtml, userFeedback) => {
 
         return response.content[0].text;
     } catch (error) {
-        console.error('Error improving landing page:', error);
+        logger.error('Error improving landing page:', error);
         throw error;
     }
 };
@@ -137,6 +153,7 @@ app.post('/register', async (req, res) => {
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
+        logger.error('Error registering user:', error);
         res.status(500).json({ error: 'Error registering user' });
     }
 });
@@ -157,6 +174,7 @@ app.post('/login', async (req, res) => {
         });
         res.json({ token });
     } catch (error) {
+        logger.error('Error logging in:', error);
         res.status(500).json({ error: 'Error logging in' });
     }
 });
@@ -186,6 +204,7 @@ app.post('/generate', authenticateToken, async (req, res) => {
         await website.save();
         res.json({ html: generatedHtml, websiteId: website._id });
     } catch (error) {
+        logger.error('Error generating landing page:', error);
         res.status(500).json({ error: 'Error generating landing page' });
     }
 });
@@ -202,6 +221,7 @@ app.post('/improve', authenticateToken, async (req, res) => {
         await website.save();
         res.json({ html: improvedHtml });
     } catch (error) {
+        logger.error('Error improving landing page:', error);
         res.status(500).json({ error: 'Error improving landing page' });
     }
 });
@@ -211,6 +231,7 @@ app.get('/websites', authenticateToken, async (req, res) => {
         const websites = await Website.find({ userId: req.user.userId });
         res.json(websites);
     } catch (error) {
+        logger.error('Error fetching websites:', error);
         res.status(500).json({ error: 'Error fetching websites' });
     }
 });
@@ -223,10 +244,40 @@ app.post('/upload-image', authenticateToken, upload.single('image'), (req, res) 
     }
 });
 
+app.post('/templates', authenticateToken, async (req, res) => {
+    try {
+        const { name, html, designType, isPublic } = req.body;
+        const template = new Template({
+            name,
+            html,
+            designType,
+            createdBy: req.user.userId,
+            isPublic
+        });
+        await template.save();
+        res.status(201).json(template);
+    } catch (error) {
+        logger.error('Error creating template:', error);
+        res.status(500).json({ error: 'Error creating template' });
+    }
+});
+
+app.get('/templates', authenticateToken, async (req, res) => {
+    try {
+        const templates = await Template.find({
+            $or: [{ createdBy: req.user.userId }, { isPublic: true }]
+        });
+        res.json(templates);
+    } catch (error) {
+        logger.error('Error fetching templates:', error);
+        res.status(500).json({ error: 'Error fetching templates' });
+    }
+});
+
 app.use('/uploads', express.static('uploads'));
 
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    logger.info(`Server running on port ${port}`);
 });
 
 export default app;

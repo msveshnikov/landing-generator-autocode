@@ -15,7 +15,8 @@ export const WebsiteProvider = ({ children }) => {
         heroImageUrl: '',
         additionalImages: [],
         productDescription: '',
-        generatedHtml: ''
+        generatedHtml: '',
+        components: []
     });
 
     const updateWebsite = (updates) => {
@@ -36,7 +37,40 @@ export const WebsiteProvider = ({ children }) => {
             heroImageUrl: '',
             additionalImages: [],
             productDescription: '',
-            generatedHtml: ''
+            generatedHtml: '',
+            components: []
+        });
+    };
+
+    const addComponent = (component) => {
+        setWebsite((prevWebsite) => ({
+            ...prevWebsite,
+            components: [...prevWebsite.components, component]
+        }));
+    };
+
+    const removeComponent = (componentId) => {
+        setWebsite((prevWebsite) => ({
+            ...prevWebsite,
+            components: prevWebsite.components.filter((c) => c.id !== componentId)
+        }));
+    };
+
+    const updateComponent = (componentId, updates) => {
+        setWebsite((prevWebsite) => ({
+            ...prevWebsite,
+            components: prevWebsite.components.map((c) =>
+                c.id === componentId ? { ...c, ...updates } : c
+            )
+        }));
+    };
+
+    const reorderComponents = (startIndex, endIndex) => {
+        setWebsite((prevWebsite) => {
+            const newComponents = Array.from(prevWebsite.components);
+            const [removed] = newComponents.splice(startIndex, 1);
+            newComponents.splice(endIndex, 0, removed);
+            return { ...prevWebsite, components: newComponents };
         });
     };
 
@@ -45,7 +79,11 @@ export const WebsiteProvider = ({ children }) => {
             value={{
                 website,
                 updateWebsite,
-                resetWebsite
+                resetWebsite,
+                addComponent,
+                removeComponent,
+                updateComponent,
+                reorderComponents
             }}
         >
             {children}

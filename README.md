@@ -22,8 +22,6 @@ generated page with additional instructions until they are satisfied. Works full
 
 ## Technical Considerations
 
--   Implement a modular architecture for easy feature additions
--   react router v6
 -   Ensure cross-browser compatibility
 -   Consider implementing a backend API for more advanced features
 -   Consider serverless architecture for scalability
@@ -37,3 +35,6 @@ generated page with additional instructions until they are satisfied. Works full
 5. Access the application through your web browser
 
 # TODO
+
+-   Fix colors and pass all params to claude
+-   Fix drag n drop of components to Web Canvas

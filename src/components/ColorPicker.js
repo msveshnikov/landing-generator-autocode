@@ -1,64 +1,73 @@
 import React, { useState } from 'react';
 import { SketchPicker } from 'react-color';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-const ColorPicker = ({ onColorChange }) => {
-    const [color, setColor] = useState('#ffffff');
-    const [displayColorPicker, setDisplayColorPicker] = useState(false);
+const ColorPickerContainer = styled.div`
+  position: relative;
+`;
 
-    const handleClick = () => {
-        setDisplayColorPicker(!displayColorPicker);
-    };
+const ColorSwatch = styled.div`
+  padding: 5px;
+  background: #fff;
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  cursor: pointer;
+`;
 
-    const handleClose = () => {
-        setDisplayColorPicker(false);
-    };
+const ColorPreview = styled.div`
+  width: 36px;
+  height: 14px;
+  border-radius: 2px;
+`;
 
-    const handleChange = (newColor) => {
-        setColor(newColor.hex);
-        onColorChange(newColor.hex);
-    };
+const PopoverWrapper = styled.div`
+  position: absolute;
+  z-index: 2;
+`;
 
-    const styles = {
-        color: {
-            width: '36px',
-            height: '14px',
-            borderRadius: '2px',
-            background: color
-        },
-        swatch: {
-            padding: '5px',
-            background: '#fff',
-            borderRadius: '1px',
-            boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-            display: 'inline-block',
-            cursor: 'pointer'
-        },
-        popover: {
-            position: 'absolute',
-            zIndex: '2'
-        },
-        cover: {
-            position: 'fixed',
-            top: '0px',
-            right: '0px',
-            bottom: '0px',
-            left: '0px'
-        }
-    };
+const PopoverCover = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+`;
 
-    return (
-        <div>
-            <div style={styles.swatch} onClick={handleClick}>
-                <div style={styles.color} />
-            </div>
-            {displayColorPicker ? (
-                <div style={styles.popover}>
-                    <div style={styles.cover} onClick={handleClose} />
-                    <SketchPicker color={color} onChange={handleChange} />
-                </div>
-            ) : null}
-        </div>
-    );
+const ColorPicker = ({ selectedColor, onChange }) => {
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
+
+  const handleClick = () => {
+    setDisplayColorPicker(!displayColorPicker);
+  };
+
+  const handleClose = () => {
+    setDisplayColorPicker(false);
+  };
+
+  const handleChange = (color) => {
+    onChange(color.hex);
+  };
+
+  return (
+    <ColorPickerContainer>
+      <ColorSwatch onClick={handleClick}>
+        <ColorPreview style={{ background: selectedColor }} />
+      </ColorSwatch>
+      {displayColorPicker && (
+        <PopoverWrapper>
+          <PopoverCover onClick={handleClose} />
+          <SketchPicker color={selectedColor} onChange={handleChange} />
+        </PopoverWrapper>
+      )}
+    </ColorPickerContainer>
+  );
+};
+
+ColorPicker.propTypes = {
+  selectedColor: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default ColorPicker;

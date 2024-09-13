@@ -8,7 +8,8 @@ const generateLandingPage = async (
     colors,
     heroImageUrl,
     otherImagery,
-    productDescription
+    productDescription,
+    components
 ) => {
     try {
         const response = await axios.post(
@@ -21,10 +22,11 @@ const generateLandingPage = async (
                         role: 'user',
                         content: `Generate an HTML landing page with the following specifications:
               Design Type: ${designType}
-              Colors: ${colors.join(', ')}
+              Colors: ${JSON.stringify(colors)}
               Hero Image URL: ${heroImageUrl}
               Other Imagery: ${otherImagery}
               Product Description: ${productDescription}
+              Components: ${components.map(c => c.type).join(', ')}
               
               Create a responsive, modern, and visually appealing landing page. Include appropriate meta tags, CSS, and minimal JavaScript if necessary. Ensure the page is optimized for SEO and performance.`
                     }

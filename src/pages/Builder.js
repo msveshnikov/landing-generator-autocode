@@ -30,6 +30,8 @@ const Canvas = styled.div`
     flex: 1;
     padding: 20px;
     background-color: #ffffff;
+    border: 2px dashed #ccc;
+    min-height: 400px;
 `;
 
 const ComponentItem = styled.div`
@@ -38,6 +40,12 @@ const ComponentItem = styled.div`
     background-color: #ffffff;
     border: 1px solid #ddd;
     cursor: move;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
 `;
 
 const CanvasItem = styled.div`
@@ -45,6 +53,11 @@ const CanvasItem = styled.div`
     margin-bottom: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 `;
 
 const PreviewContainer = styled.div`
@@ -52,23 +65,36 @@ const PreviewContainer = styled.div`
 `;
 
 const ControlPanel = styled.div`
-    width: 250px;
+    width: 300px;
     background-color: #f0f0f0;
     padding: 20px;
 `;
 
 const Button = styled.button`
     margin-top: 10px;
-    padding: 10px;
+    padding: 10px 15px;
     background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #0056b3;
+    }
 `;
 
 const TextArea = styled.textarea`
     width: 100%;
     height: 100px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    resize: vertical;
+`;
+
+const SectionTitle = styled.h3`
+    margin-top: 20px;
     margin-bottom: 10px;
 `;
 
@@ -232,27 +258,31 @@ const Builder = () => {
                 </DragDropContext>
                 <ControlPanel>
                     <h2>Customization</h2>
-                    <h3>Primary Color</h3>
+                    <SectionTitle>Colors</SectionTitle>
                     <ColorPicker
                         selectedColor={website.colors.primary}
                         onChange={(color) => handleColorChange(color, 'primary')}
+                        label="Primary Color"
                     />
-                    <h3>Secondary Color</h3>
                     <ColorPicker
                         selectedColor={website.colors.secondary}
                         onChange={(color) => handleColorChange(color, 'secondary')}
+                        label="Secondary Color"
                     />
-                    <h3>Accent Color</h3>
                     <ColorPicker
                         selectedColor={website.colors.accent}
                         onChange={(color) => handleColorChange(color, 'accent')}
+                        label="Accent Color"
                     />
+                    <SectionTitle>Hero Image</SectionTitle>
                     <ImageUploader onUpload={handleImageUpload} />
+                    <SectionTitle>Product Description</SectionTitle>
                     <TextArea
                         placeholder="Enter product description"
                         value={website.productDescription}
                         onChange={handleDescriptionChange}
                     />
+                    <SectionTitle>Additional Instructions</SectionTitle>
                     <TextArea
                         placeholder="Additional instructions"
                         value={additionalInstructions}

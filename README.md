@@ -29,11 +29,11 @@ generated page with additional instructions until they are satisfied. Works full
 ## Getting Started
 
 1. Clone the repository
-2. Set REACT_APP_CLAUDE_KEY variable in .env
-3. Install dependencies
-4. Run the development server
-5. Access the application through your web browser
+2. Install dependencies
+3. Run the development server
+4. Access the application through your web browser
 
 # TODO
 
--   Fix drag n drop of components to Web Canvas
+-   Make simple ExpressJS backend to execute claude (because it cant work from browser), CLAUDE_KEY
+    is in .env in /server

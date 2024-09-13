@@ -99,7 +99,10 @@ const LandingPage = () => {
             <Header />
             <MainContent>
                 <Title>Landing Page Generator</Title>
-                <Subtitle>Create stunning, professional landing pages in minutes with AI-powered technology</Subtitle>
+                <Subtitle>
+                    Create stunning, professional landing pages in minutes with AI-powered
+                    technology
+                </Subtitle>
                 <CTAButton to="/builder">Start Creating</CTAButton>
                 <FeatureSection>
                     <FeatureCard>

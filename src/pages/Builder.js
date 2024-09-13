@@ -5,7 +5,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ColorPicker from '../components/ColorPicker';
 import ImageUploader from '../components/ImageUploader';
-import { generateLandingPage, improveLandingPage } from '../claude';
 import { useWebsite } from '../contexts/WebsiteContext';
 
 const BuilderContainer = styled.div`
@@ -137,7 +136,8 @@ const Builder = () => {
                 Object.values(colors),
                 heroImageUrl,
                 additionalImages.join(', '),
-                productDescription
+                productDescription,
+                canvasItems
             );
             updateWebsite({ generatedHtml });
         } catch (error) {

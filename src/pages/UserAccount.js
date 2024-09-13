@@ -1,8 +1,78 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { AuthContext } from '../contexts/AuthContext';
 import { useWebsite } from '../contexts/WebsiteContext';
 import { getUserWebsites, deleteWebsite, logout } from '../services/api';
+
+const UserAccountContainer = styled.div`
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+`;
+
+const Title = styled.h1`
+    color: #333;
+    margin-bottom: 20px;
+`;
+
+const WelcomeMessage = styled.p`
+    font-size: 18px;
+    margin-bottom: 20px;
+`;
+
+const Button = styled.button`
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #357abd;
+    }
+`;
+
+const WebsiteList = styled.ul`
+    list-style-type: none;
+    padding: 0;
+`;
+
+const WebsiteItem = styled.li`
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const WebsiteName = styled.h3`
+    margin: 0;
+    color: #333;
+`;
+
+const ActionButtons = styled.div`
+    display: flex;
+    gap: 10px;
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #4a90e2;
+    font-weight: bold;
+    transition: color 0.3s;
+
+    &:hover {
+        color: #357abd;
+    }
+`;
 
 const UserAccount = () => {
     const { user, setUser } = useContext(AuthContext);
@@ -51,40 +121,45 @@ const UserAccount = () => {
 
     if (!user) {
         return (
-            <div className="user-account">
-                <h1>User Account</h1>
-                <p>Please log in to view your account.</p>
-                <Link to="/login">Login</Link>
-            </div>
+            <UserAccountContainer>
+                <Title>User Account</Title>
+                <WelcomeMessage>Please log in to view your account.</WelcomeMessage>
+                <StyledLink to="/login">Login</StyledLink>
+            </UserAccountContainer>
         );
     }
 
     return (
-        <div className="user-account">
-            <h1>User Account</h1>
-            <p>Welcome, {user.email}!</p>
-            <button onClick={handleLogout}>Logout</button>
-            <h2>Your Websites</h2>
+        <UserAccountContainer>
+            <Title>User Account</Title>
+            <WelcomeMessage>Welcome, {user.email}!</WelcomeMessage>
+            <Button onClick={handleLogout}>Logout</Button>
+            <Title as="h2">Your Websites</Title>
             {websites.length > 0 ? (
-                <ul className="website-list">
+                <WebsiteList>
                     {websites.map((website) => (
-                        <li key={website.id} className="website-item">
-                            <h3>{website.name}</h3>
-                            <button onClick={() => handleEditWebsite(website)}>Edit</button>
-                            <Link to="/preview" onClick={() => setCurrentWebsite(website)}>
-                                Preview
-                            </Link>
-                            <button onClick={() => handleDeleteWebsite(website.id)}>Delete</button>
-                        </li>
+                        <WebsiteItem key={website.id}>
+                            <WebsiteName>{website.name}</WebsiteName>
+                            <ActionButtons>
+                                <Button onClick={() => handleEditWebsite(website)}>Edit</Button>
+                                <StyledLink
+                                    to="/preview"
+                                    onClick={() => setCurrentWebsite(website)}
+                                >
+                                    Preview
+                                </StyledLink>
+                                <Button onClick={() => handleDeleteWebsite(website.id)}>
+                                    Delete
+                                </Button>
+                            </ActionButtons>
+                        </WebsiteItem>
                     ))}
-                </ul>
+                </WebsiteList>
             ) : (
-                <p>You haven't created any websites yet.</p>
+                <WelcomeMessage>You haven't created any websites yet.</WelcomeMessage>
             )}
-            <Link to="/templates" className="create-new-button">
-                Create New Website
-            </Link>
-        </div>
+            <StyledLink to="/templates">Create New Website</StyledLink>
+        </UserAccountContainer>
     );
 };
 

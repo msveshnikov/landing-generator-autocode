@@ -282,6 +282,26 @@ app.get('/templates', authenticateToken, async (req, res) => {
     }
 });
 
+app.delete('/websites/:id', authenticateToken, async (req, res) => {
+    try {
+        const website = await Website.findOneAndDelete({
+            _id: req.params.id,
+            userId: req.user.userId
+        });
+        if (!website) {
+            return res.status(404).json({ error: 'Website not found' });
+        }
+        res.json({ message: 'Website deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting website:', error);
+        res.status(500).json({ error: 'Error deleting website' });
+    }
+});
+
+app.post('/logout', authenticateToken, (req, res) => {
+    res.json({ message: 'Logged out successfully' });
+});
+
 app.use('/uploads', express.static('uploads'));
 
 app.listen(port, () => {

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useWebsite } from '../contexts/WebsiteContext';
-import { improveLandingPage } from '../services/api';
 
 const PreviewContainer = styled.div`
     display: flex;
@@ -52,7 +51,7 @@ const Button = styled.button`
 
 const Preview = () => {
     const navigate = useNavigate();
-    const { website, updateWebsite } = useWebsite();
+    const { website, improveWebsite } = useWebsite();
     const [additionalInstructions, setAdditionalInstructions] = useState('');
 
     useEffect(() => {
@@ -67,11 +66,8 @@ const Preview = () => {
 
     const handleImprovePage = async () => {
         try {
-            const improvedHtml = await improveLandingPage(
-                website.generatedHtml,
-                additionalInstructions
-            );
-            updateWebsite({ generatedHtml: improvedHtml });
+            await improveWebsite(additionalInstructions);
+            setAdditionalInstructions('');
         } catch (error) {
             console.error('Error improving landing page:', error);
         }

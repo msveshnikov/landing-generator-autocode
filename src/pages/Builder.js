@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Header from '../components/Header';
@@ -7,7 +7,6 @@ import ColorPicker from '../components/ColorPicker';
 import ImageUploader from '../components/ImageUploader';
 import { useWebsite } from '../contexts/WebsiteContext';
 import { useAuth } from '../contexts/AuthContext';
-import { generateLandingPage, improveLandingPage, uploadImage } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const BuilderContainer = styled.div`
@@ -152,7 +151,14 @@ const Spinner = styled.div`
 `;
 
 const Builder = () => {
-    const { website, updateWebsite } = useWebsite();
+    const {
+        website,
+        updateWebsiteState,
+        addComponent,
+        reorderComponents,
+        generateWebsite,
+        improveWebsite
+    } = useWebsite();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const [components] = useState([
@@ -162,15 +168,8 @@ const Builder = () => {
         { id: 'cta', type: 'Call to Action' },
         { id: 'footer', type: 'Footer' }
     ]);
-    const [canvasItems, setCanvasItems] = useState([]);
     const [additionalInstructions, setAdditionalInstructions] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
-
-    useEffect(() => {
-        if (website.components) {
-            setCanvasItems(website.components);
-        }
-    }, [website]);
 
     const onDragEnd = useCallback(
         (result) => {
@@ -180,83 +179,59 @@ const Builder = () => {
 
             if (source.droppableId === 'componentLibrary' && destination.droppableId === 'canvas') {
                 const draggedComponent = components[source.index];
-                const newCanvasItem = { ...draggedComponent, id: `canvas-${Date.now()}` };
-                const newCanvasItems = [...canvasItems];
-                newCanvasItems.splice(destination.index, 0, newCanvasItem);
-                setCanvasItems(newCanvasItems);
-                updateWebsite({ components: newCanvasItems });
+                const newComponent = { ...draggedComponent, id: `canvas-${Date.now()}` };
+                addComponent(newComponent);
             } else if (source.droppableId === 'canvas' && destination.droppableId === 'canvas') {
-                const newCanvasItems = Array.from(canvasItems);
-                const [reorderedItem] = newCanvasItems.splice(source.index, 1);
-                newCanvasItems.splice(destination.index, 0, reorderedItem);
-                setCanvasItems(newCanvasItems);
-                updateWebsite({ components: newCanvasItems });
+                reorderComponents(source.index, destination.index);
             }
         },
-        [canvasItems, components, updateWebsite]
+        [components, addComponent, reorderComponents]
     );
 
     const handleColorChange = useCallback(
         (color, type) => {
-            updateWebsite({ colors: { ...website.colors, [type]: color } });
+            updateWebsiteState({ colors: { ...website.colors, [type]: color } });
         },
-        [website.colors, updateWebsite]
+        [website.colors, updateWebsiteState]
     );
 
     const handleImageUpload = useCallback(
-        async (file) => {
-            try {
-                const imageUrl = await uploadImage(file);
-                updateWebsite({ heroImageUrl: imageUrl });
-            } catch (error) {
-                console.error('Error uploading image:', error);
-                alert('Failed to upload image. Please try again.');
-            }
+        (imageUrl) => {
+            updateWebsiteState({ heroImageUrl: imageUrl });
         },
-        [updateWebsite]
+        [updateWebsiteState]
     );
 
     const handleDescriptionChange = useCallback(
         (e) => {
-            updateWebsite({ productDescription: e.target.value });
+            updateWebsiteState({ productDescription: e.target.value });
         },
-        [updateWebsite]
+        [updateWebsiteState]
     );
 
     const handleAdditionalInstructionsChange = useCallback((e) => {
         setAdditionalInstructions(e.target.value);
     }, []);
 
-    const generatePage = useCallback(async () => {
+    const handleGeneratePage = useCallback(async () => {
         if (!isAuthenticated) {
             alert('Please log in to generate a landing page.');
             navigate('/login');
             return;
         }
 
-        const designType = canvasItems.map((item) => item.type).join(', ');
-        const { colors, heroImageUrl, additionalImages, productDescription } = website;
-
         setIsGenerating(true);
         try {
-            const generatedHtml = await generateLandingPage(
-                designType,
-                Object.values(colors),
-                heroImageUrl,
-                additionalImages.join(', '),
-                productDescription,
-                canvasItems
-            );
-            updateWebsite({ generatedHtml });
+            await generateWebsite();
         } catch (error) {
             console.error('Error generating landing page:', error);
             alert('An error occurred while generating the landing page. Please try again.');
         } finally {
             setIsGenerating(false);
         }
-    }, [isAuthenticated, navigate, canvasItems, website, updateWebsite]);
+    }, [isAuthenticated, navigate, generateWebsite]);
 
-    const improvePage = useCallback(async () => {
+    const handleImprovePage = useCallback(async () => {
         if (!isAuthenticated) {
             alert('Please log in to improve the landing page.');
             navigate('/login');
@@ -265,20 +240,16 @@ const Builder = () => {
 
         setIsGenerating(true);
         try {
-            const improvedHtml = await improveLandingPage(
-                website.generatedHtml,
-                additionalInstructions
-            );
-            updateWebsite({ generatedHtml: improvedHtml });
+            await improveWebsite(additionalInstructions);
         } catch (error) {
             console.error('Error improving landing page:', error);
             alert('An error occurred while improving the landing page. Please try again.');
         } finally {
             setIsGenerating(false);
         }
-    }, [isAuthenticated, navigate, website.generatedHtml, additionalInstructions, updateWebsite]);
+    }, [isAuthenticated, navigate, improveWebsite, additionalInstructions]);
 
-    const downloadHtml = useCallback(() => {
+    const handleDownloadHtml = useCallback(() => {
         const blob = new Blob([website.generatedHtml], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -327,7 +298,7 @@ const Builder = () => {
                         <Droppable droppableId="canvas">
                             {(provided) => (
                                 <div {...provided.droppableProps} ref={provided.innerRef}>
-                                    {canvasItems.map((item, index) => (
+                                    {website.components.map((item, index) => (
                                         <Draggable
                                             key={item.id}
                                             draggableId={item.id}
@@ -382,15 +353,15 @@ const Builder = () => {
                         value={additionalInstructions}
                         onChange={handleAdditionalInstructionsChange}
                     />
-                    <Button onClick={generatePage} disabled={isGenerating}>
+                    <Button onClick={handleGeneratePage} disabled={isGenerating}>
                         Generate Landing Page
                     </Button>
                     {website.generatedHtml && (
                         <>
-                            <Button onClick={improvePage} disabled={isGenerating}>
+                            <Button onClick={handleImprovePage} disabled={isGenerating}>
                                 Improve Landing Page
                             </Button>
-                            <Button onClick={downloadHtml}>Download HTML</Button>
+                            <Button onClick={handleDownloadHtml}>Download HTML</Button>
                         </>
                     )}
                 </ControlPanel>

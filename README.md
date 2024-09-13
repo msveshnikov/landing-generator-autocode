@@ -31,6 +31,7 @@ generated page with additional instructions until they are satisfied. Works full
 -   Implement caching mechanisms for improved performance
 -   Ensure secure authentication and data protection
 -   Implement proper error handling and logging
+-   model 'claude-3-5-sonnet-20240620';
 
 ## Project Structure
 
@@ -78,5 +79,6 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   !!!  fix [object Object] in preview instead of html rendered !!!
--   improve account page design
+-   fix updateWebsite is not a function TypeError: updateWebsite is not a function at
+    http://localhost:3000/static/js/bundle
+-   fix Error generating landing page: Error: Website validation failed: otherImagery: Cast to string failed for value "[]" (type Array) at path "otherImagery", components.0: Cast to [string] failed for value "[ { id: 'canvas-1726265549481', type: 'Header' } ]" (type string) at path "components.0" because of "CastError"

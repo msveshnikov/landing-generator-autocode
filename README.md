@@ -39,6 +39,7 @@ generated page with additional instructions until they are satisfied. Works full
 # TODO
 
 -   Fix ERROR
-Cannot destructure property 'user' of '(0 , _contexts_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)(...)' as it is undefined.
-TypeError: Cannot destructure property 'user' of '(0 , _contexts_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)(...)' as it is undefined.
+useAuth must be used within an AuthProvider
+    at useAuth (http://localhost:3000/main.aa02d4e8e67abd057fec.hot-update.js:32:11)
+    at Header (http://localhost:3000/main.f0759b045f59cdc68842.hot-update.js:79:78)
 

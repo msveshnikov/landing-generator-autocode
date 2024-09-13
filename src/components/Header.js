@@ -51,7 +51,7 @@ const Button = styled.button`
 `;
 
 const Header = () => {
-  const { user, logout } = useAuth();
+  const auth = useAuth();
 
   return (
     <HeaderContainer>
@@ -59,10 +59,10 @@ const Header = () => {
       <Nav>
         <NavLink to="/templates">Templates</NavLink>
         <NavLink to="/builder">Builder</NavLink>
-        {user ? (
+        {auth?.isAuthenticated ? (
           <>
             <NavLink to="/user-account">Account</NavLink>
-            <Button onClick={logout}>Logout</Button>
+            <Button onClick={auth.logout}>Logout</Button>
           </>
         ) : (
           <>

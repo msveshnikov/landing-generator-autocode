@@ -13,8 +13,6 @@ import UserAccount from './pages/UserAccount';
 import Templates from './pages/Templates';
 import { AuthProvider } from './contexts/AuthContext';
 import { WebsiteProvider } from './contexts/WebsiteContext';
-import Header from './components/Header';
-import Footer from './components/Footer';
 
 const AppWrapper = styled.div`
     min-height: 100vh;

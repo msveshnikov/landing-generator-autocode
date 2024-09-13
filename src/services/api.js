@@ -42,14 +42,7 @@ export const logout = () => {
     localStorage.removeItem('token');
 };
 
-export const generateLandingPage = async (
-    designType,
-    colors,
-    heroImageUrl,
-    otherImagery,
-    productDescription,
-    components
-) => {
+export const generateLandingPage = async (designType, colors, heroImageUrl, otherImagery, productDescription, components) => {
     try {
         const response = await api.post('/generate', {
             designType,
@@ -130,6 +123,46 @@ export const deleteWebsite = async (websiteId) => {
         await api.delete(`/websites/${websiteId}`);
     } catch (error) {
         console.error('Error deleting website:', error);
+        throw error;
+    }
+};
+
+export const getDesignTypes = async () => {
+    try {
+        const response = await api.get('/design-types');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching design types:', error);
+        throw error;
+    }
+};
+
+export const getColorPalettes = async () => {
+    try {
+        const response = await api.get('/color-palettes');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching color palettes:', error);
+        throw error;
+    }
+};
+
+export const downloadWebsite = async (websiteId) => {
+    try {
+        const response = await api.get(`/websites/${websiteId}/download`, { responseType: 'blob' });
+        return response.data;
+    } catch (error) {
+        console.error('Error downloading website:', error);
+        throw error;
+    }
+};
+
+export const getWebsiteAnalytics = async (websiteId) => {
+    try {
+        const response = await api.get(`/websites/${websiteId}/analytics`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching website analytics:', error);
         throw error;
     }
 };

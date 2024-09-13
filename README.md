@@ -78,7 +78,7 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   add user logins/save to db
--   make design of builder and landing page more interesting and with modern font
--   add templates
 -   add nice Generating spinner when Sonnet is building landing
+-   make header with nice color
+-   get rid of username
+-   add Template schema  and methods

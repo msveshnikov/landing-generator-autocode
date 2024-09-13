@@ -37,9 +37,3 @@ generated page with additional instructions until they are satisfied. Works full
 5. Access the application through your web browser
 
 # TODO
-
--   Fix ERROR
-useAuth must be used within an AuthProvider
-    at useAuth (http://localhost:3000/main.aa02d4e8e67abd057fec.hot-update.js:32:11)
-    at Header (http://localhost:3000/main.f0759b045f59cdc68842.hot-update.js:79:78)
-

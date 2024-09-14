@@ -183,7 +183,7 @@ const Builder = () => {
 
     useEffect(() => {
         if (templates?.length > 0 && !selectedTemplate) {
-            setSelectedTemplate(templates[0].id);
+            setSelectedTemplate(templates[0]._id);
         }
     }, [templates, selectedTemplate]);
 
@@ -350,7 +350,7 @@ const Builder = () => {
                     <SectionTitle>Template</SectionTitle>
                     <TemplateSelector value={selectedTemplate} onChange={handleTemplateChange}>
                         {templates?.map((template) => (
-                            <option key={template.id} value={template.id}>
+                            <option key={template._id} value={template._id}>
                                 {template.name}
                             </option>
                         ))}

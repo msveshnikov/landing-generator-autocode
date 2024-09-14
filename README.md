@@ -105,7 +105,6 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   Preview, Edit buttons dont work, naviagte back to buikder I wanna see site
 -   Reduce height of Web Canvas in Builder, regroup elements nicer and more compact
 -   add some tempates to DB
 -   make design mobile friendly

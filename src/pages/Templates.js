@@ -152,7 +152,7 @@ const Templates = () => {
 
         try {
             if (user) {
-                await saveTemplate(user.id, templateData);
+                await saveTemplate(user._id, templateData);
             }
             setWebsiteData(templateData);
             navigate('/builder');
@@ -167,9 +167,9 @@ const Templates = () => {
             <TemplateGrid>
                 {templates.map((template) => (
                     <TemplateItem
-                        key={template.id}
+                        key={template._id}
                         onClick={() => handleTemplateSelect(template)}
-                        selected={selectedTemplate?.id === template.id}
+                        selected={selectedTemplate?._id === template._id}
                     >
                         <TemplateImage src={template.thumbnail} alt={template.name} />
                         <TemplateName>{template.name}</TemplateName>

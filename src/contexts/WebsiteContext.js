@@ -107,19 +107,19 @@ export const WebsiteProvider = ({ children }) => {
     const improveWebsite = useCallback(
         async (userFeedback) => {
             try {
-                const { html } = await improveLandingPage(website.id, userFeedback);
+                const { html } = await improveLandingPage(website._id, userFeedback);
                 updateWebsite({ html: html });
             } catch (error) {
                 console.error('Error improving website:', error);
                 throw error;
             }
         },
-        [website.id, updateWebsite]
+        [website._id, updateWebsite]
     );
 
     const saveWebsite = useCallback(async () => {
         try {
-            const updatedWebsite = await apiUpdateWebsite(website.id, website);
+            const updatedWebsite = await apiUpdateWebsite(website._id, website);
             updateWebsite(updatedWebsite);
         } catch (error) {
             console.error('Error saving website:', error);
@@ -139,11 +139,12 @@ export const WebsiteProvider = ({ children }) => {
 
     const downloadWebsiteHtml = useCallback(async () => {
         try {
-            const htmlBlob = await downloadWebsite(website.id);
+            console.log(website)
+            const htmlBlob = await downloadWebsite(website._id);
             const url = window.URL.createObjectURL(htmlBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `website_${website.id}.html`);
+            link.setAttribute('download', `website_${website._id}.html`);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
@@ -151,7 +152,7 @@ export const WebsiteProvider = ({ children }) => {
             console.error('Error downloading website:', error);
             throw error;
         }
-    }, [website.id]);
+    }, [website]);
 
     const fetchUserWebsites = useCallback(async () => {
         try {
@@ -167,7 +168,7 @@ export const WebsiteProvider = ({ children }) => {
         try {
             await apiDeleteWebsite(websiteId);
             setUserWebsites((prevWebsites) =>
-                prevWebsites.filter((website) => website.id !== websiteId)
+                prevWebsites.filter((website) => website._id !== websiteId)
             );
         } catch (error) {
             console.error('Error deleting website:', error);

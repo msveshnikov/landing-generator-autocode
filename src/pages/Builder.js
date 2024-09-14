@@ -170,9 +170,13 @@ const Builder = () => {
         website,
         updateWebsite,
         addComponent,
+        removeComponent,
         reorderComponents,
         generateWebsite,
-        improveWebsite
+        improveWebsite,
+        saveWebsite,
+        loadTemplate,
+        saveAsTemplate
     } = useWebsite();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -188,6 +192,7 @@ const Builder = () => {
     const [templates, setTemplates] = useState([]);
     const [designTypes, setDesignTypes] = useState([]);
     const [colorPalettes, setColorPalettes] = useState([]);
+    const [templateName, setTemplateName] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -208,7 +213,7 @@ const Builder = () => {
     }, []);
 
     const onDragEnd = useCallback(
-        (result) => {
+        result => {
             if (!result.destination) return;
 
             const { source, destination } = result;
@@ -232,20 +237,20 @@ const Builder = () => {
     );
 
     const handleHeroImageUrlChange = useCallback(
-        (e) => {
+        e => {
             updateWebsite({ heroImageUrl: e.target.value });
         },
         [updateWebsite]
     );
 
     const handleDescriptionChange = useCallback(
-        (e) => {
+        e => {
             updateWebsite({ productDescription: e.target.value });
         },
         [updateWebsite]
     );
 
-    const handleAdditionalInstructionsChange = useCallback((e) => {
+    const handleAdditionalInstructionsChange = useCallback(e => {
         setAdditionalInstructions(e.target.value);
     }, []);
 
@@ -298,36 +303,61 @@ const Builder = () => {
     }, [website.html]);
 
     const handleTemplateChange = useCallback(
-        (e) => {
+        e => {
             const templateId = e.target.value;
-            const selectedTemplate = templates.find((template) => template._id === templateId);
-            if (selectedTemplate) {
-                updateWebsite({
-                    designType: selectedTemplate.designType,
-                    colors: selectedTemplate.colors,
-                    components: selectedTemplate.components
-                });
-            }
+            loadTemplate(templateId);
         },
-        [templates, updateWebsite]
+        [loadTemplate]
     );
 
     const handleDesignTypeChange = useCallback(
-        (e) => {
+        e => {
             updateWebsite({ designType: e.target.value });
         },
         [updateWebsite]
     );
 
     const handleColorPaletteChange = useCallback(
-        (e) => {
+        e => {
             const paletteId = e.target.value;
-            const selectedPalette = colorPalettes.find((palette) => palette._id === paletteId);
+            const selectedPalette = colorPalettes.find(palette => palette._id === paletteId);
             if (selectedPalette) {
                 updateWebsite({ colors: selectedPalette.colors });
             }
         },
         [colorPalettes, updateWebsite]
+    );
+
+    const handleSaveTemplate = useCallback(async () => {
+        if (!templateName) {
+            alert('Please enter a template name');
+            return;
+        }
+        try {
+            await saveAsTemplate(templateName);
+            alert('Template saved successfully');
+            setTemplateName('');
+        } catch (error) {
+            console.error('Error saving template:', error);
+            alert('An error occurred while saving the template. Please try again.');
+        }
+    }, [saveAsTemplate, templateName]);
+
+    const handleSaveWebsite = useCallback(async () => {
+        try {
+            await saveWebsite();
+            alert('Website saved successfully');
+        } catch (error) {
+            console.error('Error saving website:', error);
+            alert('An error occurred while saving the website. Please try again.');
+        }
+    }, [saveWebsite]);
+
+    const handleImageUpload = useCallback(
+        imageUrl => {
+            updateWebsite({ additionalImages: [...website.additionalImages, imageUrl] });
+        },
+        [updateWebsite, website.additionalImages]
     );
 
     return (
@@ -337,7 +367,7 @@ const Builder = () => {
                     <ComponentLibrary>
                         <h2>Components</h2>
                         <Droppable droppableId="componentLibrary" isDropDisabled={true}>
-                            {(provided) => (
+                            {provided => (
                                 <div {...provided.droppableProps} ref={provided.innerRef}>
                                     {components.map((component, index) => (
                                         <Draggable
@@ -345,7 +375,7 @@ const Builder = () => {
                                             draggableId={component.id}
                                             index={index}
                                         >
-                                            {(provided) => (
+                                            {provided => (
                                                 <ComponentItem
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
@@ -364,7 +394,7 @@ const Builder = () => {
                     <Canvas>
                         <h2>Website Canvas</h2>
                         <Droppable droppableId="canvas">
-                            {(provided) => (
+                            {provided => (
                                 <div {...provided.droppableProps} ref={provided.innerRef}>
                                     {website.components.map((item, index) => (
                                         <Draggable
@@ -372,13 +402,18 @@ const Builder = () => {
                                             draggableId={item.id}
                                             index={index}
                                         >
-                                            {(provided) => (
+                                            {provided => (
                                                 <CanvasItem
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
                                                 >
                                                     {item.type}
+                                                    <button
+                                                        onClick={() => removeComponent(item.id)}
+                                                    >
+                                                        Remove
+                                                    </button>
                                                 </CanvasItem>
                                             )}
                                         </Draggable>
@@ -394,7 +429,7 @@ const Builder = () => {
                     <SectionTitle>Template</SectionTitle>
                     <Select onChange={handleTemplateChange}>
                         <option value="">Select a template</option>
-                        {templates.map((template) => (
+                        {templates.map(template => (
                             <option key={template._id} value={template._id}>
                                 {template.name}
                             </option>
@@ -403,7 +438,7 @@ const Builder = () => {
                     <SectionTitle>Design Type</SectionTitle>
                     <Select value={website.designType} onChange={handleDesignTypeChange}>
                         <option value="">Select a design type</option>
-                        {designTypes.map((type) => (
+                        {designTypes.map(type => (
                             <option key={type._id} value={type._id}>
                                 {type.name}
                             </option>
@@ -412,7 +447,7 @@ const Builder = () => {
                     <SectionTitle>Color Palette</SectionTitle>
                     <Select onChange={handleColorPaletteChange}>
                         <option value="">Select a color palette</option>
-                        {colorPalettes.map((palette) => (
+                        {colorPalettes.map(palette => (
                             <option key={palette._id} value={palette._id}>
                                 {palette.name}
                             </option>
@@ -421,17 +456,17 @@ const Builder = () => {
                     <SectionTitle>Colors</SectionTitle>
                     <ColorPicker
                         selectedColor={website.colors.primary}
-                        onChange={(color) => handleColorChange(color, 'primary')}
+                        onChange={color => handleColorChange(color, 'primary')}
                         label="Primary Color"
                     />
                     <ColorPicker
                         selectedColor={website.colors.secondary}
-                        onChange={(color) => handleColorChange(color, 'secondary')}
+                        onChange={color => handleColorChange(color, 'secondary')}
                         label="Secondary Color"
                     />
                     <ColorPicker
                         selectedColor={website.colors.accent}
-                        onChange={(color) => handleColorChange(color, 'accent')}
+                        onChange={color => handleColorChange(color, 'accent')}
                         label="Accent Color"
                     />
                     <SectionTitle>Hero Image URL</SectionTitle>
@@ -441,6 +476,7 @@ const Builder = () => {
                         value={website.heroImageUrl}
                         onChange={handleHeroImageUrlChange}
                     />
+                    <SectionTitle>Additional Images</SectionTitle>
                     <SectionTitle>Product Description</SectionTitle>
                     <TextArea
                         placeholder="Enter product description"
@@ -462,6 +498,14 @@ const Builder = () => {
                                 Improve Landing Page
                             </Button>
                             <Button onClick={handleDownloadHtml}>Download HTML</Button>
+                            <Button onClick={handleSaveWebsite}>Save Website</Button>
+                            <Input
+                                type="text"
+                                placeholder="Enter template name"
+                                value={templateName}
+                                onChange={e => setTemplateName(e.target.value)}
+                            />
+                            <Button onClick={handleSaveTemplate}>Save as Template</Button>
                         </>
                     )}
                 </ControlPanel>

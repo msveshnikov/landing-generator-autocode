@@ -133,3 +133,10 @@ submitting pull requests.
 ## License
 
 This project is licensed under the MIT License.
+
+# TODO
+
+- Fix when selecting template from dropdown ERROR
+Cannot read properties of undefined (reading 'primary')
+TypeError: Cannot read properties of undefined (reading 'primary')
+    at Builder (http://localhost:3000/static/js/bundle.js:2078:41)

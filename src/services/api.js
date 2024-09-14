@@ -9,7 +9,7 @@ const api = axios.create({
     }
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -18,8 +18,8 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-    (response) => response,
-    (error) => {
+    response => response,
+    error => {
         if (error.response && error.response.status === 401) {
             localStorage.removeItem('token');
         }
@@ -77,12 +77,12 @@ export const fetchTemplates = async () => {
     return response.data;
 };
 
-export const saveTemplate = async (templateData) => {
-    const response = await api.post('/templates', templateData);
+export const saveTemplate = async (userId, templateData) => {
+    const response = await api.post('/templates', { userId, ...templateData });
     return response.data;
 };
 
-export const deleteWebsite = async (websiteId) => {
+export const deleteWebsite = async websiteId => {
     await api.delete(`/websites/${websiteId}`);
 };
 
@@ -96,12 +96,12 @@ export const getColorPalettes = async () => {
     return response.data;
 };
 
-export const downloadWebsite = async (websiteId) => {
+export const downloadWebsite = async websiteId => {
     const response = await api.get(`/websites/${websiteId}/download`, { responseType: 'blob' });
     return response.data;
 };
 
-export const getWebsiteAnalytics = async (websiteId) => {
+export const getWebsiteAnalytics = async websiteId => {
     const response = await api.get(`/websites/${websiteId}/analytics`);
     return response.data;
 };
@@ -111,12 +111,12 @@ export const getCurrentUser = async () => {
     return response.data;
 };
 
-export const updateUserProfile = async (profileData) => {
+export const updateUserProfile = async profileData => {
     const response = await api.put('/user', profileData);
     return response.data;
 };
 
-export const getWebsiteById = async (websiteId) => {
+export const getWebsiteById = async websiteId => {
     const response = await api.get(`/websites/${websiteId}`);
     return response.data;
 };
@@ -126,7 +126,7 @@ export const updateWebsite = async (websiteId, websiteData) => {
     return response.data;
 };
 
-export const uploadImage = async (file) => {
+export const uploadImage = async file => {
     const formData = new FormData();
     formData.append('image', file);
     const response = await api.post('/upload-image', formData, {
@@ -134,6 +134,46 @@ export const uploadImage = async (file) => {
             'Content-Type': 'multipart/form-data'
         }
     });
+    return response.data;
+};
+
+export const getCustomCSS = async websiteId => {
+    const response = await api.get(`/websites/${websiteId}/css`);
+    return response.data;
+};
+
+export const updateCustomCSS = async (websiteId, css) => {
+    const response = await api.put(`/websites/${websiteId}/css`, { css });
+    return response.data;
+};
+
+export const getSEOData = async websiteId => {
+    const response = await api.get(`/websites/${websiteId}/seo`);
+    return response.data;
+};
+
+export const updateSEOData = async (websiteId, seoData) => {
+    const response = await api.put(`/websites/${websiteId}/seo`, seoData);
+    return response.data;
+};
+
+export const getWebsiteVersions = async websiteId => {
+    const response = await api.get(`/websites/${websiteId}/versions`);
+    return response.data;
+};
+
+export const revertToVersion = async (websiteId, versionId) => {
+    const response = await api.post(`/websites/${websiteId}/revert`, { versionId });
+    return response.data;
+};
+
+export const getWebsitePerformance = async websiteId => {
+    const response = await api.get(`/websites/${websiteId}/performance`);
+    return response.data;
+};
+
+export const optimizeWebsite = async websiteId => {
+    const response = await api.post(`/websites/${websiteId}/optimize`);
     return response.data;
 };
 

@@ -5,6 +5,7 @@ import { useWebsite } from '../contexts/WebsiteContext';
 import { useAuth } from '../contexts/AuthContext';
 import { fetchTemplates, saveTemplate } from '../services/api';
 import ColorPicker from '../components/ColorPicker';
+import ImageUploader from '../components/ImageUploader';
 
 const TemplatesContainer = styled.div`
     max-width: 1200px;
@@ -104,20 +105,28 @@ const Templates = () => {
         loadTemplates();
     }, []);
 
-    const handleTemplateSelect = (template) => {
+    const handleTemplateSelect = template => {
         setSelectedTemplate(template);
-        setCustomColors(template.colors);
+        setCustomColors(template.colors || {});
         setHeroImage('');
         setOtherImages([]);
         setProductDescription('');
     };
 
     const handleColorChange = (key, color) => {
-        setCustomColors((prevColors) => ({ ...prevColors, [key]: color }));
+        setCustomColors(prevColors => ({ ...prevColors, [key]: color }));
     };
 
-    const handleDescriptionChange = (e) => {
+    const handleDescriptionChange = e => {
         setProductDescription(e.target.value);
+    };
+
+    const handleHeroImageUpload = imageUrl => {
+        setHeroImage(imageUrl);
+    };
+
+    const handleOtherImagesUpload = imageUrl => {
+        setOtherImages(prevImages => [...prevImages, imageUrl]);
     };
 
     const handleSaveTemplate = async () => {
@@ -133,7 +142,7 @@ const Templates = () => {
 
         try {
             if (user) {
-                await saveTemplate(user._id, templateData);
+                await saveTemplate(templateData);
             }
             setWebsiteData(templateData);
             navigate('/builder');
@@ -146,7 +155,7 @@ const Templates = () => {
         <TemplatesContainer>
             <h1>Choose a Template</h1>
             <TemplateGrid>
-                {templates.map((template) => (
+                {templates.map(template => (
                     <TemplateItem
                         key={template._id}
                         onClick={() => handleTemplateSelect(template)}
@@ -165,10 +174,15 @@ const Templates = () => {
                             key={key}
                             label={key}
                             color={color}
-                            onChange={(newColor) => handleColorChange(key, newColor)}
+                            onChange={newColor => handleColorChange(key, newColor)}
                         />
                     ))}
-
+                    <ImageUploader label="Hero Image" onUpload={handleHeroImageUpload} />
+                    <ImageUploader
+                        label="Other Images"
+                        onUpload={handleOtherImagesUpload}
+                        multiple
+                    />
                     <TextArea
                         placeholder="Enter your product description"
                         value={productDescription}

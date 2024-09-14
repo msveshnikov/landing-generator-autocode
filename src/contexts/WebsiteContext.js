@@ -8,7 +8,9 @@ import {
     getUserWebsites,
     deleteWebsite as apiDeleteWebsite,
     fetchTemplates,
-    saveTemplate
+    saveTemplate,
+    getDesignTypes,
+    getColorPalettes
 } from '../services/api';
 
 const WebsiteContext = createContext();
@@ -33,9 +35,11 @@ export const WebsiteProvider = ({ children }) => {
 
     const [userWebsites, setUserWebsites] = useState([]);
     const [templates, setTemplates] = useState([]);
+    const [designTypes, setDesignTypes] = useState([]);
+    const [colorPalettes, setColorPalettes] = useState([]);
 
-    const updateWebsite = useCallback((updates) => {
-        setWebsite((prevWebsite) => ({
+    const updateWebsite = useCallback(updates => {
+        setWebsite(prevWebsite => ({
             ...prevWebsite,
             ...updates
         }));
@@ -58,31 +62,31 @@ export const WebsiteProvider = ({ children }) => {
         });
     }, []);
 
-    const addComponent = useCallback((component) => {
-        setWebsite((prevWebsite) => ({
+    const addComponent = useCallback(component => {
+        setWebsite(prevWebsite => ({
             ...prevWebsite,
             components: [...prevWebsite.components, component]
         }));
     }, []);
 
-    const removeComponent = useCallback((componentId) => {
-        setWebsite((prevWebsite) => ({
+    const removeComponent = useCallback(componentId => {
+        setWebsite(prevWebsite => ({
             ...prevWebsite,
-            components: prevWebsite.components.filter((c) => c.id !== componentId)
+            components: prevWebsite.components.filter(c => c.id !== componentId)
         }));
     }, []);
 
     const updateComponent = useCallback((componentId, updates) => {
-        setWebsite((prevWebsite) => ({
+        setWebsite(prevWebsite => ({
             ...prevWebsite,
-            components: prevWebsite.components.map((c) =>
+            components: prevWebsite.components.map(c =>
                 c.id === componentId ? { ...c, ...updates } : c
             )
         }));
     }, []);
 
     const reorderComponents = useCallback((startIndex, endIndex) => {
-        setWebsite((prevWebsite) => {
+        setWebsite(prevWebsite => {
             const newComponents = Array.from(prevWebsite.components);
             const [removed] = newComponents.splice(startIndex, 1);
             newComponents.splice(endIndex, 0, removed);
@@ -108,7 +112,7 @@ export const WebsiteProvider = ({ children }) => {
     }, [website, updateWebsite]);
 
     const improveWebsite = useCallback(
-        async (userFeedback) => {
+        async userFeedback => {
             try {
                 const { html } = await improveLandingPage(website.id, userFeedback);
                 updateWebsite({ html: html });
@@ -130,7 +134,7 @@ export const WebsiteProvider = ({ children }) => {
         }
     }, [website, updateWebsite]);
 
-    const loadWebsite = useCallback(async (websiteId) => {
+    const loadWebsite = useCallback(async websiteId => {
         try {
             const loadedWebsite = await getWebsiteById(websiteId);
             setWebsite(loadedWebsite);
@@ -166,11 +170,11 @@ export const WebsiteProvider = ({ children }) => {
         }
     }, []);
 
-    const deleteWebsite = useCallback(async (websiteId) => {
+    const deleteWebsite = useCallback(async websiteId => {
         try {
             await apiDeleteWebsite(websiteId);
-            setUserWebsites((prevWebsites) =>
-                prevWebsites.filter((website) => website.id !== websiteId)
+            setUserWebsites(prevWebsites =>
+                prevWebsites.filter(website => website.id !== websiteId)
             );
         } catch (error) {
             console.error('Error deleting website:', error);
@@ -189,8 +193,8 @@ export const WebsiteProvider = ({ children }) => {
     }, []);
 
     const loadTemplate = useCallback(
-        (templateId) => {
-            const template = templates.find((t) => t.id === templateId);
+        templateId => {
+            const template = templates.find(t => t.id === templateId);
             if (template) {
                 updateWebsite(template);
             }
@@ -199,10 +203,10 @@ export const WebsiteProvider = ({ children }) => {
     );
 
     const saveAsTemplate = useCallback(
-        async (templateName) => {
+        async templateName => {
             try {
                 const newTemplate = await saveTemplate({ ...website, name: templateName });
-                setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
+                setTemplates(prevTemplates => [...prevTemplates, newTemplate]);
             } catch (error) {
                 console.error('Error saving template:', error);
                 throw error;
@@ -211,9 +215,31 @@ export const WebsiteProvider = ({ children }) => {
         [website]
     );
 
+    const loadDesignTypes = useCallback(async () => {
+        try {
+            const fetchedDesignTypes = await getDesignTypes();
+            setDesignTypes(fetchedDesignTypes);
+        } catch (error) {
+            console.error('Error loading design types:', error);
+            throw error;
+        }
+    }, []);
+
+    const loadColorPalettes = useCallback(async () => {
+        try {
+            const fetchedColorPalettes = await getColorPalettes();
+            setColorPalettes(fetchedColorPalettes);
+        } catch (error) {
+            console.error('Error loading color palettes:', error);
+            throw error;
+        }
+    }, []);
+
     useEffect(() => {
         loadTemplates();
-    }, [loadTemplates]);
+        loadDesignTypes();
+        loadColorPalettes();
+    }, [loadTemplates, loadDesignTypes, loadColorPalettes]);
 
     return (
         <WebsiteContext.Provider
@@ -235,7 +261,9 @@ export const WebsiteProvider = ({ children }) => {
                 deleteWebsite,
                 templates,
                 loadTemplate,
-                saveAsTemplate
+                saveAsTemplate,
+                designTypes,
+                colorPalettes
             }}
         >
             {children}

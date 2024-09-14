@@ -105,7 +105,5 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   allow only hero image url, not upload, and send this url to API!!
--   Reduce height of Web Canvas in Builder, regroup elements nicer and more compact
 -   add some tempates to DB
 -   make design mobile friendly

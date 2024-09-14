@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useWebsite } from '../contexts/WebsiteContext';
 import { useAuth } from '../contexts/AuthContext';
-import { fetchTemplates, saveTemplate, uploadImage } from '../services/api';
+import { fetchTemplates, saveTemplate } from '../services/api';
 import ColorPicker from '../components/ColorPicker';
 
 const TemplatesContainer = styled.div`

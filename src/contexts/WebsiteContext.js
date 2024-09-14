@@ -198,15 +198,18 @@ export const WebsiteProvider = ({ children }) => {
         [templates, updateWebsite]
     );
 
-    const saveAsTemplate = useCallback(async (templateName) => {
-        try {
-            const newTemplate = await saveTemplate({ ...website, name: templateName });
-            setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
-        } catch (error) {
-            console.error('Error saving template:', error);
-            throw error;
-        }
-    }, [website]);
+    const saveAsTemplate = useCallback(
+        async (templateName) => {
+            try {
+                const newTemplate = await saveTemplate({ ...website, name: templateName });
+                setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
+            } catch (error) {
+                console.error('Error saving template:', error);
+                throw error;
+            }
+        },
+        [website]
+    );
 
     useEffect(() => {
         loadTemplates();

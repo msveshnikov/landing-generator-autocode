@@ -45,11 +45,17 @@ const Button = styled.button`
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #0056b3;
+    }
 `;
 
 const Preview = () => {
     const navigate = useNavigate();
-    const { website, improveWebsite } = useWebsite();
+    const { website, improveWebsite, saveWebsite, downloadWebsiteHtml } = useWebsite();
     const [additionalInstructions, setAdditionalInstructions] = useState('');
 
     useEffect(() => {
@@ -71,16 +77,27 @@ const Preview = () => {
         }
     };
 
-    const handleDownload = () => {
-        const blob = new Blob([website.generatedHtml], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'landing-page.html';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+    const handleSave = async () => {
+        try {
+            await saveWebsite();
+            alert('Website saved successfully!');
+        } catch (error) {
+            console.error('Error saving website:', error);
+            alert('Failed to save website. Please try again.');
+        }
+    };
+
+    const handleDownload = async () => {
+        try {
+            await downloadWebsiteHtml();
+        } catch (error) {
+            console.error('Error downloading website:', error);
+            alert('Failed to download website. Please try again.');
+        }
+    };
+
+    const handleBackToBuilder = () => {
+        navigate('/builder');
     };
 
     return (
@@ -101,7 +118,9 @@ const Preview = () => {
                         onChange={handleAdditionalInstructionsChange}
                     />
                     <Button onClick={handleImprovePage}>Improve Landing Page</Button>
+                    <Button onClick={handleSave}>Save</Button>
                     <Button onClick={handleDownload}>Download HTML</Button>
+                    <Button onClick={handleBackToBuilder}>Back to Builder</Button>
                 </ControlPanel>
             </PreviewContent>
         </PreviewContainer>

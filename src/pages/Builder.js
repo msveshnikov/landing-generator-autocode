@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ColorPicker from '../components/ColorPicker';
@@ -36,6 +36,7 @@ const Canvas = styled.div`
     min-height: 400px;
     margin: 20px;
     border-radius: 8px;
+
 `;
 
 const ComponentItem = styled.div`
@@ -148,14 +149,24 @@ const Spinner = styled.div`
     }
 `;
 
+const TemplateSelector = styled.select`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+`;
+
 const Builder = () => {
     const {
         website,
-        updateWebsiteState,
+        updateWebsite,
         addComponent,
         reorderComponents,
         generateWebsite,
-        improveWebsite
+        improveWebsite,
+        loadTemplate,
+        templates
     } = useWebsite();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -168,6 +179,13 @@ const Builder = () => {
     ]);
     const [additionalInstructions, setAdditionalInstructions] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState('');
+
+    useEffect(() => {
+        if (templates?.length > 0 && !selectedTemplate) {
+            setSelectedTemplate(templates[0].id);
+        }
+    }, [templates, selectedTemplate]);
 
     const onDragEnd = useCallback(
         (result) => {
@@ -188,23 +206,23 @@ const Builder = () => {
 
     const handleColorChange = useCallback(
         (color, type) => {
-            updateWebsiteState({ colors: { ...website.colors, [type]: color } });
+            updateWebsite({ colors: { ...website.colors, [type]: color } });
         },
-        [website.colors, updateWebsiteState]
+        [website.colors, updateWebsite]
     );
 
     const handleImageUpload = useCallback(
         (imageUrl) => {
-            updateWebsiteState({ heroImageUrl: imageUrl });
+            updateWebsite({ heroImageUrl: imageUrl });
         },
-        [updateWebsiteState]
+        [updateWebsite]
     );
 
     const handleDescriptionChange = useCallback(
         (e) => {
-            updateWebsiteState({ productDescription: e.target.value });
+            updateWebsite({ productDescription: e.target.value });
         },
-        [updateWebsiteState]
+        [updateWebsite]
     );
 
     const handleAdditionalInstructionsChange = useCallback((e) => {
@@ -258,6 +276,15 @@ const Builder = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }, [website.generatedHtml]);
+
+    const handleTemplateChange = useCallback(
+        (e) => {
+            const templateId = e.target.value;
+            setSelectedTemplate(templateId);
+            loadTemplate(templateId);
+        },
+        [loadTemplate]
+    );
 
     return (
         <BuilderContainer>
@@ -320,6 +347,14 @@ const Builder = () => {
                 </DragDropContext>
                 <ControlPanel>
                     <h2>Customization</h2>
+                    <SectionTitle>Template</SectionTitle>
+                    <TemplateSelector value={selectedTemplate} onChange={handleTemplateChange}>
+                        {templates?.map((template) => (
+                            <option key={template.id} value={template.id}>
+                                {template.name}
+                            </option>
+                        ))}
+                    </TemplateSelector>
                     <SectionTitle>Colors</SectionTitle>
                     <ColorPicker
                         selectedColor={website.colors.primary}

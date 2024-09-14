@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useWebsite } from '../contexts/WebsiteContext';
+import { useNavigate } from 'react-router-dom';
 
 const DownloadContainer = styled.div`
     display: flex;
@@ -22,7 +23,7 @@ const Title = styled.h1`
     margin-bottom: 1rem;
 `;
 
-const DownloadButton = styled.button`
+const Button = styled.button`
     background-color: #007bff;
     color: white;
     border: none;
@@ -31,42 +32,70 @@ const DownloadButton = styled.button`
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s;
+    margin: 0.5rem;
 
     &:hover {
         background-color: #0056b3;
     }
 `;
 
-const Download = () => {
-    const location = useLocation();
-    const { generatedHtml } = location.state || {};
+const IframeContainer = styled.div`
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+`;
 
-    const handleDownload = () => {
-        if (generatedHtml) {
-            const blob = new Blob([generatedHtml], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'landing-page.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+const StyledIframe = styled.iframe`
+    width: 100%;
+    height: 100%;
+    border: none;
+`;
+
+const Download = () => {
+    const { website, downloadWebsiteHtml } = useWebsite();
+    const navigate = useNavigate();
+
+    const handleDownload = async () => {
+        try {
+            await downloadWebsiteHtml();
+        } catch (error) {
+            console.error('Error downloading website:', error);
         }
     };
+
+    const handleEditWebsite = () => {
+        navigate('/builder');
+    };
+
+    if (!website.generatedHtml) {
+        return (
+            <DownloadContainer>
+                <Content>
+                    <Title>No Generated Website</Title>
+                    <p>Please go back and generate a landing page first.</p>
+                    <Button onClick={() => navigate('/builder')}>Go to Builder</Button>
+                </Content>
+            </DownloadContainer>
+        );
+    }
 
     return (
         <DownloadContainer>
             <Content>
                 <Title>Download Your Landing Page</Title>
-                {generatedHtml ? (
-                    <DownloadButton onClick={handleDownload}>Download HTML</DownloadButton>
-                ) : (
-                    <p>
-                        No generated HTML available. Please go back and generate a landing page
-                        first.
-                    </p>
-                )}
+                <IframeContainer>
+                    <StyledIframe
+                        title="Landing Page Preview"
+                        srcDoc={website.generatedHtml}
+                        sandbox="allow-scripts"
+                    />
+                </IframeContainer>
+                <Button onClick={handleDownload}>Download HTML</Button>
+                <Button onClick={handleEditWebsite}>Edit Website</Button>
             </Content>
         </DownloadContainer>
     );

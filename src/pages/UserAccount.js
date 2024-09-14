@@ -76,7 +76,7 @@ const StyledLink = styled(Link)`
 
 const UserAccount = () => {
     const { user, setUser } = useContext(AuthContext);
-    const { updateWebsite } = useWebsite();
+    const { loadWebsite } = useWebsite();
     const [websites, setWebsites] = useState([]);
     const navigate = useNavigate();
 
@@ -104,9 +104,22 @@ const UserAccount = () => {
         }
     };
 
-    const handleEditWebsite = (website) => {
-        updateWebsite(website);
-        navigate('/builder');
+    const handleEditWebsite = async (websiteId) => {
+        try {
+            await loadWebsite(websiteId);
+            navigate('/builder');
+        } catch (error) {
+            console.error('Error loading website:', error);
+        }
+    };
+
+    const handlePreviewWebsite = async (websiteId) => {
+        try {
+            await loadWebsite(websiteId);
+            navigate('/preview');
+        } catch (error) {
+            console.error('Error loading website for preview:', error);
+        }
     };
 
     const handleLogout = async () => {
@@ -141,10 +154,10 @@ const UserAccount = () => {
                         <WebsiteItem key={website._id}>
                             <WebsiteName>{website.designType}</WebsiteName>
                             <ActionButtons>
-                                <Button onClick={() => handleEditWebsite(website)}>Edit</Button>
-                                <StyledLink to="/preview" onClick={() => updateWebsite(website)}>
+                                <Button onClick={() => handleEditWebsite(website._id)}>Edit</Button>
+                                <Button onClick={() => handlePreviewWebsite(website._id)}>
                                     Preview
-                                </StyledLink>
+                                </Button>
                                 <Button onClick={() => handleDeleteWebsite(website._id)}>
                                     Delete
                                 </Button>

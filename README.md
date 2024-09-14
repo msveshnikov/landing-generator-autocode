@@ -105,9 +105,8 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   Fix in UserAccount ERROR setCurrentWebsite is not a function TypeError: setCurrentWebsite is not
-    a function at handleEditWebsite (http://localhost:3000
-
--   Improve design of userAccount
--   Preview, Edit, buttons dont work
--   Reduce height of Web Canvas in Builder, regroup elemants nicer
+-   Improve design of UserAccount, make all buttons nicer
+-   Preview, Edit buttons dont work, naviagte back to buikder I wanna see site
+-   Reduce height of Web Canvas in Builder, regroup elements nicer and more compact
+-   add some tempates to DB
+-   make design mobile friendly

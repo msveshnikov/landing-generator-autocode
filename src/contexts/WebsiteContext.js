@@ -4,7 +4,9 @@ import {
     improveLandingPage,
     updateWebsite as apiUpdateWebsite,
     getWebsiteById,
-    downloadWebsite
+    downloadWebsite,
+    getUserWebsites,
+    deleteWebsite as apiDeleteWebsite
 } from '../services/api';
 
 const WebsiteContext = createContext();
@@ -26,6 +28,8 @@ export const WebsiteProvider = ({ children }) => {
         generatedHtml: '',
         components: []
     });
+
+    const [userWebsites, setUserWebsites] = useState([]);
 
     const updateWebsite = useCallback((updates) => {
         setWebsite((prevWebsite) => ({
@@ -149,6 +153,28 @@ export const WebsiteProvider = ({ children }) => {
         }
     }, [website.id]);
 
+    const fetchUserWebsites = useCallback(async () => {
+        try {
+            const websites = await getUserWebsites();
+            setUserWebsites(websites);
+        } catch (error) {
+            console.error('Error fetching user websites:', error);
+            throw error;
+        }
+    }, []);
+
+    const deleteWebsite = useCallback(async (websiteId) => {
+        try {
+            await apiDeleteWebsite(websiteId);
+            setUserWebsites((prevWebsites) =>
+                prevWebsites.filter((website) => website.id !== websiteId)
+            );
+        } catch (error) {
+            console.error('Error deleting website:', error);
+            throw error;
+        }
+    }, []);
+
     return (
         <WebsiteContext.Provider
             value={{
@@ -163,7 +189,10 @@ export const WebsiteProvider = ({ children }) => {
                 improveWebsite,
                 saveWebsite,
                 loadWebsite,
-                downloadWebsiteHtml
+                downloadWebsiteHtml,
+                userWebsites,
+                fetchUserWebsites,
+                deleteWebsite
             }}
         >
             {children}

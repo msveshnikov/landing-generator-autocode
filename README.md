@@ -135,3 +135,5 @@ submitting pull requests.
 This project is licensed under the MIT License.
 
 # TODO
+
+-   compact UI: Canvas just for small components drag, no need in full screen

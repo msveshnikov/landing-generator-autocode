@@ -151,6 +151,13 @@ const Templates = () => {
         }
     };
 
+    const getFirstImageFromHTML = html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const firstImage = doc.querySelector('img');
+        return firstImage ? firstImage.src : null;
+    };
+
     return (
         <TemplatesContainer>
             <h1>Choose a Template</h1>
@@ -161,7 +168,10 @@ const Templates = () => {
                         onClick={() => handleTemplateSelect(template)}
                         selected={selectedTemplate?._id === template._id}
                     >
-                        <TemplateImage src={template.thumbnail} alt={template.name} />
+                        <TemplateImage
+                            src={getFirstImageFromHTML(template.html) || template.thumbnail}
+                            alt={template.name}
+                        />
                         <TemplateName>{template.name}</TemplateName>
                     </TemplateItem>
                 ))}

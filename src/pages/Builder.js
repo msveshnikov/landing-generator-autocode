@@ -470,7 +470,7 @@ const Builder = () => {
                     />
                     <SectionTitle>Additional Instructions</SectionTitle>
                     <TextArea
-                        placeholder="Additional instructions"
+                        placeholder="Additional instructions for improvement"
                         value={additionalInstructions}
                         onChange={handleAdditionalInstructionsChange}
                     />

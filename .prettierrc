@@ -6,5 +6,12 @@
     "useTabs": false,
     "trailingComma": "none",
     "bracketSpacing": true,
-    "semi": true
+    "semi": true,
+    "arrowParens": "avoid",
+    "endOfLine": "lf",
+    "jsxSingleQuote": false,
+    "quoteProps": "as-needed",
+    "htmlWhitespaceSensitivity": "css",
+    "vueIndentScriptAndStyle": false,
+    "embeddedLanguageFormatting": "auto"
 }

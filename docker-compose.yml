@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - '3000:3000'
+        environment:
+            - NODE_ENV=production
+        restart: unless-stopped
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        volumes:
+            - ./src:/app/src
+            - ./package.json:/app/package.json
+            - ./package-lock.json:/app/package-lock.json
+        networks:
+            - app-network
+        depends_on:
+            - server
+            - mongodb
+
+    server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        ports:
+            - '5000:5000'
+        environment:
+            - NODE_ENV=production
+            - MONGODB_URI=mongodb://mongodb:27017/landingpagegenerator
+            - JWT_SECRET=${JWT_SECRET}
+            - CLAUDE_KEY=${CLAUDE_KEY}
+        restart: unless-stopped
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:5000/health']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        volumes:
+            - ./server:/app
+        networks:
+            - app-network
+        depends_on:
+            - mongodb
+
+    mongodb:
+        image: mongo:latest
+        ports:
+            - '27017:27017'
+        volumes:
+            - mongodb_data:/data/db
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    mongodb_data:

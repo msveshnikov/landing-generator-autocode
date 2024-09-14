@@ -106,4 +106,5 @@ This project is licensed under the MIT License.
 # TODO
 
 -   add some tempates to DB
--   make design mobile friendly
+-   add some palettes to DB
+-   add some design types to DB

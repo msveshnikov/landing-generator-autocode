@@ -45,9 +45,21 @@ const TemplateSchema = new mongoose.Schema({
     isPublic: { type: Boolean, default: false }
 });
 
+const PaletteSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    colors: { type: [String], required: true }
+});
+
+const DesignTypeSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    description: String
+});
+
 const User = mongoose.model('User', UserSchema);
 const Website = mongoose.model('Website', WebsiteSchema);
 const Template = mongoose.model('Template', TemplateSchema);
+const Palette = mongoose.model('Palette', PaletteSchema);
+const DesignType = mongoose.model('DesignType', DesignTypeSchema);
 
 const anthropic = new Anthropic({
     apiKey: process.env.CLAUDE_KEY
@@ -347,6 +359,73 @@ app.put('/websites/:id', authenticateToken, async (req, res) => {
     } catch (error) {
         console.error('Error updating website:', error);
         res.status(500).json({ error: 'Error updating website' });
+    }
+});
+
+app.get('/design-types', async (req, res) => {
+    try {
+        const designTypes = await DesignType.find();
+        res.json(designTypes);
+    } catch (error) {
+        console.error('Error fetching design types:', error);
+        res.status(500).json({ error: 'Error fetching design types' });
+    }
+});
+
+app.get('/color-palettes', async (req, res) => {
+    try {
+        const palettes = await Palette.find();
+        res.json(palettes);
+    } catch (error) {
+        console.error('Error fetching color palettes:', error);
+        res.status(500).json({ error: 'Error fetching color palettes' });
+    }
+});
+
+app.get('/websites/:id/download', authenticateToken, async (req, res) => {
+    try {
+        const website = await Website.findOne({ _id: req.params.id, userId: req.user.userId });
+        if (!website) {
+            return res.status(404).json({ error: 'Website not found' });
+        }
+        res.setHeader('Content-Type', 'text/html');
+        res.setHeader(
+            'Content-Disposition',
+            `attachment; filename=${website.name || 'website'}.html`
+        );
+        res.send(website.html);
+    } catch (error) {
+        console.error('Error downloading website:', error);
+        res.status(500).json({ error: 'Error downloading website' });
+    }
+});
+
+app.get('/websites/:id/analytics', authenticateToken, async (req, res) => {
+    try {
+        const website = await Website.findOne({ _id: req.params.id, userId: req.user.userId });
+        if (!website) {
+            return res.status(404).json({ error: 'Website not found' });
+        }
+        res.json({ message: 'Analytics feature not implemented yet' });
+    } catch (error) {
+        console.error('Error fetching website analytics:', error);
+        res.status(500).json({ error: 'Error fetching website analytics' });
+    }
+});
+
+app.put('/user', authenticateToken, async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findByIdAndUpdate(req.user.userId, { email }, { new: true }).select(
+            '-password'
+        );
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Error updating user profile:', error);
+        res.status(500).json({ error: 'Error updating user profile' });
     }
 });
 

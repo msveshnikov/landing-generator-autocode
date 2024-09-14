@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../contexts/AuthContext';
-import Header from '../components/Header';
 
 const RegisterContainer = styled.div`
     display: flex;
@@ -103,47 +102,44 @@ const Register = () => {
     };
 
     return (
-        <>
-            <Header />
-            <RegisterContainer>
-                <RegisterForm onSubmit={handleSubmit}>
-                    <Title>Register</Title>
-                    {error && <ErrorMessage>{error}</ErrorMessage>}
-                    <InputGroup>
-                        <Label htmlFor="email">Email:</Label>
-                        <Input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label htmlFor="password">Password:</Label>
-                        <Input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label htmlFor="confirmPassword">Confirm Password:</Label>
-                        <Input
-                            type="password"
-                            id="confirmPassword"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                    </InputGroup>
-                    <Button type="submit">Register</Button>
-                    <StyledLink to="/login">Already have an account? Login here</StyledLink>
-                </RegisterForm>
-            </RegisterContainer>
-        </>
+        <RegisterContainer>
+            <RegisterForm onSubmit={handleSubmit}>
+                <Title>Register</Title>
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+                <InputGroup>
+                    <Label htmlFor="email">Email:</Label>
+                    <Input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </InputGroup>
+                <InputGroup>
+                    <Label htmlFor="password">Password:</Label>
+                    <Input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </InputGroup>
+                <InputGroup>
+                    <Label htmlFor="confirmPassword">Confirm Password:</Label>
+                    <Input
+                        type="password"
+                        id="confirmPassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                </InputGroup>
+                <Button type="submit">Register</Button>
+                <StyledLink to="/login">Already have an account? Login here</StyledLink>
+            </RegisterForm>
+        </RegisterContainer>
     );
 };
 

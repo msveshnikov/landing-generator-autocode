@@ -1,8 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import ColorPicker from '../components/ColorPicker';
 import ImageUploader from '../components/ImageUploader';
 import { useWebsite } from '../contexts/WebsiteContext';
@@ -263,7 +261,6 @@ const Builder = () => {
 
     return (
         <BuilderContainer>
-            <Header />
             <BuilderContent>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <ComponentLibrary>
@@ -378,7 +375,6 @@ const Builder = () => {
                     />
                 </PreviewContainer>
             )}
-            <Footer />
             {isGenerating && (
                 <LoadingOverlay>
                     <Spinner />

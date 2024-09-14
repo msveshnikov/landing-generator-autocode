@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useWebsite } from '../contexts/WebsiteContext';
 
 const PreviewContainer = styled.div`
@@ -87,7 +85,6 @@ const Preview = () => {
 
     return (
         <PreviewContainer>
-            <Header />
             <PreviewContent>
                 <h1>Landing Page Preview</h1>
                 <IframeContainer>
@@ -107,7 +104,6 @@ const Preview = () => {
                     <Button onClick={handleDownload}>Download HTML</Button>
                 </ControlPanel>
             </PreviewContent>
-            <Footer />
         </PreviewContainer>
     );
 };

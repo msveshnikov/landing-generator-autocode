@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../contexts/AuthContext';
-import Header from '../components/Header';
 
 const LoginContainer = styled.div`
     display: flex;
@@ -112,7 +111,6 @@ const Login = () => {
 
     return (
         <>
-            <Header />
             <LoginContainer>
                 <LoginForm onSubmit={handleSubmit}>
                     <Title>Login</Title>

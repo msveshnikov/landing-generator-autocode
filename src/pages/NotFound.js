@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 const NotFoundContainer = styled.div`
     display: flex;
@@ -45,13 +43,11 @@ const StyledLink = styled(Link)`
 const NotFound = () => {
     return (
         <NotFoundContainer>
-            <Header />
             <Content>
                 <Title>404 - Page Not Found</Title>
                 <Message>The page you are looking for does not exist.</Message>
                 <StyledLink to="/">Return to Home</StyledLink>
             </Content>
-            <Footer />
         </NotFoundContainer>
     );
 };

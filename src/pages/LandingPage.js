@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useAuth } from '../contexts/AuthContext';
 
 const gradientAnimation = keyframes`
@@ -100,7 +98,6 @@ const LandingPage = () => {
 
     return (
         <LandingContainer>
-            <Header />
             <MainContent>
                 <Title>Landing Page Generator</Title>
                 <Subtitle>
@@ -137,7 +134,6 @@ const LandingPage = () => {
                     </FeatureCard>
                 </FeatureSection>
             </MainContent>
-            <Footer />
         </LandingContainer>
     );
 };

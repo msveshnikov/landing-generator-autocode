@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 const DownloadContainer = styled.div`
     display: flex;
@@ -59,7 +57,6 @@ const Download = () => {
 
     return (
         <DownloadContainer>
-            <Header />
             <Content>
                 <Title>Download Your Landing Page</Title>
                 {generatedHtml ? (
@@ -71,7 +68,6 @@ const Download = () => {
                     </p>
                 )}
             </Content>
-            <Footer />
         </DownloadContainer>
     );
 };

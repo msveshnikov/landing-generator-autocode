@@ -18,10 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+mongoose.connect(process.env.MONGODB_URI, {});
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
@@ -168,7 +165,7 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-            expiresIn: '1h'
+            expiresIn: '14d'
         });
         res.json({ token });
     } catch (error) {
@@ -310,5 +307,3 @@ app.use('/uploads', express.static('uploads'));
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
-export default app;

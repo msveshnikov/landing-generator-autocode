@@ -5,7 +5,7 @@ const About = () => {
     const { isDarkMode } = useTheme();
 
     return (
-        <div className={`about-page ${isDarkMode ? 'dark-mode' : ''}`}>
+        <div className={`about-page ${isDarkMode ? 'dark-mode' : ''}`} style={{ padding: '20px' }}>
             <h1>About Landing Page Generator</h1>
             <section>
                 <h2>Overview</h2>
@@ -27,6 +27,8 @@ const About = () => {
                     <li>User authentication and account management</li>
                     <li>Persistent storage of user-generated websites</li>
                     <li>Template selection for quick start designs</li>
+                    <li>Responsive design for mobile compatibility</li>
+                    <li>Progressive web app (PWA) features</li>
                 </ul>
             </section>
             <section>
@@ -40,12 +42,30 @@ const About = () => {
             </section>
             <section>
                 <h2>Future Enhancements</h2>
-                <p>
-                    We are constantly working to improve our landing page generator. Some planned
-                    enhancements include custom CSS input, CMS platform integration, A/B testing
-                    capabilities, analytics integration, and a template marketplace for user-created
-                    designs.
-                </p>
+                <ul>
+                    <li>Custom CSS input support</li>
+                    <li>Integration with popular CMS platforms</li>
+                    <li>A/B testing capabilities for landing pages</li>
+                    <li>Analytics integration for performance tracking</li>
+                    <li>Template marketplace for user-created designs</li>
+                    <li>Multi-language support for generated pages</li>
+                    <li>SEO optimization tools</li>
+                    <li>Social media integration for sharing and promotion</li>
+                    <li>Email marketing integration for lead capture</li>
+                    <li>Version control for user-generated pages</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Security and Performance</h2>
+                <ul>
+                    <li>HTTPS implementation for secure communication</li>
+                    <li>Rate limiting to prevent abuse</li>
+                    <li>Input validation and sanitization</li>
+                    <li>Secure session management</li>
+                    <li>Regular security audits and penetration testing</li>
+                    <li>Caching strategies for improved performance</li>
+                    <li>Lazy loading for optimized resource loading</li>
+                </ul>
             </section>
             <section>
                 <h2>Get Started</h2>

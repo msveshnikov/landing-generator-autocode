@@ -2,10 +2,10 @@ import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Privacy = () => {
-    const { theme } = useTheme();
+    const { isDarkMode } = useTheme();
 
     return (
-        <div className={`container ${theme}`}>
+        <div className={`container ${isDarkMode ? 'dark-mode' : ''}`}>
             <h1>Privacy Policy</h1>
             <p>Last updated: {new Date().toLocaleDateString()}</p>
 
@@ -41,6 +41,10 @@ const Privacy = () => {
                         Usage Data: includes information about how you use our website, products and
                         services
                     </li>
+                    <li>
+                        Generated Content: includes landing pages, templates, and other content
+                        created using our service
+                    </li>
                 </ul>
             </section>
 
@@ -52,26 +56,27 @@ const Privacy = () => {
                 </p>
                 <ul>
                     <li>
-                        Where we need to perform the contract we are about to enter into or have
-                        entered into with you
+                        To provide and maintain our service, including to monitor the usage of our
+                        service
                     </li>
+                    <li>To manage your account and provide you with customer support</li>
                     <li>
-                        Where it is necessary for our legitimate interests (or those of a third
-                        party) and your interests and fundamental rights do not override those
-                        interests
+                        To notify you about changes to our service and important announcements
                     </li>
-                    <li>Where we need to comply with a legal obligation</li>
+                    <li>To improve our service based on your feedback and usage patterns</li>
+                    <li>To comply with legal obligations and resolve any disputes</li>
                 </ul>
             </section>
 
             <section>
                 <h2>4. Data Security</h2>
                 <p>
-                    We have put in place appropriate security measures to prevent your personal data
-                    from being accidentally lost, used or accessed in an unauthorized way, altered
-                    or disclosed. In addition, we limit access to your personal data to those
-                    employees, agents, contractors and other third parties who have a business need
-                    to know.
+                    We have implemented appropriate technical and organizational security measures
+                    designed to protect the security of any personal information we process.
+                    However, please also remember that we cannot guarantee that the internet itself
+                    is 100% secure. Although we will do our best to protect your personal
+                    information, transmission of personal information to and from our Services is at
+                    your own risk.
                 </p>
             </section>
 
@@ -90,12 +95,37 @@ const Privacy = () => {
                     <li>Request transfer of your personal data</li>
                     <li>Right to withdraw consent</li>
                 </ul>
+                <p>
+                    You can exercise any of these rights by contacting us using the information
+                    provided in the "Contact Us" section.
+                </p>
             </section>
 
             <section>
-                <h2>6. Contact Us</h2>
+                <h2>6. Third-Party Services</h2>
                 <p>
-                    If you have any questions about this privacy policy or our privacy practices,
+                    Our service may contain links to other websites that are not operated by us. If
+                    you click on a third-party link, you will be directed to that third party's
+                    site. We strongly advise you to review the Privacy Policy of every site you
+                    visit. We have no control over and assume no responsibility for the content,
+                    privacy policies or practices of any third-party sites or services.
+                </p>
+            </section>
+
+            <section>
+                <h2>7. Changes to This Privacy Policy</h2>
+                <p>
+                    We may update our Privacy Policy from time to time. We will notify you of any
+                    changes by posting the new Privacy Policy on this page and updating the "Last
+                    updated" date at the top of this Privacy Policy. You are advised to review this
+                    Privacy Policy periodically for any changes.
+                </p>
+            </section>
+
+            <section>
+                <h2>8. Contact Us</h2>
+                <p>
+                    If you have any questions about this Privacy Policy or our privacy practices,
                     please contact us at:
                 </p>
                 <p>Email: privacy@landingpagegenerator.com</p>

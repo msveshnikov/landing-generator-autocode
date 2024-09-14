@@ -65,7 +65,7 @@ const Footer = () => {
                 </FooterSection>
             </FooterContent>
             <Copyright>
-                © {new Date().getFullYear()} Landing Page Generator. All rights reserved.
+                © {new Date().getFullYear()} MaxSoft. All rights reserved.
             </Copyright>
         </FooterContainer>
     );

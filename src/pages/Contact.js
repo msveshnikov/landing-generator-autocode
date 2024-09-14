@@ -1,32 +1,38 @@
 import React, { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { sendContactForm } from '../services/api';
 
 const Contact = () => {
-    const { theme } = useTheme();
+    const { isDarkMode } = useTheme();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     });
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
             ...prevData,
             [name]: value
         }));
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Implement form submission logic here
-        console.log('Form submitted:', formData);
-        setSubmitted(true);
+        setError('');
+        try {
+            // await sendContactForm(formData);
+            setSubmitted(true);
+        } catch (err) {
+            setError('Failed to send message. Please try again later.');
+        }
     };
 
     return (
-        <div className={`container ${theme}`}>
+        <div className={`container ${isDarkMode ? 'dark-mode' : ''}`}>
             <h1>Contact Us</h1>
             {submitted ? (
                 <p>Thank you for your message. We'll get back to you soon!</p>
@@ -64,6 +70,7 @@ const Contact = () => {
                             required
                         ></textarea>
                     </div>
+                    {error && <p className="error">{error}</p>}
                     <button type="submit">Send Message</button>
                 </form>
             )}

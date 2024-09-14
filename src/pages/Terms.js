@@ -5,7 +5,7 @@ const Terms = () => {
     const { isDarkMode } = useTheme();
 
     return (
-        <div className={`container ${isDarkMode ? 'dark-mode' : ''}`}>
+        <div className={`container ${isDarkMode ? 'dark-mode' : ''}`} style={{ padding: '20px' }}>
             <h1>Terms of Service</h1>
             <section>
                 <h2>1. Acceptance of Terms</h2>
@@ -98,6 +98,33 @@ const Terms = () => {
                     These terms and conditions are governed by and construed in accordance with the
                     laws of [Your Country] and you irrevocably submit to the exclusive jurisdiction
                     of the courts in that State or location.
+                </p>
+            </section>
+            <section>
+                <h2>9. User Accounts</h2>
+                <p>
+                    You are responsible for maintaining the confidentiality of your account and
+                    password. You agree to accept responsibility for all activities that occur under
+                    your account or password. You must notify us immediately upon becoming aware of
+                    any breach of security or unauthorized use of your account.
+                </p>
+            </section>
+            <section>
+                <h2>10. Intellectual Property</h2>
+                <p>
+                    The Landing Page Generator and its original content, features, and functionality
+                    are owned by Landing Page Generator and are protected by international copyright,
+                    trademark, patent, trade secret, and other intellectual property or proprietary
+                    rights laws.
+                </p>
+            </section>
+            <section>
+                <h2>11. Termination</h2>
+                <p>
+                    We may terminate or suspend your account and bar access to the Service
+                    immediately, without prior notice or liability, under our sole discretion, for
+                    any reason whatsoever and without limitation, including but not limited to a
+                    breach of the Terms.
                 </p>
             </section>
         </div>

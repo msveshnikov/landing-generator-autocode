@@ -5,7 +5,6 @@ import { useWebsite } from '../contexts/WebsiteContext';
 import { useAuth } from '../contexts/AuthContext';
 import { fetchTemplates, saveTemplate, uploadImage } from '../services/api';
 import ColorPicker from '../components/ColorPicker';
-import ImageUploader from '../components/ImageUploader';
 
 const TemplatesContainer = styled.div`
     max-width: 1200px;
@@ -117,24 +116,6 @@ const Templates = () => {
         setCustomColors((prevColors) => ({ ...prevColors, [key]: color }));
     };
 
-    const handleHeroImageUpload = async (file) => {
-        try {
-            const imageUrl = await uploadImage(file);
-            setHeroImage(imageUrl);
-        } catch (error) {
-            console.error('Error uploading hero image:', error);
-        }
-    };
-
-    const handleOtherImageUpload = async (file) => {
-        try {
-            const imageUrl = await uploadImage(file);
-            setOtherImages((prevImages) => [...prevImages, imageUrl]);
-        } catch (error) {
-            console.error('Error uploading other image:', error);
-        }
-    };
-
     const handleDescriptionChange = (e) => {
         setProductDescription(e.target.value);
     };
@@ -187,12 +168,7 @@ const Templates = () => {
                             onChange={(newColor) => handleColorChange(key, newColor)}
                         />
                     ))}
-                    <ImageUploader label="Hero Image" onImageUpload={handleHeroImageUpload} />
-                    <ImageUploader
-                        label="Other Images"
-                        onImageUpload={handleOtherImageUpload}
-                        multiple
-                    />
+
                     <TextArea
                         placeholder="Enter your product description"
                         value={productDescription}

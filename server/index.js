@@ -74,7 +74,7 @@ const generateLandingPage = async (
           Design Type: ${designType}
           Colors: ${JSON.stringify(colors)}
           Hero Image URL: ${heroImageUrl}
-          Other Imagery: ${otherImagery.join(', ')}
+          Other Imagery: ${otherImagery?.join(', ')}
           Product Description: ${productDescription}
           Components: ${components.map((c) => c.type).join(', ')}
           

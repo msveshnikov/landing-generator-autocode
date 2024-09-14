@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useCallback } from 'react';
+import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 import {
     generateLandingPage,
     improveLandingPage,
@@ -6,7 +6,9 @@ import {
     getWebsiteById,
     downloadWebsite,
     getUserWebsites,
-    deleteWebsite as apiDeleteWebsite
+    deleteWebsite as apiDeleteWebsite,
+    fetchTemplates,
+    saveTemplate
 } from '../services/api';
 
 const WebsiteContext = createContext();
@@ -30,6 +32,7 @@ export const WebsiteProvider = ({ children }) => {
     });
 
     const [userWebsites, setUserWebsites] = useState([]);
+    const [templates, setTemplates] = useState([]);
 
     const updateWebsite = useCallback((updates) => {
         setWebsite((prevWebsite) => ({
@@ -107,19 +110,19 @@ export const WebsiteProvider = ({ children }) => {
     const improveWebsite = useCallback(
         async (userFeedback) => {
             try {
-                const { html } = await improveLandingPage(website._id, userFeedback);
+                const { html } = await improveLandingPage(website.id, userFeedback);
                 updateWebsite({ html: html });
             } catch (error) {
                 console.error('Error improving website:', error);
                 throw error;
             }
         },
-        [website._id, updateWebsite]
+        [website.id, updateWebsite]
     );
 
     const saveWebsite = useCallback(async () => {
         try {
-            const updatedWebsite = await apiUpdateWebsite(website._id, website);
+            const updatedWebsite = await apiUpdateWebsite(website.id, website);
             updateWebsite(updatedWebsite);
         } catch (error) {
             console.error('Error saving website:', error);
@@ -139,12 +142,11 @@ export const WebsiteProvider = ({ children }) => {
 
     const downloadWebsiteHtml = useCallback(async () => {
         try {
-            console.log(website)
-            const htmlBlob = await downloadWebsite(website._id);
+            const htmlBlob = await downloadWebsite(website.id);
             const url = window.URL.createObjectURL(htmlBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `website_${website._id}.html`);
+            link.setAttribute('download', `website_${website.id}.html`);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
@@ -152,7 +154,7 @@ export const WebsiteProvider = ({ children }) => {
             console.error('Error downloading website:', error);
             throw error;
         }
-    }, [website]);
+    }, [website.id]);
 
     const fetchUserWebsites = useCallback(async () => {
         try {
@@ -168,13 +170,47 @@ export const WebsiteProvider = ({ children }) => {
         try {
             await apiDeleteWebsite(websiteId);
             setUserWebsites((prevWebsites) =>
-                prevWebsites.filter((website) => website._id !== websiteId)
+                prevWebsites.filter((website) => website.id !== websiteId)
             );
         } catch (error) {
             console.error('Error deleting website:', error);
             throw error;
         }
     }, []);
+
+    const loadTemplates = useCallback(async () => {
+        try {
+            const fetchedTemplates = await fetchTemplates();
+            setTemplates(fetchedTemplates);
+        } catch (error) {
+            console.error('Error loading templates:', error);
+            throw error;
+        }
+    }, []);
+
+    const loadTemplate = useCallback(
+        (templateId) => {
+            const template = templates.find((t) => t.id === templateId);
+            if (template) {
+                updateWebsite(template);
+            }
+        },
+        [templates, updateWebsite]
+    );
+
+    const saveAsTemplate = useCallback(async (templateName) => {
+        try {
+            const newTemplate = await saveTemplate({ ...website, name: templateName });
+            setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
+        } catch (error) {
+            console.error('Error saving template:', error);
+            throw error;
+        }
+    }, [website]);
+
+    useEffect(() => {
+        loadTemplates();
+    }, [loadTemplates]);
 
     return (
         <WebsiteContext.Provider
@@ -193,7 +229,10 @@ export const WebsiteProvider = ({ children }) => {
                 downloadWebsiteHtml,
                 userWebsites,
                 fetchUserWebsites,
-                deleteWebsite
+                deleteWebsite,
+                templates,
+                loadTemplate,
+                saveAsTemplate
             }}
         >
             {children}

@@ -147,7 +147,7 @@ const UserAccount = () => {
             <Title>User Account</Title>
             <WelcomeMessage>Welcome, {user.email}!</WelcomeMessage>
             <Button onClick={handleLogout}>Logout</Button>
-            <Title as="h2">Your Websites</Title>
+            <Title as="h2">Your Landings</Title>
             {websites.length > 0 ? (
                 <WebsiteList>
                     {websites.map((website) => (

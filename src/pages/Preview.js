@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useWebsite } from '../contexts/WebsiteContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const PreviewContainer = styled.div`
     display: flex;
@@ -36,12 +37,15 @@ const TextArea = styled.textarea`
     width: 100%;
     height: 100px;
     margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 `;
 
 const Button = styled.button`
     margin-right: 10px;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #4a90e2;
     color: white;
     border: none;
     cursor: pointer;
@@ -49,14 +53,21 @@ const Button = styled.button`
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: #0056b3;
+        background-color: #357abd;
+    }
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
     }
 `;
 
 const Preview = () => {
     const navigate = useNavigate();
     const { website, improveWebsite, saveWebsite, downloadWebsiteHtml } = useWebsite();
+    const { isAuthenticated } = useAuth();
     const [additionalInstructions, setAdditionalInstructions] = useState('');
+    const [isImproving, setIsImproving] = useState(false);
 
     useEffect(() => {
         if (!website.html) {
@@ -69,15 +80,31 @@ const Preview = () => {
     };
 
     const handleImprovePage = async () => {
+        if (!isAuthenticated) {
+            alert('Please log in to improve the landing page.');
+            navigate('/login');
+            return;
+        }
+
+        setIsImproving(true);
         try {
             await improveWebsite(additionalInstructions);
             setAdditionalInstructions('');
         } catch (error) {
             console.error('Error improving landing page:', error);
+            alert('An error occurred while improving the landing page. Please try again.');
+        } finally {
+            setIsImproving(false);
         }
     };
 
     const handleSave = async () => {
+        if (!isAuthenticated) {
+            alert('Please log in to save the website.');
+            navigate('/login');
+            return;
+        }
+
         try {
             await saveWebsite();
             alert('Website saved successfully!');
@@ -117,7 +144,9 @@ const Preview = () => {
                         value={additionalInstructions}
                         onChange={handleAdditionalInstructionsChange}
                     />
-                    <Button onClick={handleImprovePage}>Improve Landing Page</Button>
+                    <Button onClick={handleImprovePage} disabled={isImproving}>
+                        {isImproving ? 'Improving...' : 'Improve Landing Page'}
+                    </Button>
                     <Button onClick={handleSave}>Save</Button>
                     <Button onClick={handleDownload}>Download HTML</Button>
                     <Button onClick={handleBackToBuilder}>Back to Builder</Button>

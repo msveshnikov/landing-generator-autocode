@@ -17,7 +17,7 @@ const PreviewContent = styled.div`
 
 const IframeContainer = styled.div`
     width: 100%;
-    height: 60vh;
+    height: 260vh;
     border: 1px solid #ddd;
     border-radius: 4px;
     overflow: hidden;

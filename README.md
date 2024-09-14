@@ -1,5 +1,7 @@
 # Landing Page Generator
 
+![alt text](image-1.png)
+
 ## Overview
 
 This project is a Landing Page Generator that allows users to create custom landing pages by
@@ -136,4 +138,3 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   add paddings

@@ -1,57 +1,36 @@
-version: '3'
+version: '3.8'
 
 services:
-    app:
-        build:
-            context: .
-            dockerfile: Dockerfile
+    backend:
+        image: extender777/landing-backend
         ports:
-            - '3000:3000'
-        environment:
-            - NODE_ENV=production
-        restart: unless-stopped
-        networks:
-            - app-network
-        depends_on:
-            - server
-            - mongodb
-
-    server:
-        build:
-            context: ./server
-            dockerfile: Dockerfile
-        ports:
-            - '5000:5000'
+            - '6005:5000'
         environment:
             - NODE_ENV=production
             - MONGODB_URI=mongodb://mongodb:27017/landing
             - JWT_SECRET=${JWT_SECRET}
-            - CLAUDE_KEY=${CLAUDE_KEY}
         restart: unless-stopped
-        healthcheck:
-            test: ['CMD', 'curl', '-f', 'http://localhost:5000/health']
-            interval: 30s
-            timeout: 10s
-            retries: 3
-        volumes:
-            - ./server:/app
-        networks:
-            - app-network
         depends_on:
             - mongodb
 
+    frontend:
+        image: extender777/landing-frontend
+        environment:
+            - NODE_ENV=production
+            - REACT_APP_API_BASE_URL=http://backend:5000
+        ports:
+            - '8787:80'
+        restart: unless-stopped
+        depends_on:
+            - backend
+
     mongodb:
         image: mongo:latest
-        ports:
-            - '27017:27017'
         volumes:
-            - mongodb_data:/data/db
-        networks:
-            - app-network
-
-networks:
-    app-network:
-        driver: bridge
+            - mongo-data:/data/db
+        restart: unless-stopped
+        logging:
+            driver: none
 
 volumes:
-    mongodb_data:
+    mongo-data:

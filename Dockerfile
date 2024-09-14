@@ -1,26 +1,20 @@
-FROM node:20-alpine AS build
+FROM --platform=$BUILDPLATFORM node:20-slim AS build
 
 WORKDIR /app
 
 COPY package*.json ./
+
 RUN npm ci
 
 COPY . .
+
+ENV REACT_APP_API_BASE_URL https://landing.autocode.work/api
+
 RUN npm run build
 
-FROM node:20-alpine
-
-WORKDIR /app
-
-COPY --from=build /app/build ./build
-COPY --from=build /app/server ./server
-COPY package*.json ./
-
-RUN npm ci --only=production
-
-ENV NODE_ENV=production
-ENV PORT=3000
-
-EXPOSE 3000
-
-CMD ["node", "server/index.js"]
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

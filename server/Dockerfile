@@ -1,17 +1,13 @@
-FROM node:20-alpine
+FROM node:20-slim
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production
+
+RUN npm install
 
 COPY . .
 
-ENV NODE_ENV=production
-ENV CLAUDE_KEY=""
-ENV MONGODB_URI=""
-ENV JWT_SECRET=""
-
-EXPOSE 3000
+EXPOSE 5000
 
 CMD ["node", "index.js"]

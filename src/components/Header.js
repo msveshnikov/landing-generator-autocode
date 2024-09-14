@@ -2,20 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 const HeaderContainer = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #4a90e2;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: ${({ theme }) => theme.colors.header.background};
+    box-shadow: 0 2px 4px ${({ theme }) => theme.colors.shadow};
 `;
 
 const Logo = styled(Link)`
     font-size: 1.5rem;
     font-weight: bold;
-    color: white;
+    color: ${({ theme }) => theme.colors.header.text};
     text-decoration: none;
     font-family: 'Arial', sans-serif;
 `;
@@ -23,10 +24,11 @@ const Logo = styled(Link)`
 const Nav = styled.nav`
     display: flex;
     gap: 1rem;
+    align-items: center;
 `;
 
 const NavLink = styled(Link)`
-    color: white;
+    color: ${({ theme }) => theme.colors.header.text};
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -34,13 +36,13 @@ const NavLink = styled(Link)`
     font-family: 'Arial', sans-serif;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: ${({ theme }) => theme.colors.primary}40;
     }
 `;
 
 const Button = styled.button`
-    background-color: white;
-    color: #4a90e2;
+    background-color: ${({ theme }) => theme.colors.button.background};
+    color: ${({ theme }) => theme.colors.button.text};
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -49,30 +51,60 @@ const Button = styled.button`
     font-family: 'Arial', sans-serif;
 
     &:hover {
-        background-color: #f0f0f0;
+        opacity: 0.9;
     }
+`;
+
+const ThemeToggle = styled.button`
+    background-color: transparent;
+    border: none;
+    color: ${({ theme }) => theme.colors.header.text};
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Header = () => {
     const { isAuthenticated, logout } = useAuth();
+    const { theme } = useTheme();
 
     return (
-        <HeaderContainer>
-            <Logo to="/">Landing Page Generator</Logo>
+        <HeaderContainer theme={theme}>
+            <Logo to="/" theme={theme}>
+                Landing Page Generator
+            </Logo>
             <Nav>
-                <NavLink to="/templates">Templates</NavLink>
-                <NavLink to="/builder">Builder</NavLink>
+                <NavLink to="/templates" theme={theme}>
+                    Templates
+                </NavLink>
+                <NavLink to="/builder" theme={theme}>
+                    Builder
+                </NavLink>
                 {isAuthenticated ? (
                     <>
-                        <NavLink to="/user-account">Account</NavLink>
-                        <Button onClick={logout}>Logout</Button>
+                        <NavLink to="/user-account" theme={theme}>
+                            Account
+                        </NavLink>
+                        <Button onClick={logout} theme={theme}>
+                            Logout
+                        </Button>
                     </>
                 ) : (
                     <>
-                        <NavLink to="/login">Login</NavLink>
-                        <NavLink to="/register">Register</NavLink>
+                        <NavLink to="/login" theme={theme}>
+                            Login
+                        </NavLink>
+                        <NavLink to="/register" theme={theme}>
+                            Register
+                        </NavLink>
                     </>
                 )}
+                <ThemeToggle onClick={theme.toggleTheme} theme={theme}>
+                    {theme.isDarkMode ? '🌞' : '🌙'}
+                </ThemeToggle>
             </Nav>
         </HeaderContainer>
     );

@@ -63,12 +63,6 @@ const Footer = () => {
                     <FooterLink to="/terms">Terms of Service</FooterLink>
                     <FooterLink to="/privacy">Privacy Policy</FooterLink>
                 </FooterSection>
-                {/* <FooterSection>
-                    <FooterHeading>Community</FooterHeading>
-                    <FooterLink to="/forum">Forum</FooterLink>
-                    <FooterLink to="/feedback">Feedback</FooterLink>
-                    <FooterLink to="/support">Support</FooterLink>
-                </FooterSection> */}
             </FooterContent>
             <Copyright>
                 © {new Date().getFullYear()} Landing Page Generator. All rights reserved.

@@ -136,6 +136,3 @@ This project is licensed under the MIT License.
 
 # TODO
 
--  Fix theme ERROR Cannot destructure property 'theme' of '(0 , _contexts_ThemeContext__WEBPACK_IMPORTED_MODULE_18__.useTheme)(...)' as it is undefined.
-TypeError: Cannot destructure property 'theme' of '(0 , _contexts_ThemeContext__WEBPACK_IMPORTED_MODULE_18__.useTheme)(...)' as it is undefined.
-    at App (http://localhost:3000/main.ab20bb745f4a29f15bc2.hot-update.js:89:5)

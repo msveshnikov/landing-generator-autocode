@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ColorPicker from '../components/ColorPicker';
+import ImageUploader from '../components/ImageUploader';
 import { useWebsite } from '../contexts/WebsiteContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { fetchTemplates, getDesignTypes, getColorPalettes } from '../services/api';
 
 const BuilderContainer = styled.div`
     display: flex;
@@ -176,7 +176,10 @@ const Builder = () => {
         improveWebsite,
         saveWebsite,
         loadTemplate,
-        saveAsTemplate
+        saveAsTemplate,
+        templates,
+        designTypes,
+        colorPalettes
     } = useWebsite();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -189,28 +192,7 @@ const Builder = () => {
     ]);
     const [additionalInstructions, setAdditionalInstructions] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
-    const [templates, setTemplates] = useState([]);
-    const [designTypes, setDesignTypes] = useState([]);
-    const [colorPalettes, setColorPalettes] = useState([]);
     const [templateName, setTemplateName] = useState('');
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [templatesData, designTypesData, colorPalettesData] = await Promise.all([
-                    fetchTemplates(),
-                    getDesignTypes(),
-                    getColorPalettes()
-                ]);
-                setTemplates(templatesData);
-                setDesignTypes(designTypesData);
-                setColorPalettes(colorPalettesData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData();
-    }, []);
 
     const onDragEnd = useCallback(
         result => {
@@ -353,6 +335,15 @@ const Builder = () => {
         }
     }, [saveWebsite]);
 
+    const handleAdditionalImageUpload = useCallback(
+        imageUrl => {
+            updateWebsite({
+                additionalImages: [...website.additionalImages, imageUrl]
+            });
+        },
+        [website.additionalImages, updateWebsite]
+    );
+
     return (
         <BuilderContainer>
             <BuilderContent>
@@ -470,6 +461,7 @@ const Builder = () => {
                         onChange={handleHeroImageUrlChange}
                     />
                     <SectionTitle>Additional Images</SectionTitle>
+                    <ImageUploader onUpload={handleAdditionalImageUpload} />
                     <SectionTitle>Product Description</SectionTitle>
                     <TextArea
                         placeholder="Enter product description"

@@ -135,5 +135,3 @@ submitting pull requests.
 This project is licensed under the MIT License.
 
 # TODO
-
-    -  Fix additional instructions not going to  API

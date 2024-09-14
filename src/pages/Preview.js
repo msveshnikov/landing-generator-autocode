@@ -59,10 +59,10 @@ const Preview = () => {
     const [additionalInstructions, setAdditionalInstructions] = useState('');
 
     useEffect(() => {
-        if (!website.generatedHtml) {
+        if (!website.html) {
             navigate('/builder');
         }
-    }, [website.generatedHtml, navigate]);
+    }, [website.html, navigate]);
 
     const handleAdditionalInstructionsChange = (e) => {
         setAdditionalInstructions(e.target.value);
@@ -107,7 +107,7 @@ const Preview = () => {
                 <IframeContainer>
                     <StyledIframe
                         title="Landing Page Preview"
-                        srcDoc={website.generatedHtml}
+                        srcDoc={website.html}
                         sandbox="allow-scripts"
                     />
                 </IframeContainer>

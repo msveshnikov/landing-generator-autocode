@@ -25,7 +25,7 @@ export const WebsiteProvider = ({ children }) => {
         heroImageUrl: '',
         additionalImages: [],
         productDescription: '',
-        generatedHtml: '',
+        html: '',
         components: []
     });
 
@@ -50,7 +50,7 @@ export const WebsiteProvider = ({ children }) => {
             heroImageUrl: '',
             additionalImages: [],
             productDescription: '',
-            generatedHtml: '',
+            html: '',
             components: []
         });
     }, []);
@@ -97,7 +97,7 @@ export const WebsiteProvider = ({ children }) => {
                 website.productDescription,
                 website.components
             );
-            updateWebsite({ id: websiteId, generatedHtml: html });
+            updateWebsite({ id: websiteId, html: html });
         } catch (error) {
             console.error('Error generating website:', error);
             throw error;
@@ -108,7 +108,7 @@ export const WebsiteProvider = ({ children }) => {
         async (userFeedback) => {
             try {
                 const { html } = await improveLandingPage(website.id, userFeedback);
-                updateWebsite({ generatedHtml: html });
+                updateWebsite({ html: html });
             } catch (error) {
                 console.error('Error improving website:', error);
                 throw error;

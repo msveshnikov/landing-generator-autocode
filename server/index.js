@@ -192,7 +192,7 @@ app.post('/generate', authenticateToken, async (req, res) => {
     try {
         const { designType, colors, heroImageUrl, otherImagery, productDescription, components } =
             req.body;
-        const generatedHtml = await generateLandingPage(
+        const html = await generateLandingPage(
             designType,
             colors,
             heroImageUrl,
@@ -202,7 +202,7 @@ app.post('/generate', authenticateToken, async (req, res) => {
         );
         const website = new Website({
             userId: req.user.userId,
-            html: generatedHtml,
+            html,
             designType,
             colors,
             heroImageUrl,
@@ -211,7 +211,7 @@ app.post('/generate', authenticateToken, async (req, res) => {
             components
         });
         await website.save();
-        res.json({ html: generatedHtml, websiteId: website._id });
+        res.json({ html, websiteId: website._id });
     } catch (error) {
         console.error('Error generating landing page:', error);
         res.status(500).json({ error: 'Error generating landing page' });

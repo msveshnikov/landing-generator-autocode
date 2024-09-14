@@ -21,27 +21,26 @@ const BuilderContent = styled.div`
 `;
 
 const ComponentLibrary = styled.div`
-    width: 250px;
+    width: 200px;
     background-color: #ffffff;
-    padding: 20px;
+    padding: 15px;
     overflow-y: auto;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 `;
 
 const Canvas = styled.div`
     flex: 1;
-    padding: 20px;
+    padding: 15px;
     background-color: #ffffff;
     border: 2px dashed #ccc;
-    min-height: 400px;
-    margin: 20px;
+    min-height: 300px;
+    margin: 15px;
     border-radius: 8px;
-
 `;
 
 const ComponentItem = styled.div`
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 8px;
+    margin-bottom: 8px;
     background-color: #f0f4f8;
     border: 1px solid #ddd;
     cursor: move;
@@ -55,8 +54,8 @@ const ComponentItem = styled.div`
 `;
 
 const CanvasItem = styled.div`
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 8px;
+    margin-bottom: 8px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     transition: all 0.3s ease;
@@ -67,24 +66,16 @@ const CanvasItem = styled.div`
     }
 `;
 
-const PreviewContainer = styled.div`
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-`;
-
 const ControlPanel = styled.div`
-    width: 300px;
+    width: 250px;
     background-color: #ffffff;
-    padding: 20px;
+    padding: 15px;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 `;
 
 const Button = styled.button`
     margin-top: 10px;
-    padding: 10px 15px;
+    padding: 8px 12px;
     background-color: #4a90e2;
     color: white;
     border: none;
@@ -104,18 +95,19 @@ const Button = styled.button`
 
 const TextArea = styled.textarea`
     width: 100%;
-    height: 100px;
-    margin-bottom: 10px;
-    padding: 10px;
+    height: 80px;
+    margin-bottom: 8px;
+    padding: 8px;
     border: 1px solid #ddd;
     resize: vertical;
     border-radius: 4px;
 `;
 
 const SectionTitle = styled.h3`
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 8px;
     color: #333;
+    font-size: 14px;
 `;
 
 const LoadingOverlay = styled.div`
@@ -135,8 +127,8 @@ const Spinner = styled.div`
     border: 4px solid #f3f3f3;
     border-top: 4px solid #3498db;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     animation: spin 1s linear infinite;
 
     @keyframes spin {
@@ -151,10 +143,18 @@ const Spinner = styled.div`
 
 const TemplateSelector = styled.select`
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 8px;
+    margin-bottom: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
+`;
+
+const PreviewContainer = styled.div`
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const Builder = () => {
@@ -266,7 +266,7 @@ const Builder = () => {
     }, [isAuthenticated, navigate, improveWebsite, additionalInstructions]);
 
     const handleDownloadHtml = useCallback(() => {
-        const blob = new Blob([website.generatedHtml], { type: 'text/html' });
+        const blob = new Blob([website.html], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -275,7 +275,7 @@ const Builder = () => {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    }, [website.generatedHtml]);
+    }, [website.html]);
 
     const handleTemplateChange = useCallback(
         (e) => {
@@ -388,7 +388,7 @@ const Builder = () => {
                     <Button onClick={handleGeneratePage} disabled={isGenerating}>
                         Generate Landing Page
                     </Button>
-                    {website.generatedHtml && (
+                    {website.html && (
                         <>
                             <Button onClick={handleImprovePage} disabled={isGenerating}>
                                 Improve Landing Page
@@ -398,14 +398,14 @@ const Builder = () => {
                     )}
                 </ControlPanel>
             </BuilderContent>
-            {website.generatedHtml && (
+            {website.html && (
                 <PreviewContainer>
                     <h2>Preview</h2>
                     <iframe
                         title="Landing Page Preview"
-                        srcDoc={website.generatedHtml}
+                        srcDoc={website.html}
                         width="100%"
-                        height="600px"
+                        height="1400px"
                         style={{ border: '1px solid #ddd', borderRadius: '4px' }}
                     />
                 </PreviewContainer>

@@ -71,7 +71,7 @@ const Download = () => {
         navigate('/builder');
     };
 
-    if (!website.generatedHtml) {
+    if (!website.html) {
         return (
             <DownloadContainer>
                 <Content>
@@ -90,7 +90,7 @@ const Download = () => {
                 <IframeContainer>
                     <StyledIframe
                         title="Landing Page Preview"
-                        srcDoc={website.generatedHtml}
+                        srcDoc={website.html}
                         sandbox="allow-scripts"
                     />
                 </IframeContainer>

@@ -4,9 +4,9 @@
 
 This project is a Landing Page Generator that allows users to create custom landing pages by
 selecting design types, colors, hero image URLs, and other imagery. Users can also provide a brief
-product description. The generator uses the Sonnet 3.5 model to create an lamding page, which is
-then displayed in an iframe and available for download. Users can iteratively improve the generated
-page with additional instructions until they are satisfied.
+product description. The generator uses the Sonnet 3.5 model to create an landing pageand allow
+download. Users can iteratively improve the generated page with additional instructions until they
+are satisfied.
 
 ## Features
 
@@ -105,7 +105,6 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   Improve design of UserAccount, make all buttons nicer
 -   Preview, Edit buttons dont work, naviagte back to buikder I wanna see site
 -   Reduce height of Web Canvas in Builder, regroup elements nicer and more compact
 -   add some tempates to DB

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Modern Minimalist",
+    "description": "Clean and simple design with ample white space and minimal elements."
+  },
+  {
+    "name": "Bold and Vibrant",
+    "description": "Eye-catching design with bright colors and strong visual elements."
+  },
+  {
+    "name": "Corporate Professional",
+    "description": "Sleek and polished design suitable for business and corporate websites."
+  },
+  {
+    "name": "Creative Portfolio",
+    "description": "Artistic and unique design to showcase creative work and projects."
+  },
+  {
+    "name": "E-commerce Focus",
+    "description": "Design optimized for showcasing products and encouraging purchases."
+  },
+  {
+    "name": "Tech Startup",
+    "description": "Modern and innovative design with a focus on technology and innovation."
+  },
+  {
+    "name": "Nature Inspired",
+    "description": "Organic and natural design elements with earthy colors and textures."
+  },
+  {
+    "name": "Retro Vintage",
+    "description": "Nostalgic design with classic elements and a touch of nostalgia."
+  },
+  {
+    "name": "Elegant Luxury",
+    "description": "Sophisticated and high-end design with premium look and feel."
+  },
+  {
+    "name": "Playful and Fun",
+    "description": "Energetic and cheerful design with playful elements and bright colors."
+  }
+]

@@ -8,8 +8,13 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
 import morgan from 'morgan';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -78,7 +83,7 @@ const generateLandingPage = async (
     try {
         const response = await anthropic.messages.create({
             model: CLAUDE_MODEL,
-            max_tokens: 4000,
+            max_tokens: 8192,
             messages: [
                 {
                     role: 'user',
@@ -95,7 +100,9 @@ const generateLandingPage = async (
             ]
         });
 
-        return response.content[0].text;
+        let html = response.content[0].text;
+        html = html.replace(/```html|```/g, '').trim();
+        return html;
     } catch (error) {
         console.error('Error generating landing page:', error);
         throw error;
@@ -106,7 +113,7 @@ const improveLandingPage = async (currentHtml, userFeedback) => {
     try {
         const response = await anthropic.messages.create({
             model: CLAUDE_MODEL,
-            max_tokens: 4000,
+            max_tokens: 8192,
             messages: [
                 {
                     role: 'user',
@@ -120,7 +127,9 @@ const improveLandingPage = async (currentHtml, userFeedback) => {
             ]
         });
 
-        return response.content[0].text;
+        let html = response.content[0].text;
+        html = html.replace(/```html|```/g, '').trim();
+        return html;
     } catch (error) {
         console.error('Error improving landing page:', error);
         throw error;
@@ -431,6 +440,66 @@ app.put('/user', authenticateToken, async (req, res) => {
 
 app.use('/uploads', express.static('uploads'));
 
-app.listen(port, () => {
+const loadTemplates = async () => {
+    const templatesDir = path.join(__dirname, 'templates');
+    const files = fs.readdirSync(templatesDir);
+
+    for (const file of files) {
+        if (path.extname(file) === '.html') {
+            const name = path.basename(file, '.html');
+            const html = fs.readFileSync(path.join(templatesDir, file), 'utf-8');
+            const existingTemplate = await Template.findOne({ name });
+
+            if (!existingTemplate) {
+                const template = new Template({
+                    name,
+                    html,
+                    isPublic: true
+                });
+                await template.save();
+                console.log(`Template ${name} loaded successfully`);
+            }
+        }
+    }
+};
+
+const loadPalettes = async () => {
+    const palettesPath = path.join(__dirname, 'palettes.json');
+    if (fs.existsSync(palettesPath)) {
+        const palettesData = JSON.parse(fs.readFileSync(palettesPath, 'utf-8'));
+        for (const palette of palettesData) {
+            const existingPalette = await Palette.findOne({ name: palette.name });
+            if (!existingPalette) {
+                const newPalette = new Palette(palette);
+                await newPalette.save();
+                console.log(`Palette ${palette.name} loaded successfully`);
+            }
+        }
+    }
+};
+
+const loadDesignTypes = async () => {
+    const designTypesPath = path.join(__dirname, 'designTypes.json');
+    if (fs.existsSync(designTypesPath)) {
+        const designTypesData = JSON.parse(fs.readFileSync(designTypesPath, 'utf-8'));
+        for (const designType of designTypesData) {
+            const existingDesignType = await DesignType.findOne({ name: designType.name });
+            if (!existingDesignType) {
+                const newDesignType = new DesignType(designType);
+                await newDesignType.save();
+                console.log(`Design type ${designType.name} loaded successfully`);
+            }
+        }
+    }
+};
+
+const initializeData = async () => {
+    await loadTemplates();
+    await loadPalettes();
+    await loadDesignTypes();
+};
+
+app.listen(port, async () => {
     console.log(`Server running on port ${port}`);
+    await initializeData();
 });

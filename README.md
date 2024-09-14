@@ -105,8 +105,4 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   add some tempates to DB via folder /server/templates/*.html load to DB (name of file=name of template)
--   add some palettes to DB via one time json load
--   add some design types to DB via one time json load
 -   remove md markdown from generated, html, extract html snippet
--   increase outpuit tokens to 8192

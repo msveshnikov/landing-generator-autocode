@@ -50,7 +50,6 @@ const Footer = () => {
                     <FooterHeading>Features</FooterHeading>
                     <FooterLink to="/builder">Website Builder</FooterLink>
                     <FooterLink to="/templates">Templates</FooterLink>
-                    <FooterLink to="/preview">Preview</FooterLink>
                     <FooterLink to="/download">Download</FooterLink>
                 </FooterSection>
                 <FooterSection>
@@ -70,9 +69,7 @@ const Footer = () => {
                     <FooterLink to="/privacy">Privacy Policy</FooterLink>
                 </FooterSection>
             </FooterContent>
-            <Copyright>
-                © {new Date().getFullYear()} Landing Page Generator. All rights reserved.
-            </Copyright>
+            <Copyright>© {new Date().getFullYear()} MaxSoft. All rights reserved.</Copyright>
         </FooterContainer>
     );
 };

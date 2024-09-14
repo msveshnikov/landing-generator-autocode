@@ -76,7 +76,7 @@ const StyledLink = styled(Link)`
 
 const UserAccount = () => {
     const { user, setUser } = useContext(AuthContext);
-    const { setCurrentWebsite } = useWebsite();
+    const { updateWebsite } = useWebsite();
     const [websites, setWebsites] = useState([]);
     const navigate = useNavigate();
 
@@ -98,14 +98,14 @@ const UserAccount = () => {
     const handleDeleteWebsite = async (websiteId) => {
         try {
             await deleteWebsite(websiteId);
-            setWebsites(websites.filter((website) => website.id !== websiteId));
+            setWebsites(websites.filter((website) => website._id !== websiteId));
         } catch (error) {
             console.error('Error deleting website:', error);
         }
     };
 
     const handleEditWebsite = (website) => {
-        setCurrentWebsite(website);
+        updateWebsite(website);
         navigate('/builder');
     };
 
@@ -138,17 +138,14 @@ const UserAccount = () => {
             {websites.length > 0 ? (
                 <WebsiteList>
                     {websites.map((website) => (
-                        <WebsiteItem key={website.id}>
-                            <WebsiteName>{website.name}</WebsiteName>
+                        <WebsiteItem key={website._id}>
+                            <WebsiteName>{website.designType}</WebsiteName>
                             <ActionButtons>
                                 <Button onClick={() => handleEditWebsite(website)}>Edit</Button>
-                                <StyledLink
-                                    to="/preview"
-                                    onClick={() => setCurrentWebsite(website)}
-                                >
+                                <StyledLink to="/preview" onClick={() => updateWebsite(website)}>
                                     Preview
                                 </StyledLink>
-                                <Button onClick={() => handleDeleteWebsite(website.id)}>
+                                <Button onClick={() => handleDeleteWebsite(website._id)}>
                                     Delete
                                 </Button>
                             </ActionButtons>

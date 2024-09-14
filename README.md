@@ -4,9 +4,9 @@
 
 This project is a Landing Page Generator that allows users to create custom landing pages by
 selecting design types, colors, hero image URLs, and other imagery. Users can also provide a brief
-product description. The generator uses the Sonnet 3.5 model to create an `index.html` file, which
-is then displayed in an iframe and available for download. Users can iteratively improve the
-generated page with additional instructions until they are satisfied. Works fully in browser.
+product description. The generator uses the Sonnet 3.5 model to create an lamding page, which is
+then displayed in an iframe and available for download. Users can iteratively improve the generated
+page with additional instructions until they are satisfied.
 
 ## Features
 
@@ -29,14 +29,11 @@ generated page with additional instructions until they are satisfied. Works full
 -   Ensure cross-browser compatibility
 -   Implement a backend API for more advanced features
 -   Consider serverless architecture for scalability
--   Optimize image uploads and storage
--   Implement caching mechanisms for improved performance
 -   Ensure secure authentication and data protection
 -   Implement proper error handling and logging
 -   Use context API for state management
 -   Implement responsive design for mobile compatibility
 -   Optimize API calls to reduce latency
--   Implement rate limiting to prevent abuse
 -   Use lazy loading for improved performance
 -   Implement progressive web app (PWA) features
 -   Model: 'claude-3-5-sonnet-20240620'
@@ -59,7 +56,12 @@ generated page with additional instructions until they are satisfied. Works full
     npm install
     cd server && npm install
     ```
-3. Set up environment variables
+3. Set up environment variables in /server/.env
+
+-   CLAUDE_KEY
+-   MONGODB_URI
+-   JWT_SECRET
+
 4. Run the development server:
     ```
     npm run dev
@@ -68,7 +70,6 @@ generated page with additional instructions until they are satisfied. Works full
 
 ## Future Enhancements
 
--   Implement drag-and-drop functionality for easier layout customization
 -   Add support for custom CSS input
 -   Integrate with popular CMS platforms
 -   Implement A/B testing capabilities for landing pages
@@ -79,8 +80,6 @@ generated page with additional instructions until they are satisfied. Works full
 -   Implement social media integration for sharing and promotion
 -   Add email marketing integration for lead capture
 -   Implement version control for user-generated pages
--   Add collaboration features for team-based projects
--   Implement accessibility checks and improvements
 -   Add support for custom domains and hosting
 
 ## Design Ideas
@@ -94,7 +93,6 @@ generated page with additional instructions until they are satisfied. Works full
 -   Create a blog section for landing page design tips and tricks
 -   Add a community forum for users to share ideas and get help
 -   Implement a recommendation system for design elements based on user preferences
--   Create a mobile app for on-the-go landing page management
 
 ## Contributing
 
@@ -104,3 +102,12 @@ submitting pull requests.
 ## License
 
 This project is licensed under the MIT License.
+
+# TODO
+
+-   Fix in UserAccount ERROR setCurrentWebsite is not a function TypeError: setCurrentWebsite is not
+    a function at handleEditWebsite (http://localhost:3000
+
+-   Improve design of userAccount
+-   Preview, Edit, buttons dont work
+-   Reduce height of Web Canvas in Builder, regroup elemants nicer

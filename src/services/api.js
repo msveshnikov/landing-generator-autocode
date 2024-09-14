@@ -38,7 +38,8 @@ export const loginUser = async (email, password) => {
     return response.data;
 };
 
-export const logout = () => {
+export const logout = async () => {
+    await api.post('/logout');
     localStorage.removeItem('token');
 };
 
@@ -62,10 +63,7 @@ export const generateLandingPage = async (
 };
 
 export const improveLandingPage = async (websiteId, userFeedback) => {
-    const response = await api.post('/improve', {
-        websiteId,
-        userFeedback
-    });
+    const response = await api.post('/improve', { websiteId, userFeedback });
     return response.data;
 };
 

@@ -2,7 +2,9 @@ import React, { createContext, useState, useContext, useCallback } from 'react';
 import {
     generateLandingPage,
     improveLandingPage,
-    updateWebsite as apiUpdateWebsite
+    updateWebsite as apiUpdateWebsite,
+    getWebsiteById,
+    downloadWebsite
 } from '../services/api';
 
 const WebsiteContext = createContext();
@@ -121,6 +123,32 @@ export const WebsiteProvider = ({ children }) => {
         }
     }, [website, updateWebsite]);
 
+    const loadWebsite = useCallback(async (websiteId) => {
+        try {
+            const loadedWebsite = await getWebsiteById(websiteId);
+            setWebsite(loadedWebsite);
+        } catch (error) {
+            console.error('Error loading website:', error);
+            throw error;
+        }
+    }, []);
+
+    const downloadWebsiteHtml = useCallback(async () => {
+        try {
+            const htmlBlob = await downloadWebsite(website.id);
+            const url = window.URL.createObjectURL(htmlBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `website_${website.id}.html`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading website:', error);
+            throw error;
+        }
+    }, [website.id]);
+
     return (
         <WebsiteContext.Provider
             value={{
@@ -133,7 +161,9 @@ export const WebsiteProvider = ({ children }) => {
                 reorderComponents,
                 generateWebsite,
                 improveWebsite,
-                saveWebsite
+                saveWebsite,
+                loadWebsite,
+                downloadWebsiteHtml
             }}
         >
             {children}

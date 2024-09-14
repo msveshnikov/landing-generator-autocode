@@ -33,7 +33,8 @@ const WebsiteSchema = new mongoose.Schema({
     heroImageUrl: String,
     otherImagery: [String],
     productDescription: String,
-    components: [Object]
+    components: [Object],
+    name: String
 });
 
 const TemplateSchema = new mongoose.Schema({
@@ -300,6 +301,53 @@ app.delete('/websites/:id', authenticateToken, async (req, res) => {
 
 app.post('/logout', authenticateToken, (req, res) => {
     res.json({ message: 'Logged out successfully' });
+});
+
+app.get('/websites/:id', authenticateToken, async (req, res) => {
+    try {
+        const website = await Website.findOne({ _id: req.params.id, userId: req.user.userId });
+        if (!website) {
+            return res.status(404).json({ error: 'Website not found' });
+        }
+        res.json(website);
+    } catch (error) {
+        console.error('Error fetching website:', error);
+        res.status(500).json({ error: 'Error fetching website' });
+    }
+});
+
+app.put('/websites/:id', authenticateToken, async (req, res) => {
+    try {
+        const {
+            name,
+            designType,
+            colors,
+            heroImageUrl,
+            otherImagery,
+            productDescription,
+            components
+        } = req.body;
+        const website = await Website.findOneAndUpdate(
+            { _id: req.params.id, userId: req.user.userId },
+            {
+                name,
+                designType,
+                colors,
+                heroImageUrl,
+                otherImagery,
+                productDescription,
+                components
+            },
+            { new: true }
+        );
+        if (!website) {
+            return res.status(404).json({ error: 'Website not found' });
+        }
+        res.json(website);
+    } catch (error) {
+        console.error('Error updating website:', error);
+        res.status(500).json({ error: 'Error updating website' });
+    }
 });
 
 app.use('/uploads', express.static('uploads'));

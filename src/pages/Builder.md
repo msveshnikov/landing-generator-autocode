@@ -2,7 +2,10 @@
 
 ## Overview
 
-The `Builder` component is a crucial part of the website builder application. It provides a drag-and-drop interface for users to construct and customize their landing pages. This component is located in `src/pages/Builder.js` and serves as the main page for the website building functionality.
+The `Builder` component is a crucial part of the website builder application. It provides a
+drag-and-drop interface for users to construct and customize their landing pages. This component is
+located in `src/pages/Builder.js` and serves as the main page for the website building
+functionality.
 
 ## Key Features
 
@@ -19,12 +22,12 @@ The `Builder` component is a crucial part of the website builder application. It
 
 ## Dependencies
 
-- React and various hooks (useState, useCallback, useEffect)
-- styled-components for styling
-- react-beautiful-dnd for drag-and-drop functionality
-- Custom hooks: useWebsite, useAuth
-- React Router's useNavigate
-- API services: fetchTemplates, getDesignTypes, getColorPalettes
+-   React and various hooks (useState, useCallback, useEffect)
+-   styled-components for styling
+-   react-beautiful-dnd for drag-and-drop functionality
+-   Custom hooks: useWebsite, useAuth
+-   React Router's useNavigate
+-   API services: fetchTemplates, getDesignTypes, getColorPalettes
 
 ## Component Structure
 
@@ -39,9 +42,10 @@ The component is structured with the following main sections:
 
 The component uses both local state and context-based state management:
 
-- Local state for components, additional instructions, loading state, templates, design types, and color palettes
-- WebsiteContext for managing the overall website state
-- AuthContext for user authentication status
+-   Local state for components, additional instructions, loading state, templates, design types, and
+    color palettes
+-   WebsiteContext for managing the overall website state
+-   AuthContext for user authentication status
 
 ## Main Functions
 
@@ -50,15 +54,17 @@ The component uses both local state and context-based state management:
 Handles the drag-and-drop functionality for components.
 
 Parameters:
-- `result`: Object containing drag-and-drop information
+
+-   `result`: Object containing drag-and-drop information
 
 ### handleColorChange
 
 Updates the website's color scheme.
 
 Parameters:
-- `color`: The selected color
-- `type`: The color type (primary, secondary, or accent)
+
+-   `color`: The selected color
+-   `type`: The color type (primary, secondary, or accent)
 
 ### handleGeneratePage
 
@@ -78,7 +84,8 @@ Handle the selection of templates, design types, and color palettes respectively
 
 ## Usage
 
-This component is typically rendered as the main content of the builder page. It should be wrapped in the necessary context providers (WebsiteContext and AuthContext) to function correctly.
+This component is typically rendered as the main content of the builder page. It should be wrapped
+in the necessary context providers (WebsiteContext and AuthContext) to function correctly.
 
 Example:
 
@@ -89,11 +96,11 @@ import { AuthProvider } from '../contexts/AuthContext';
 import Builder from './Builder';
 
 const BuilderPage = () => (
-  <AuthProvider>
-    <WebsiteProvider>
-      <Builder />
-    </WebsiteProvider>
-  </AuthProvider>
+    <AuthProvider>
+        <WebsiteProvider>
+            <Builder />
+        </WebsiteProvider>
+    </AuthProvider>
 );
 
 export default BuilderPage;
@@ -101,19 +108,24 @@ export default BuilderPage;
 
 ## Styling
 
-The component uses styled-components for styling, with various styled elements defined at the top of the file. These styles create a responsive and visually appealing interface for the website builder.
+The component uses styled-components for styling, with various styled elements defined at the top of
+the file. These styles create a responsive and visually appealing interface for the website builder.
 
 ## Error Handling
 
-The component includes basic error handling for API calls and generation processes, displaying alerts to the user when errors occur.
+The component includes basic error handling for API calls and generation processes, displaying
+alerts to the user when errors occur.
 
 ## Accessibility
 
-The component uses semantic HTML elements and ARIA attributes where applicable to enhance accessibility. However, further improvements could be made to ensure full accessibility compliance.
+The component uses semantic HTML elements and ARIA attributes where applicable to enhance
+accessibility. However, further improvements could be made to ensure full accessibility compliance.
 
 ## Performance Considerations
 
-The component uses React's `useCallback` hook to memoize functions, potentially improving performance by reducing unnecessary re-renders. Large lists (like templates or components) could benefit from virtualization techniques if they grow significantly.
+The component uses React's `useCallback` hook to memoize functions, potentially improving
+performance by reducing unnecessary re-renders. Large lists (like templates or components) could
+benefit from virtualization techniques if they grow significantly.
 
 ## Future Improvements
 
@@ -124,4 +136,6 @@ The component uses React's `useCallback` hook to memoize functions, potentially 
 5. Improve accessibility
 6. Add more advanced preview options
 
-This documentation provides an overview of the `Builder` component, its main functions, and its role within the larger website builder application. Developers working on this component should refer to this documentation for understanding its structure and functionality.
+This documentation provides an overview of the `Builder` component, its main functions, and its role
+within the larger website builder application. Developers working on this component should refer to
+this documentation for understanding its structure and functionality.

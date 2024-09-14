@@ -55,21 +55,24 @@ const Footer = () => {
                 <FooterSection>
                     <FooterHeading>Resources</FooterHeading>
                     <FooterLink to="/docs">Documentation</FooterLink>
-                    <FooterLink to="/api">API</FooterLink>
-                    <FooterLink to="/blog">Blog</FooterLink>
                 </FooterSection>
                 <FooterSection>
                     <FooterHeading>Company</FooterHeading>
                     <FooterLink to="/about">About Us</FooterLink>
                     <FooterLink to="/contact">Contact</FooterLink>
-                </FooterSection>
-                <FooterSection>
-                    <FooterHeading>Legal</FooterHeading>
                     <FooterLink to="/terms">Terms of Service</FooterLink>
                     <FooterLink to="/privacy">Privacy Policy</FooterLink>
                 </FooterSection>
+                {/* <FooterSection>
+                    <FooterHeading>Community</FooterHeading>
+                    <FooterLink to="/forum">Forum</FooterLink>
+                    <FooterLink to="/feedback">Feedback</FooterLink>
+                    <FooterLink to="/support">Support</FooterLink>
+                </FooterSection> */}
             </FooterContent>
-            <Copyright>© {new Date().getFullYear()} MaxSoft. All rights reserved.</Copyright>
+            <Copyright>
+                © {new Date().getFullYear()} Landing Page Generator. All rights reserved.
+            </Copyright>
         </FooterContainer>
     );
 };

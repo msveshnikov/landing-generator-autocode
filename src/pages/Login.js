@@ -98,7 +98,7 @@ const Login = () => {
         }
     }, [authError]);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
         setError('');
 
@@ -121,7 +121,7 @@ const Login = () => {
                             type="email"
                             id="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={e => setEmail(e.target.value)}
                             required
                         />
                     </InputGroup>
@@ -131,7 +131,7 @@ const Login = () => {
                             type="password"
                             id="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={e => setPassword(e.target.value)}
                             required
                         />
                     </InputGroup>

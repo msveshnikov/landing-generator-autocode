@@ -15,20 +15,24 @@
 
 ## Project Overview
 
-The Landing Page Generator is a web application that enables users to create custom landing pages without coding knowledge. It leverages the power of AI, specifically the Sonnet 3.5 model, to generate HTML based on user inputs and preferences. The project aims to simplify the process of creating professional-looking landing pages for marketers, entrepreneurs, and small businesses.
+The Landing Page Generator is a web application that enables users to create custom landing pages
+without coding knowledge. It leverages the power of AI, specifically the Sonnet 3.5 model, to
+generate HTML based on user inputs and preferences. The project aims to simplify the process of
+creating professional-looking landing pages for marketers, entrepreneurs, and small businesses.
 
 Key aspects of the project include:
 
-- User-friendly interface for selecting design elements
-- AI-powered HTML generation
-- Real-time preview of generated pages
-- Iterative improvement process
-- User authentication and account management
-- Persistent storage of user-generated websites
+-   User-friendly interface for selecting design elements
+-   AI-powered HTML generation
+-   Real-time preview of generated pages
+-   Iterative improvement process
+-   User authentication and account management
+-   Persistent storage of user-generated websites
 
 ## Architecture
 
-The Landing Page Generator follows a client-server architecture with a React frontend and a Node.js backend. The project structure is organized as follows:
+The Landing Page Generator follows a client-server architecture with a React frontend and a Node.js
+backend. The project structure is organized as follows:
 
 ```
 landing-page-generator/
@@ -45,10 +49,10 @@ landing-page-generator/
 
 The application uses:
 
-- React for the frontend
-- Node.js and Express for the backend
-- MongoDB for data persistence
-- Docker for containerization and deployment
+-   React for the frontend
+-   Node.js and Express for the backend
+-   MongoDB for data persistence
+-   Docker for containerization and deployment
 
 ## Features
 
@@ -69,28 +73,32 @@ The application uses:
 To set up the project locally, follow these steps:
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/your-repo/landing-page-generator.git
-   cd landing-page-generator
-   ```
+
+    ```
+    git clone https://github.com/your-repo/landing-page-generator.git
+    cd landing-page-generator
+    ```
 
 2. Install dependencies for both client and server:
-   ```
-   npm install
-   cd server && npm install
-   ```
+
+    ```
+    npm install
+    cd server && npm install
+    ```
 
 3. Set up environment variables in `/server/.env`:
-   ```
-   CLAUDE_KEY=your_claude_api_key
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   ```
+
+    ```
+    CLAUDE_KEY=your_claude_api_key
+    MONGODB_URI=your_mongodb_connection_string
+    JWT_SECRET=your_jwt_secret
+    ```
 
 4. Run the development server:
-   ```
-   npm run dev
-   ```
+
+    ```
+    npm run dev
+    ```
 
 5. Access the application through your web browser at `http://localhost:3000`
 
@@ -109,27 +117,28 @@ To set up the project locally, follow these steps:
 
 ## Module Interactions
 
-- `AuthContext.js`: Manages user authentication state across the application.
-- `WebsiteContext.js`: Stores and provides access to the current website design state.
-- `api.js`: Handles communication with the backend server.
-- `Builder.js`: Main page for customizing and generating landing pages.
-- `Preview.js`: Displays real-time preview of the generated landing page.
-- `Download.js`: Handles the download process for generated HTML files.
-- `ColorPicker.js`: Component for selecting custom colors.
-- `ImageUploader.js`: Manages image uploads for the landing page.
+-   `AuthContext.js`: Manages user authentication state across the application.
+-   `WebsiteContext.js`: Stores and provides access to the current website design state.
+-   `api.js`: Handles communication with the backend server.
+-   `Builder.js`: Main page for customizing and generating landing pages.
+-   `Preview.js`: Displays real-time preview of the generated landing page.
+-   `Download.js`: Handles the download process for generated HTML files.
+-   `ColorPicker.js`: Component for selecting custom colors.
+-   `ImageUploader.js`: Manages image uploads for the landing page.
 
-The backend server (`server/index.js`) processes requests from the frontend, interacts with the database, and communicates with the Sonnet 3.5 model for HTML generation.
+The backend server (`server/index.js`) processes requests from the frontend, interacts with the
+database, and communicates with the Sonnet 3.5 model for HTML generation.
 
 ## Technical Considerations
 
-- Cross-browser compatibility
-- Responsive design for mobile devices
-- Secure authentication and data protection
-- Error handling and logging
-- Use of React Context API for state management
-- Optimization of API calls to reduce latency
-- Implementation of lazy loading for improved performance
-- Progressive Web App (PWA) features
+-   Cross-browser compatibility
+-   Responsive design for mobile devices
+-   Secure authentication and data protection
+-   Error handling and logging
+-   Use of React Context API for state management
+-   Optimization of API calls to reduce latency
+-   Implementation of lazy loading for improved performance
+-   Progressive Web App (PWA) features
 
 ## Future Enhancements
 
@@ -146,7 +155,8 @@ The backend server (`server/index.js`) processes requests from the frontend, int
 
 ## Contributing
 
-Contributions to the Landing Page Generator project are welcome. Please read our contributing guidelines and code of conduct before submitting pull requests.
+Contributions to the Landing Page Generator project are welcome. Please read our contributing
+guidelines and code of conduct before submitting pull requests.
 
 ## License
 

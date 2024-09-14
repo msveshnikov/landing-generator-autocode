@@ -46,7 +46,7 @@ const ColorPicker = ({ selectedColor, onChange }) => {
         setDisplayColorPicker(false);
     };
 
-    const handleChange = (color) => {
+    const handleChange = color => {
         onChange(color.hex);
     };
 

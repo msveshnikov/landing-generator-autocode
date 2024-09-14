@@ -75,7 +75,7 @@ const Preview = () => {
         }
     }, [website.html, navigate]);
 
-    const handleAdditionalInstructionsChange = (e) => {
+    const handleAdditionalInstructionsChange = e => {
         setAdditionalInstructions(e.target.value);
     };
 

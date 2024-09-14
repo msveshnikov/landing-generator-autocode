@@ -1,42 +1,42 @@
 [
-  {
-    "name": "Classic",
-    "colors": ["#FFFFFF", "#000000", "#808080", "#C0C0C0"]
-  },
-  {
-    "name": "Nature",
-    "colors": ["#4CAF50", "#8BC34A", "#FFC107", "#795548"]
-  },
-  {
-    "name": "Ocean",
-    "colors": ["#03A9F4", "#00BCD4", "#009688", "#1976D2"]
-  },
-  {
-    "name": "Sunset",
-    "colors": ["#FF9800", "#F44336", "#E91E63", "#9C27B0"]
-  },
-  {
-    "name": "Pastel",
-    "colors": ["#FFD3E0", "#D4F0F0", "#FFEFD5", "#E6E6FA"]
-  },
-  {
-    "name": "Monochrome",
-    "colors": ["#212121", "#424242", "#616161", "#9E9E9E"]
-  },
-  {
-    "name": "Vibrant",
-    "colors": ["#FF4081", "#00E5FF", "#76FF03", "#FFEA00"]
-  },
-  {
-    "name": "Earthy",
-    "colors": ["#795548", "#8D6E63", "#A1887F", "#BCAAA4"]
-  },
-  {
-    "name": "Cool",
-    "colors": ["#2196F3", "#3F51B5", "#673AB7", "#9C27B0"]
-  },
-  {
-    "name": "Warm",
-    "colors": ["#FF5722", "#FF9800", "#FFC107", "#FFEB3B"]
-  }
+    {
+        "name": "Classic",
+        "colors": ["#FFFFFF", "#000000", "#808080", "#C0C0C0"]
+    },
+    {
+        "name": "Nature",
+        "colors": ["#4CAF50", "#8BC34A", "#FFC107", "#795548"]
+    },
+    {
+        "name": "Ocean",
+        "colors": ["#03A9F4", "#00BCD4", "#009688", "#1976D2"]
+    },
+    {
+        "name": "Sunset",
+        "colors": ["#FF9800", "#F44336", "#E91E63", "#9C27B0"]
+    },
+    {
+        "name": "Pastel",
+        "colors": ["#FFD3E0", "#D4F0F0", "#FFEFD5", "#E6E6FA"]
+    },
+    {
+        "name": "Monochrome",
+        "colors": ["#212121", "#424242", "#616161", "#9E9E9E"]
+    },
+    {
+        "name": "Vibrant",
+        "colors": ["#FF4081", "#00E5FF", "#76FF03", "#FFEA00"]
+    },
+    {
+        "name": "Earthy",
+        "colors": ["#795548", "#8D6E63", "#A1887F", "#BCAAA4"]
+    },
+    {
+        "name": "Cool",
+        "colors": ["#2196F3", "#3F51B5", "#673AB7", "#9C27B0"]
+    },
+    {
+        "name": "Warm",
+        "colors": ["#FF5722", "#FF9800", "#FFC107", "#FFEB3B"]
+    }
 ]

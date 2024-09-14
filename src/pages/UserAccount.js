@@ -95,16 +95,16 @@ const UserAccount = () => {
         }
     }, [user]);
 
-    const handleDeleteWebsite = async (websiteId) => {
+    const handleDeleteWebsite = async websiteId => {
         try {
             await deleteWebsite(websiteId);
-            setWebsites(websites.filter((website) => website._id !== websiteId));
+            setWebsites(websites.filter(website => website._id !== websiteId));
         } catch (error) {
             console.error('Error deleting website:', error);
         }
     };
 
-    const handleEditWebsite = async (websiteId) => {
+    const handleEditWebsite = async websiteId => {
         try {
             await loadWebsite(websiteId);
             navigate('/builder');
@@ -113,7 +113,7 @@ const UserAccount = () => {
         }
     };
 
-    const handlePreviewWebsite = async (websiteId) => {
+    const handlePreviewWebsite = async websiteId => {
         try {
             await loadWebsite(websiteId);
             navigate('/preview');
@@ -150,7 +150,7 @@ const UserAccount = () => {
             <Title as="h2">Your Landings</Title>
             {websites.length > 0 ? (
                 <WebsiteList>
-                    {websites.map((website) => (
+                    {websites.map(website => (
                         <WebsiteItem key={website._id}>
                             <WebsiteName>{website.designType}</WebsiteName>
                             <ActionButtons>

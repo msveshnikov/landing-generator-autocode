@@ -15,7 +15,7 @@
                 box-sizing: border-box;
             }
             body {
-                font-family: "Poppins", sans-serif;
+                font-family: 'Poppins', sans-serif;
                 line-height: 1.6;
                 color: #ffffff;
                 background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -66,13 +66,13 @@
                 overflow: hidden;
             }
             .hero::before {
-                content: "";
+                content: '';
                 position: absolute;
                 top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: url("https://img.freepik.com/free-photo/ai-technology-brain-background-digital-transformation-concept_53876-124672.jpg")
+                background: url('https://img.freepik.com/free-photo/ai-technology-brain-background-digital-transformation-concept_53876-124672.jpg')
                     repeat;
                 opacity: 0.1;
                 animation: backgroundScroll 20s linear infinite;
@@ -127,7 +127,7 @@
                 box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
             }
             .cta-button::after {
-                content: "";
+                content: '';
                 position: absolute;
                 top: -50%;
                 left: -50%;
@@ -169,13 +169,18 @@
                 box-shadow: 0 15px 30px rgba(79, 172, 254, 0.2);
             }
             .feature-item::before {
-                content: "";
+                content: '';
                 position: absolute;
                 top: -50%;
                 left: -50%;
                 width: 200%;
                 height: 200%;
-                background: linear-gradient(45deg, transparent, rgba(79, 172, 254, 0.1), transparent);
+                background: linear-gradient(
+                    45deg,
+                    transparent,
+                    rgba(79, 172, 254, 0.1),
+                    transparent
+                );
                 transform: rotate(45deg);
                 transition: 0.5s;
             }
@@ -315,13 +320,18 @@
                 box-shadow: 0 15px 30px rgba(79, 172, 254, 0.2);
             }
             .pricing-item::before {
-                content: "";
+                content: '';
                 position: absolute;
                 top: -50%;
                 left: -50%;
                 width: 200%;
                 height: 200%;
-                background: linear-gradient(45deg, transparent, rgba(79, 172, 254, 0.1), transparent);
+                background: linear-gradient(
+                    45deg,
+                    transparent,
+                    rgba(79, 172, 254, 0.1),
+                    transparent
+                );
                 transform: rotate(45deg);
                 transition: 0.5s;
             }
@@ -383,7 +393,10 @@
                 }
             }
         </style>
-        <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+        <script
+            src="https://kit.fontawesome.com/your-fontawesome-kit.js"
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
         <header>
@@ -404,7 +417,9 @@
             <section class="hero">
                 <div class="container">
                     <h1>Unleash the Power of AI</h1>
-                    <p class="subtitle">One app to rule them all: Gemini, Claude, GPT-4, and more!</p>
+                    <p class="subtitle">
+                        One app to rule them all: Gemini, Claude, GPT-4, and more!
+                    </p>
                     <a href="https://allchat.online/" class="cta-button">Get Started</a>
                 </div>
             </section>
@@ -479,8 +494,8 @@
                                 <img src="https://i.pravatar.cc/150?img=1" alt="User Avatar" />
                             </div>
                             <p class="testimonial-text">
-                                "AllChat has revolutionized the way I interact with AI. It's like having a
-                                super-intelligent assistant at my fingertips!"
+                                "AllChat has revolutionized the way I interact with AI. It's like
+                                having a super-intelligent assistant at my fingertips!"
                             </p>
                             <p class="testimonial-author">- Sarah J.</p>
                         </div>
@@ -489,8 +504,9 @@
                                 <img src="https://i.pravatar.cc/150?img=2" alt="User Avatar" />
                             </div>
                             <p class="testimonial-text">
-                                "The variety of AI models and tools available in one app is incredible. AllChat has
-                                become an essential part of my daily workflow."
+                                "The variety of AI models and tools available in one app is
+                                incredible. AllChat has become an essential part of my daily
+                                workflow."
                             </p>
                             <p class="testimonial-author">- Michael R.</p>
                         </div>
@@ -499,8 +515,8 @@
                                 <img src="https://i.pravatar.cc/150?img=3" alt="User Avatar" />
                             </div>
                             <p class="testimonial-text">
-                                "As a developer, I love how easy it is to run code and integrate AI into my projects
-                                with AllChat. It's a game-changer!"
+                                "As a developer, I love how easy it is to run code and integrate AI
+                                into my projects with AllChat. It's a game-changer!"
                             </p>
                             <p class="testimonial-author">- Emily T.</p>
                         </div>
@@ -558,16 +574,16 @@
         </footer>
 
         <script>
-            window.addEventListener("scroll", function () {
-                const header = document.querySelector("header");
-                header.classList.toggle("sticky", window.scrollY > 0);
+            window.addEventListener('scroll', function () {
+                const header = document.querySelector('header');
+                header.classList.toggle('sticky', window.scrollY > 0);
             });
 
-            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-                anchor.addEventListener("click", function (e) {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    document.querySelector(this.getAttribute("href")).scrollIntoView({
-                        behavior: "smooth",
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
                     });
                 });
             });

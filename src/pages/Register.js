@@ -87,7 +87,7 @@ const Register = () => {
     const navigate = useNavigate();
     const { register, error } = useContext(AuthContext);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
         if (password !== confirmPassword) {
             alert('Passwords do not match');
@@ -112,7 +112,7 @@ const Register = () => {
                         type="email"
                         id="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                         required
                     />
                 </InputGroup>
@@ -122,7 +122,7 @@ const Register = () => {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={e => setPassword(e.target.value)}
                         required
                     />
                 </InputGroup>
@@ -132,7 +132,7 @@ const Register = () => {
                         type="password"
                         id="confirmPassword"
                         value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onChange={e => setConfirmPassword(e.target.value)}
                         required
                     />
                 </InputGroup>

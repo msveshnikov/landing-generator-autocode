@@ -5,7 +5,7 @@ const ImageUploader = ({ type }) => {
     const { updateWebsite } = useWebsite();
     const [imageUrl, setImageUrl] = useState('');
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = e => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -17,7 +17,7 @@ const ImageUploader = ({ type }) => {
         }
     };
 
-    const handleUrlChange = (e) => {
+    const handleUrlChange = e => {
         setImageUrl(e.target.value);
         updateWebsite({ [type]: e.target.value });
     };

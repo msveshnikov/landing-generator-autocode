@@ -353,13 +353,6 @@ const Builder = () => {
         }
     }, [saveWebsite]);
 
-    const handleImageUpload = useCallback(
-        imageUrl => {
-            updateWebsite({ additionalImages: [...website.additionalImages, imageUrl] });
-        },
-        [updateWebsite, website.additionalImages]
-    );
-
     return (
         <BuilderContainer>
             <BuilderContent>

@@ -66,7 +66,6 @@ const ColorPicker = ({ selectedColor, onChange }) => {
 };
 
 ColorPicker.propTypes = {
-    selectedColor: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
 };
 

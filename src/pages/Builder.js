@@ -473,7 +473,7 @@ const Builder = () => {
                         title="Landing Page Preview"
                         srcDoc={website.html}
                         width="100%"
-                        height="600px"
+                        height="2600px"
                         style={{ border: '1px solid #ddd', borderRadius: '4px' }}
                     />
                 </PreviewContainer>

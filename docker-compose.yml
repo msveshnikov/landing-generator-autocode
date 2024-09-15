@@ -4,7 +4,7 @@ services:
     backend:
         image: extender777/landing-backend
         ports:
-            - '6005:5000'
+            - '6008:5000'
         environment:
             - NODE_ENV=production
             - MONGODB_URI=mongodb://mongodb:27017/landing
@@ -19,7 +19,7 @@ services:
             - NODE_ENV=production
             - REACT_APP_API_BASE_URL=http://backend:5000
         ports:
-            - '8787:80'
+            - '8888:80'
         restart: unless-stopped
         depends_on:
             - backend

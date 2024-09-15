@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createTheme } from '@mui/material/styles';
 
 const ThemeContext = createContext();
 
@@ -31,38 +32,50 @@ export const ThemeProvider = ({ children }) => {
         setIsDarkMode(prevMode => !prevMode);
     };
 
-    const theme = {
-        isDarkMode,
-        toggleTheme,
-        colors: {
-            background: isDarkMode ? '#1a1a1a' : '#ffffff',
-            text: isDarkMode ? '#ffffff' : '#000000',
-            primary: '#3498db',
-            secondary: '#2ecc71',
-            accent: '#e74c3c',
-            header: {
-                background: isDarkMode ? '#2c3e50' : '#ecf0f1',
-                text: isDarkMode ? '#ffffff' : '#2c3e50'
+    const theme = createTheme({
+        palette: {
+            mode: isDarkMode ? 'dark' : 'light',
+            primary: {
+                main: '#3498db'
             },
-            footer: {
-                background: isDarkMode ? '#34495e' : '#bdc3c7',
-                text: isDarkMode ? '#ecf0f1' : '#34495e'
+            secondary: {
+                main: '#2ecc71'
             },
-            button: {
-                background: isDarkMode ? '#3498db' : '#2980b9',
-                text: '#ffffff'
+            error: {
+                main: '#e74c3c'
             },
-            input: {
-                background: isDarkMode ? '#2c3e50' : '#ecf0f1',
-                text: isDarkMode ? '#ffffff' : '#2c3e50'
+            warning: {
+                main: '#f39c12'
             },
-            border: isDarkMode ? '#34495e' : '#bdc3c7',
-            shadow: isDarkMode ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
-            success: '#27ae60',
-            error: '#c0392b',
-            warning: '#f39c12'
+            info: {
+                main: '#3498db'
+            },
+            success: {
+                main: '#27ae60'
+            },
+            background: {
+                default: isDarkMode ? '#1a1a1a' : '#ffffff',
+                paper: isDarkMode ? '#2c3e50' : '#ecf0f1'
+            },
+            text: {
+                primary: isDarkMode ? '#ffffff' : '#000000',
+                secondary: isDarkMode ? '#ecf0f1' : '#34495e'
+            }
+        },
+        components: {
+            MuiButton: {
+                styleOverrides: {
+                    root: {
+                        textTransform: 'none'
+                    }
+                }
+            }
         }
-    };
+    });
 
-    return <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>;
+    return (
+        <ThemeContext.Provider value={{ theme, isDarkMode, toggleTheme }}>
+            {children}
+        </ThemeContext.Provider>
+    );
 };

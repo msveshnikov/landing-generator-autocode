@@ -1,112 +1,71 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { AppBar, Toolbar, Typography, Button, IconButton, styled } from '@mui/material';
+import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme as useCustomTheme } from '../contexts/ThemeContext';
 
-const HeaderContainer = styled.header`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: ${({ theme }) => theme.colors.header.background};
-    box-shadow: 0 2px 4px ${({ theme }) => theme.colors.shadow};
-`;
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper
+}));
 
-const Logo = styled(Link)`
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.header.text};
-    text-decoration: none;
-    font-family: 'Arial', sans-serif;
-`;
+const StyledToolbar = styled(Toolbar)({
+    display: 'flex',
+    justifyContent: 'space-between'
+});
 
-const Nav = styled.nav`
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-`;
+const NavLinks = styled('div')({
+    display: 'flex',
+    alignItems: 'center'
+});
 
-const NavLink = styled(Link)`
-    color: ${({ theme }) => theme.colors.header.text};
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-    font-family: 'Arial', sans-serif;
-
-    &:hover {
-        background-color: ${({ theme }) => theme.colors.primary}40;
+const StyledLink = styled(Link)(({ theme }) => ({
+    color: theme.palette.text.primary,
+    textDecoration: 'none',
+    marginRight: theme.spacing(2),
+    '&:hover': {
+        textDecoration: 'underline'
     }
-`;
-
-const Button = styled.button`
-    background-color: ${({ theme }) => theme.colors.button.background};
-    color: ${({ theme }) => theme.colors.button.text};
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-family: 'Arial', sans-serif;
-
-    &:hover {
-        opacity: 0.9;
-    }
-`;
-
-const ThemeToggle = styled.button`
-    background-color: transparent;
-    border: none;
-    color: ${({ theme }) => theme.colors.header.text};
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
+}));
 
 const Header = () => {
     const { isAuthenticated, logout } = useAuth();
-    const { theme } = useTheme();
+    const { theme, toggleTheme } = useCustomTheme();
 
     return (
-        <HeaderContainer theme={theme}>
-            <Logo to="/" theme={theme}>
-                Landing Page Generator
-            </Logo>
-            <Nav>
-                <NavLink to="/templates" theme={theme}>
-                    Templates
-                </NavLink>
-                <NavLink to="/builder" theme={theme}>
-                    Builder
-                </NavLink>
-                {isAuthenticated ? (
-                    <>
-                        <NavLink to="/user-account" theme={theme}>
-                            Account
-                        </NavLink>
-                        <Button onClick={logout} theme={theme}>
-                            Logout
-                        </Button>
-                    </>
-                ) : (
-                    <>
-                        <NavLink to="/login" theme={theme}>
-                            Login
-                        </NavLink>
-                        <NavLink to="/register" theme={theme}>
-                            Register
-                        </NavLink>
-                    </>
-                )}
-                <ThemeToggle onClick={theme.toggleTheme} theme={theme}>
-                    {theme.isDarkMode ? '🌞' : '🌙'}
-                </ThemeToggle>
-            </Nav>
-        </HeaderContainer>
+        <StyledAppBar position="static">
+            <StyledToolbar>
+                <Typography
+                    variant="h6"
+                    component={Link}
+                    to="/"
+                    color="inherit"
+                    sx={{ textDecoration: 'none' }}
+                >
+                    Landing Page Generator
+                </Typography>
+                <NavLinks>
+                    <StyledLink to="/templates">Templates</StyledLink>
+                    <StyledLink to="/builder">Builder</StyledLink>
+                    {isAuthenticated ? (
+                        <>
+                            <StyledLink to="/user-account">Account</StyledLink>
+                            <Button color="inherit" onClick={logout}>
+                                Logout
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <StyledLink to="/login">Login</StyledLink>
+                            <StyledLink to="/register">Register</StyledLink>
+                        </>
+                    )}
+                    <IconButton onClick={toggleTheme} color="inherit">
+                        {theme.isDarkMode ? <Brightness7 /> : <Brightness4 />}
+                    </IconButton>
+                </NavLinks>
+            </StyledToolbar>
+        </StyledAppBar>
     );
 };
 

@@ -138,4 +138,5 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   migrate all UI to MUI
+-   migrate all UI to MUI, including dark switch
+

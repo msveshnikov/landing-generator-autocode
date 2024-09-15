@@ -1,72 +1,100 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
-const FooterContainer = styled.footer`
-    background-color: #f5f5f5;
-    padding: 2rem 0;
-    margin-top: 2rem;
-`;
-
-const FooterContent = styled.div`
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-`;
-
-const FooterSection = styled.div`
-    margin-bottom: 1rem;
-`;
-
-const FooterHeading = styled.h3`
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-`;
-
-const FooterLink = styled(Link)`
-    display: block;
-    color: #333;
-    text-decoration: none;
-    margin-bottom: 0.25rem;
-    &:hover {
-        text-decoration: underline;
-    }
-`;
-
-const Copyright = styled.p`
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #666;
-`;
+import { Box, Container, Grid, Typography, Link as MuiLink } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const Footer = () => {
-    return (
-        <FooterContainer>
-            <FooterContent>
-                <FooterSection>
-                    <FooterHeading>Features</FooterHeading>
-                    <FooterLink to="/builder">Website Builder</FooterLink>
-                    <FooterLink to="/templates">Templates</FooterLink>
-                    <FooterLink to="/download">Download</FooterLink>
-                </FooterSection>
-                <FooterSection>
-                    <FooterHeading>Resources</FooterHeading>
-                    <FooterLink to="/docs">Documentation</FooterLink>
-                </FooterSection>
-                <FooterSection>
-                    <FooterHeading>Company</FooterHeading>
-                    <FooterLink to="/about">About Us</FooterLink>
-                    <FooterLink to="/contact">Contact</FooterLink>
-                    <FooterLink to="/terms">Terms of Service</FooterLink>
-                    <FooterLink to="/privacy">Privacy Policy</FooterLink>
-                </FooterSection>
-            </FooterContent>
-            <Copyright>© {new Date().getFullYear()} MaxSoft. All rights reserved.</Copyright>
-        </FooterContainer>
-    );
+  const theme = useTheme();
+
+  const footerSections = [
+    {
+      title: 'Features',
+      links: [
+        { to: '/builder', text: 'Website Builder' },
+        { to: '/templates', text: 'Templates' },
+        { to: '/download', text: 'Download' },
+      ],
+    },
+    {
+      title: 'Resources',
+      links: [
+        { to: '/docs', text: 'Documentation' },
+        { to: '/blog', text: 'Blog' },
+        { to: '/community', text: 'Community Forum' },
+      ],
+    },
+    {
+      title: 'Company',
+      links: [
+        { to: '/about', text: 'About Us' },
+        { to: '/contact', text: 'Contact' },
+        { to: '/terms', text: 'Terms of Service' },
+        { to: '/privacy', text: 'Privacy Policy' },
+      ],
+    },
+    {
+      title: 'Connect',
+      links: [
+        { href: 'https://twitter.com/landingpagegen', text: 'Twitter' },
+        { href: 'https://facebook.com/landingpagegen', text: 'Facebook' },
+        { href: 'https://linkedin.com/company/landingpagegen', text: 'LinkedIn' },
+      ],
+    },
+  ];
+
+  return (
+    <Box
+      component="footer"
+      sx={{
+        backgroundColor: theme.palette.background.paper,
+        py: 6,
+        mt: 'auto',
+      }}
+    >
+      <Container maxWidth="lg">
+        <Grid container spacing={4} justifyContent="space-evenly">
+          {footerSections.map((section) => (
+            <Grid item xs={12} sm={6} md={3} key={section.title}>
+              <Typography variant="h6" color="text.primary" gutterBottom>
+                {section.title}
+              </Typography>
+              <ul style={{ listStyle: 'none', padding: 0 }}>
+                {section.links.map((link) => (
+                  <li key={link.text}>
+                    {link.to ? (
+                      <MuiLink
+                        component={Link}
+                        to={link.to}
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ display: 'inline-block', mb: 0.5 }}
+                      >
+                        {link.text}
+                      </MuiLink>
+                    ) : (
+                      <MuiLink
+                        href={link.href}
+                        variant="body2"
+                        color="text.secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ display: 'inline-block', mb: 0.5 }}
+                      >
+                        {link.text}
+                      </MuiLink>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </Grid>
+          ))}
+        </Grid>
+        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
+          © {new Date().getFullYear()} Landing Page Generator. All rights reserved.
+        </Typography>
+      </Container>
+    </Box>
+  );
 };
 
 export default Footer;

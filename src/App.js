@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Builder from './pages/Builder';
@@ -40,49 +40,8 @@ const App = () => {
 const AppContent = () => {
     const { theme } = useTheme();
 
-    const muiTheme = createTheme({
-        palette: {
-            mode: theme.isDarkMode ? 'dark' : 'light',
-            primary: {
-                main: theme.colors?.primary || '#1976d2'
-            },
-            secondary: {
-                main: theme.colors?.secondary || '#dc004e'
-            },
-            background: {
-                default: theme.colors?.background || '#fff',
-                paper: theme.colors?.background || '#fff'
-            },
-            text: {
-                primary: theme.colors?.text || '#000'
-            }
-        },
-        components: {
-            MuiButton: {
-                styleOverrides: {
-                    root: {
-                        backgroundColor: theme.colors?.button?.background || '#1976d2',
-                        color: theme.colors?.button?.text || '#fff',
-                        '&:hover': {
-                            backgroundColor: theme.colors?.button?.background || '#1976d2',
-                            opacity: 0.9
-                        }
-                    }
-                }
-            },
-            MuiAppBar: {
-                styleOverrides: {
-                    root: {
-                        backgroundColor: theme.colors?.header?.background || '#1976d2',
-                        color: theme.colors?.header?.text || '#fff'
-                    }
-                }
-            }
-        }
-    });
-
     return (
-        <MuiThemeProvider theme={muiTheme}>
+        <MuiThemeProvider theme={theme}>
             <CssBaseline />
             <Router>
                 <Box
@@ -91,20 +50,12 @@ const AppContent = () => {
                         flexDirection: 'column',
                         minHeight: '100vh',
                         fontFamily: '"Roboto", sans-serif',
-                        backgroundColor: theme.colors?.background || '#fff',
-                        color: theme.colors?.text || '#000'
+                        backgroundColor: theme.palette.background.default,
+                        color: theme.palette.text.primary
                     }}
                 >
                     <Helmet>
                         <title>Landing Page Generator</title>
-                        <meta
-                            name="description"
-                            content="Create custom landing pages with AI-powered generation"
-                        />
-                        <link
-                            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
-                            rel="stylesheet"
-                        />
                     </Helmet>
                     <Header />
                     <Box component="main" sx={{ flexGrow: 1 }}>

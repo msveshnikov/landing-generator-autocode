@@ -24,7 +24,6 @@ export const ThemeProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        document.documentElement.classList.toggle('dark', isDarkMode);
         localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
 

@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
-import { sendContactForm } from '../services/api';
+import {
+    Container,
+    Typography,
+    TextField,
+    Button,
+    Box,
+    Paper,
+    Snackbar,
+    Alert
+} from '@mui/material';
 
 const Contact = () => {
     const { isDarkMode } = useTheme();
@@ -11,6 +20,7 @@ const Contact = () => {
     });
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -24,57 +34,89 @@ const Contact = () => {
         e.preventDefault();
         setError('');
         try {
-            // await sendContactForm(formData);
+            //   await sendContactForm(formData);
             setSubmitted(true);
+            setSnackbarOpen(true);
         } catch (err) {
             setError('Failed to send message. Please try again later.');
         }
     };
 
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
+
     return (
-        <div className={`container ${isDarkMode ? 'dark-mode' : ''}`}>
-            <h1>Contact Us</h1>
-            {submitted ? (
-                <p>Thank you for your message. We'll get back to you soon!</p>
-            ) : (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="name">Name:</label>
-                        <input
-                            type="text"
+        <Container maxWidth="sm">
+            <Paper
+                elevation={3}
+                sx={{
+                    p: 4,
+                    mt: 4,
+                    backgroundColor: isDarkMode ? 'grey.800' : 'background.paper'
+                }}
+            >
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Contact Us
+                </Typography>
+                {submitted ? (
+                    <Typography>Thank you for your message. We'll get back to you soon!</Typography>
+                ) : (
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             id="name"
+                            label="Name"
                             name="name"
+                            autoComplete="name"
                             value={formData.name}
                             onChange={handleChange}
-                            required
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             id="email"
+                            label="Email Address"
                             name="email"
+                            autoComplete="email"
                             value={formData.email}
                             onChange={handleChange}
-                            required
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="message">Message:</label>
-                        <textarea
-                            id="message"
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             name="message"
+                            label="Message"
+                            id="message"
+                            multiline
+                            rows={4}
                             value={formData.message}
                             onChange={handleChange}
-                            required
-                        ></textarea>
-                    </div>
-                    {error && <p className="error">{error}</p>}
-                    <button type="submit">Send Message</button>
-                </form>
-            )}
-        </div>
+                        />
+                        {error && (
+                            <Typography color="error" sx={{ mt: 2 }}>
+                                {error}
+                            </Typography>
+                        )}
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                            Send Message
+                        </Button>
+                    </Box>
+                )}
+            </Paper>
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                    Message sent successfully!
+                </Alert>
+            </Snackbar>
+        </Container>
     );
 };
 

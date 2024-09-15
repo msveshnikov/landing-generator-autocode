@@ -8,7 +8,7 @@ This project is a Landing Page Generator that allows users to create custom land
 selecting design types, colors, hero image URLs, and other imagery. Users can also provide a brief
 product description. The generator uses the Sonnet 3.5 model to create a landing page and allow
 download. Users can iteratively improve the generated page with additional instructions until they
-are satisfied.
+are satisfied. (c) maxSoft
 
 ## Features
 
@@ -138,5 +138,4 @@ This project is licensed under the MIT License.
 
 # TODO
 
--   migrate all UI to MUI, including dark switch
-
+-   migrate all UI to MUI

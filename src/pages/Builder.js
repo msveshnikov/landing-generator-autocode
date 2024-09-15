@@ -164,7 +164,7 @@ const Builder = () => {
     );
 
     return (
-        <Container maxWidth="xl">
+        <Container sx={{ mt: 3 }} maxWidth="xl">
             <Grid container spacing={3}>
                 <Grid item xs={12} md={4}>
                     <Paper elevation={3} sx={{ p: 2, height: '100%' }}>

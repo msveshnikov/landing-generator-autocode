@@ -12,15 +12,15 @@ const Contact = () => {
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState('');
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
+        setFormData(prevData => ({
             ...prevData,
             [name]: value
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
         setError('');
         try {

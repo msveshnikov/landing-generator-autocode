@@ -60,9 +60,7 @@ const Privacy = () => {
                         service
                     </li>
                     <li>To manage your account and provide you with customer support</li>
-                    <li>
-                        To notify you about changes to our service and important announcements
-                    </li>
+                    <li>To notify you about changes to our service and important announcements</li>
                     <li>To improve our service based on your feedback and usage patterns</li>
                     <li>To comply with legal obligations and resolve any disputes</li>
                 </ul>

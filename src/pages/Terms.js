@@ -113,9 +113,9 @@ const Terms = () => {
                 <h2>10. Intellectual Property</h2>
                 <p>
                     The Landing Page Generator and its original content, features, and functionality
-                    are owned by Landing Page Generator and are protected by international copyright,
-                    trademark, patent, trade secret, and other intellectual property or proprietary
-                    rights laws.
+                    are owned by Landing Page Generator and are protected by international
+                    copyright, trademark, patent, trade secret, and other intellectual property or
+                    proprietary rights laws.
                 </p>
             </section>
             <section>

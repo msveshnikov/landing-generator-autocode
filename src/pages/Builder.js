@@ -255,8 +255,8 @@ const Builder = () => {
                             Additional Images
                         </Typography>
                         <ImageUploader onUpload={handleAdditionalImageUpload} />
-                        <br/>
-                        
+                        <br />
+
                         <TextField
                             fullWidth
                             multiline

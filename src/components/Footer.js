@@ -64,9 +64,7 @@ const Footer = () => {
                     <FooterLink to="/privacy">Privacy Policy</FooterLink>
                 </FooterSection>
             </FooterContent>
-            <Copyright>
-                © {new Date().getFullYear()} MaxSoft. All rights reserved.
-            </Copyright>
+            <Copyright>© {new Date().getFullYear()} MaxSoft. All rights reserved.</Copyright>
         </FooterContainer>
     );
 };
